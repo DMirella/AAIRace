@@ -87,13 +87,13 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <AdditionalIncludeDirectories>C:\Users\Dima\anaconda3\Library\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <AdditionalOptions>%(AdditionalOptions) -std=c++14</AdditionalOptions>
       <AssemblerListingLocation>Debug/</AssemblerListingLocation>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <CompileAs>CompileAsCpp</CompileAs>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <ExceptionHandling>Sync</ExceptionHandling>
       <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
+      <LanguageStandard>stdcpp14</LanguageStandard>
       <Optimization>Disabled</Optimization>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -116,7 +116,7 @@
       <ProxyFileName>%(Filename)_p.c</ProxyFileName>
     </Midl>
     <Link>
-      <AdditionalDependencies>C:\Users\Dima\anaconda3\Library\lib\sfml-system.lib;C:\Users\Dima\anaconda3\Library\lib\sfml-window.lib;C:\Users\Dima\anaconda3\Library\lib\sfml-graphics.lib;C:\Users\Dima\anaconda3\Library\lib\sfml-network.lib;C:\Users\Dima\anaconda3\Library\lib\sfml-audio.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalDependencies>source\Debug\car_library.lib;C:\Users\Dima\anaconda3\Library\lib\sfml-system.lib;C:\Users\Dima\anaconda3\Library\lib\sfml-window.lib;C:\Users\Dima\anaconda3\Library\lib\sfml-graphics.lib;C:\Users\Dima\anaconda3\Library\lib\sfml-network.lib;C:\Users\Dima\anaconda3\Library\lib\sfml-audio.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -132,11 +132,11 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
       <AdditionalIncludeDirectories>C:\Users\Dima\anaconda3\Library\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <AdditionalOptions>%(AdditionalOptions) -std=c++14</AdditionalOptions>
       <AssemblerListingLocation>Release/</AssemblerListingLocation>
       <CompileAs>CompileAsCpp</CompileAs>
       <ExceptionHandling>Sync</ExceptionHandling>
       <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <LanguageStandard>stdcpp14</LanguageStandard>
       <Optimization>MaxSpeed</Optimization>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
@@ -161,7 +161,7 @@
       <ProxyFileName>%(Filename)_p.c</ProxyFileName>
     </Midl>
     <Link>
-      <AdditionalDependencies>C:\Users\Dima\anaconda3\Library\lib\sfml-system.lib;C:\Users\Dima\anaconda3\Library\lib\sfml-window.lib;C:\Users\Dima\anaconda3\Library\lib\sfml-graphics.lib;C:\Users\Dima\anaconda3\Library\lib\sfml-network.lib;C:\Users\Dima\anaconda3\Library\lib\sfml-audio.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalDependencies>source\Release\car_library.lib;C:\Users\Dima\anaconda3\Library\lib\sfml-system.lib;C:\Users\Dima\anaconda3\Library\lib\sfml-window.lib;C:\Users\Dima\anaconda3\Library\lib\sfml-graphics.lib;C:\Users\Dima\anaconda3\Library\lib\sfml-network.lib;C:\Users\Dima\anaconda3\Library\lib\sfml-audio.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
       <GenerateDebugInformation>false</GenerateDebugInformation>
@@ -177,11 +177,11 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">
     <ClCompile>
       <AdditionalIncludeDirectories>C:\Users\Dima\anaconda3\Library\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <AdditionalOptions>%(AdditionalOptions) -std=c++14</AdditionalOptions>
       <AssemblerListingLocation>MinSizeRel/</AssemblerListingLocation>
       <CompileAs>CompileAsCpp</CompileAs>
       <ExceptionHandling>Sync</ExceptionHandling>
       <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <LanguageStandard>stdcpp14</LanguageStandard>
       <Optimization>MinSpace</Optimization>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
@@ -206,7 +206,7 @@
       <ProxyFileName>%(Filename)_p.c</ProxyFileName>
     </Midl>
     <Link>
-      <AdditionalDependencies>C:\Users\Dima\anaconda3\Library\lib\sfml-system.lib;C:\Users\Dima\anaconda3\Library\lib\sfml-window.lib;C:\Users\Dima\anaconda3\Library\lib\sfml-graphics.lib;C:\Users\Dima\anaconda3\Library\lib\sfml-network.lib;C:\Users\Dima\anaconda3\Library\lib\sfml-audio.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalDependencies>source\MinSizeRel\car_library.lib;C:\Users\Dima\anaconda3\Library\lib\sfml-system.lib;C:\Users\Dima\anaconda3\Library\lib\sfml-window.lib;C:\Users\Dima\anaconda3\Library\lib\sfml-graphics.lib;C:\Users\Dima\anaconda3\Library\lib\sfml-network.lib;C:\Users\Dima\anaconda3\Library\lib\sfml-audio.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
       <GenerateDebugInformation>false</GenerateDebugInformation>
@@ -222,12 +222,12 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">
     <ClCompile>
       <AdditionalIncludeDirectories>C:\Users\Dima\anaconda3\Library\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <AdditionalOptions>%(AdditionalOptions) -std=c++14</AdditionalOptions>
       <AssemblerListingLocation>RelWithDebInfo/</AssemblerListingLocation>
       <CompileAs>CompileAsCpp</CompileAs>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <ExceptionHandling>Sync</ExceptionHandling>
       <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <LanguageStandard>stdcpp14</LanguageStandard>
       <Optimization>MaxSpeed</Optimization>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
@@ -250,7 +250,7 @@
       <ProxyFileName>%(Filename)_p.c</ProxyFileName>
     </Midl>
     <Link>
-      <AdditionalDependencies>C:\Users\Dima\anaconda3\Library\lib\sfml-system.lib;C:\Users\Dima\anaconda3\Library\lib\sfml-window.lib;C:\Users\Dima\anaconda3\Library\lib\sfml-graphics.lib;C:\Users\Dima\anaconda3\Library\lib\sfml-network.lib;C:\Users\Dima\anaconda3\Library\lib\sfml-audio.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalDependencies>source\RelWithDebInfo\car_library.lib;C:\Users\Dima\anaconda3\Library\lib\sfml-system.lib;C:\Users\Dima\anaconda3\Library\lib\sfml-window.lib;C:\Users\Dima\anaconda3\Library\lib\sfml-graphics.lib;C:\Users\Dima\anaconda3\Library\lib\sfml-network.lib;C:\Users\Dima\anaconda3\Library\lib\sfml-audio.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -320,12 +320,18 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="E:\AAIRace\src\main.cc" />
+    <ClCompile Include="E:\AAIRace\source\main.cc" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="E:\AAIRace\build\ZERO_CHECK.vcxproj">
       <Project>{2B847DE5-EF85-3103-8B13-A19AD7F73411}</Project>
       <Name>ZERO_CHECK</Name>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </ProjectReference>
+    <ProjectReference Include="E:\AAIRace\build\source\car_library.vcxproj">
+      <Project>{3A486066-569E-3BA6-BFB4-B6AE5B2DBF6D}</Project>
+      <Name>car_library</Name>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </ProjectReference>
