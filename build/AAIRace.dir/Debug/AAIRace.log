@@ -1,4 +1,0 @@
-﻿  Building Custom Rule E:/AAIRace/CMakeLists.txt
-cl : command line warning D9002: ignoring unknown option '-std=c++14'
-  main.cc
-  AAIRace.vcxproj -> E:\AAIRace\build\Debug\AAIRace.exe
