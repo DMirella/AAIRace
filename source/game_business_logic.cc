@@ -8,7 +8,10 @@
 
 #include <SFML/Graphics.hpp>
 
+#include "car.h"
 #include "city_car.h"
+#include "racing_car.h"
+#include "road.h"
 #include "game_window.h"
 #include "tools.h"
 
@@ -49,6 +52,7 @@ GameBusinessLogic::GameBusinessLogic(const GameWindowContext& game_window_contex
                                  road_->start_line_sprite_y() - kStartYCityCarFromStartLineOffset);
     std::shared_ptr<CityCar> current_car = std::make_shared<CityCar>(current_x, current_y, game_window_context.draw_function);
     current_car->SetHeroCar(hero_racing_car_);
+    city_car_list_.push_back(current_car);
     car_list_.push_back(current_car);
   }
 }
@@ -167,23 +171,37 @@ AIInputData GameBusinessLogic::GetAIInputDataRegardingToRacingCar(const std::sha
   input_data.distance_to_right_border = road_->right_x() - car->x();
   input_data.current_speed = car->speed();
 
-  std::vector<AIInputData::OtherCarRegardingCurrentCarInfo> other_cars_info;
-  for (const auto& current_car : car_list_) {
+  auto GreaterDistanceCompareFunction 
+      = [](const AIInputData::OtherCarRegardingCurrentCarInfo& a, const AIInputData::OtherCarRegardingCurrentCarInfo& b) -> bool {
+        return a.distance < b.distance;
+      };
+
+  std::vector<AIInputData::OtherCarRegardingCurrentCarInfo> city_cars_info;
+  for (const auto& current_car : city_car_list_) {
+    AIInputData::OtherCarRegardingCurrentCarInfo info;
+    info.speed = current_car->speed();
+    info.distance = EstimateDistance(car->x(), car->y(), current_car->x(), current_car->y());
+    info.angle = std::atan((car->y() - current_car->y()) / (car->x() - current_car->x()));
+    city_cars_info.emplace_back(info);
+  }
+  std::sort(city_cars_info.begin(), city_cars_info.end(), GreaterDistanceCompareFunction);
+  for (int i = 0; i < AIInputData::kCountClosestMemorizedCityCars; i++) {
+    input_data.closest_city_cars[i] = std::move(city_cars_info[i]);
+  }
+  
+  std::vector<AIInputData::OtherCarRegardingCurrentCarInfo> racing_cars_info;
+  for (const auto& current_car : racing_car_list_) {
     if (current_car != car) {
       AIInputData::OtherCarRegardingCurrentCarInfo info;
       info.speed = current_car->speed();
       info.distance = EstimateDistance(car->x(), car->y(), current_car->x(), current_car->y());
       info.angle = std::atan((car->y() - current_car->y()) / (car->x() - current_car->x()));
-      other_cars_info.emplace_back(info);
+      racing_cars_info.emplace_back(info);
     }
   }
-
-  std::sort(other_cars_info.begin(), other_cars_info.end(), 
-      [](const AIInputData::OtherCarRegardingCurrentCarInfo& a, const AIInputData::OtherCarRegardingCurrentCarInfo& b) -> bool {
-        return a.distance < b.distance;
-      });
-  for (int i = 0; i < AIInputData::kCountClosestMemorizedCars; i++) {
-    input_data.closest_cars[i] = std::move(other_cars_info[i]);
+  std::sort(racing_cars_info.begin(), racing_cars_info.end(), GreaterDistanceCompareFunction);
+  for (int i = 0; i < AIInputData::kCountClosestMemorizedRacingCars; i++) {
+    input_data.closest_racing_cars[i] = std::move(racing_cars_info[i]);
   }
   return input_data;
 }

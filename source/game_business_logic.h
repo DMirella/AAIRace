@@ -9,14 +9,16 @@
 #include "ai_types.h"
 #include "enemy_ai.h"
 #include "game_window.h"
-#include "racing_car.h"
-#include "road.h"
 
 namespace sf {
 class RenderWindow;
 }  // namespace sf
 
 class GameWindow;
+class Car;
+class CityCar;
+class RacingCar;
+class Road;
 
 class GameBusinessLogic {
  public:
@@ -38,6 +40,7 @@ class GameBusinessLogic {
 
   std::shared_ptr<RacingCar> hero_racing_car_;
   std::vector<std::shared_ptr<Car>> car_list_;
+  std::vector<std::shared_ptr<CityCar>> city_car_list_;
   std::vector<std::shared_ptr<RacingCar>> racing_car_list_;
   std::vector<std::shared_ptr<RacingCar>> enemies_car_list_;
   std::shared_ptr<Road> road_;

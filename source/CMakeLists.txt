@@ -12,4 +12,5 @@ add_library(${CAR_LIBRARY_NAME}
             level_manager.cc
             screens.cc
             screen_state_machine.cc
-            enemy_ai.cc)
+            enemy_ai.cc
+            ai.cc)

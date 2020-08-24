@@ -8,8 +8,10 @@ struct AIInputData {
     float angle;
   };
 
-  static const int kCountClosestMemorizedCars = 20;
-  OtherCarRegardingCurrentCarInfo closest_cars[kCountClosestMemorizedCars];
+  static const int kCountClosestMemorizedCityCars = 10;
+  static const int kCountClosestMemorizedRacingCars = 2;
+  OtherCarRegardingCurrentCarInfo closest_city_cars[kCountClosestMemorizedCityCars];
+  OtherCarRegardingCurrentCarInfo closest_racing_cars[kCountClosestMemorizedRacingCars];
 
   float distance_to_left_border;
   float distance_to_right_border;
