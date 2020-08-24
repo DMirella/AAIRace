@@ -8,7 +8,7 @@
 
 class Car : public DrawableUnit {
  public:
-  Car(int x, int y, const std::shared_ptr<sf::RenderWindow>& render_window);
+  Car(int x, int y, const DrawFunction& draw_function);
   virtual ~Car() {}
 
   virtual void SetHeroCar(const std::shared_ptr<Car>& hero_car);

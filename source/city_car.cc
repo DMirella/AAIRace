@@ -9,8 +9,8 @@
 
 sf::Texture CityCar::texture_ = sf::Texture();
 
-CityCar::CityCar(int x, int y, const std::shared_ptr<sf::RenderWindow>& render_window) 
-    : Car(x, y, render_window) {
+CityCar::CityCar(int x, int y,  const DrawFunction& draw_function) 
+    : Car(x, y, draw_function) {
   sprite_.setTexture(texture_);
   sprite_.setOrigin(texture_.getSize().x / 2, texture_.getSize().y / 2);
   sprite_.setPosition(sprite_x_, sprite_y_);

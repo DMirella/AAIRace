@@ -7,8 +7,8 @@
 
 sf::Texture RacingCar::texture_ = sf::Texture();
 
-RacingCar::RacingCar(int x, int y, const std::shared_ptr<sf::RenderWindow>& render_window) 
-    : Car(x, y, render_window)
+RacingCar::RacingCar(int x, int y, const DrawFunction& draw_function) 
+    : Car(x, y, draw_function)
     , is_car_accelerate_now_(false)
     , is_car_slow_down_now_(false)
     , is_car_turn_left_now_(false)
@@ -96,6 +96,10 @@ void RacingCar::Update(float elapsed_time) {
   sprite_.setPosition(sprite_x_, sprite_y_);
   // sprite_.move(std::sin(angle_) * speed_, std::cos(angle_) * -speed_);
   // sprite_.setRotation(180 / 3.14 * angle_);
+}
+
+void RacingCar::Draw() {
+  Car::Draw();
   ResetControls();
 }
 
@@ -116,6 +120,16 @@ Rectangle RacingCar::GetIntersectRectangle() const {
   result.x1 = sprite_x_ - texture_.getSize().x / 2.0f + kOffsetFromBorder;
   result.x2 = sprite_x_ + texture_.getSize().x / 2.0f - kOffsetFromBorder;
   return result;
+}
+
+void RacingCar::GetControllersState(bool* const is_car_accelerates,
+                                    bool* const is_car_slows_down,
+                                    bool* const is_car_turns_left,
+                                    bool* const is_car_turns_right) {
+  *is_car_accelerates = is_car_accelerate_now_;
+  *is_car_slows_down = is_car_slow_down_now_;
+  *is_car_turns_left = is_car_turn_left_now_;
+  *is_car_turns_right = is_car_turn_right_now_;
 }
 
 void RacingCar::ResetControls() {

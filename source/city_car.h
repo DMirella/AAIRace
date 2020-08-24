@@ -15,7 +15,7 @@ class CityCar : public Car {
   CityCar&& operator=(const CityCar& city_car) = delete;
   CityCar&& operator=(CityCar&& city_car) = delete;
 
-  CityCar(int x, int y, const std::shared_ptr<sf::RenderWindow>& render_window);
+  CityCar(int x, int y, const DrawFunction& draw_function);
 
   static void Init();
 

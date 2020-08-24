@@ -6,8 +6,8 @@ namespace {
 const float gEpsilon = 1e-6;
 }  // namespace
 
-Car::Car(int x, int y, const std::shared_ptr<sf::RenderWindow>& render_window) 
-    : DrawableUnit(render_window)
+Car::Car(int x, int y, const DrawFunction& draw_function) 
+    : DrawableUnit(draw_function)
     , sprite_(sf::Sprite())
     , speed_(0.0f)
     , sprite_x_(static_cast<float>(x))
@@ -24,7 +24,7 @@ void Car::SetHeroCar(const std::shared_ptr<Car>& hero_car) {
 }
 
 void Car::Draw() {
-  render_window_->draw(sprite_);
+  draw_function_(sprite_);
 }
 
 void Car::Update(float elapsed_time) {

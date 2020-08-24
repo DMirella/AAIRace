@@ -17,7 +17,7 @@ class Road : public DrawableUnit {
   Road&& operator=(const Road& road) = delete;
   Road&& operator=(Road&& road) = delete;
 
-  Road(int screen_width, int screen_height, const std::shared_ptr<sf::RenderWindow>& render_window);
+  Road(int screen_width, int screen_height, const DrawFunction& draw_function);
 
   void SetHeroCar(const std::shared_ptr<RacingCar>& hero_car);
 

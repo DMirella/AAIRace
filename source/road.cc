@@ -4,8 +4,8 @@
 
 #include "racing_car.h"
 
-Road::Road(int screen_width, int screen_height, const std::shared_ptr<sf::RenderWindow>& render_window) 
-  : DrawableUnit(render_window)
+Road::Road(int screen_width, int screen_height, const DrawFunction& draw_function) 
+  : DrawableUnit(draw_function)
   , screen_width_(screen_width)
   , screen_height_(screen_height)
   , speed_(0.0f) {
@@ -22,6 +22,7 @@ Road::Road(int screen_width, int screen_height, const std::shared_ptr<sf::Render
   const float kScaleStartFinishLineY = 0.5f;
   const float kStartLineY = 500.0f;
   const float kFinishLineY = -100000.0f;
+  // const float kFinishLineY = -1000.0f;
 
   road_x_ = screen_width_ / 2 - (road_image.getSize().y * kScaleRoadX) / 2;
   start_finish_line_x_ = road_x_ + 34;
@@ -57,10 +58,10 @@ void Road::SetHeroCar(const std::shared_ptr<RacingCar>& hero_car) {
 
 
 void Road::Draw() {
-  render_window_->draw(sprite1_);
-  render_window_->draw(sprite2_);
-  render_window_->draw(start_line_sprite_);
-  render_window_->draw(finish_line_sprite_);
+  draw_function_(sprite1_);
+  draw_function_(sprite2_);
+  draw_function_(start_line_sprite_);
+  draw_function_(finish_line_sprite_);
 }
 
 void Road::Update(float elapsed_time) {

@@ -15,7 +15,7 @@ class RacingCar : public Car {
   RacingCar&& operator=(const RacingCar& racing_car) = delete;
   RacingCar&& operator=(RacingCar&& racing_car) = delete;
 
-  RacingCar(int x, int y, const std::shared_ptr<sf::RenderWindow>& render_window);
+  RacingCar(int x, int y, const DrawFunction& draw_function);
 
   static void Init();
 
@@ -29,10 +29,16 @@ class RacingCar : public Car {
 
   // DrawableUnit
   virtual void Update(float elapsed_time) override;
+  virtual void Draw() override;
 
   // Car
   virtual void SetHeroCar(const std::shared_ptr<Car>& hero_car) override;
   virtual Rectangle GetIntersectRectangle() const override;
+
+  void GetControllersState(bool* const is_car_accelerates,
+                           bool* const is_car_slows_down,
+                           bool* const is_car_turns_left,
+                           bool* const is_car_turns_right);
 
  private:
   void ResetControls();
