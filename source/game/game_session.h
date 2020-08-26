@@ -1,0 +1,34 @@
+#ifndef AAIRACE_SOURCE_GAME_SESSION_H_
+#define AAIRACE_SOURCE_GAME_SESSION_H_
+
+#include <memory>
+#include <vector>
+
+#include "game_business_logic.h"
+#include "ui/game_window.h"
+
+class EnemyAI;
+class LevelManager;
+
+class GameSession {
+ public:
+  GameSession(LevelManager* const level_manager, 
+              const GameWindowContext& game_window_context,
+              int enemies_count,
+              int city_car_count,
+              const std::vector<std::shared_ptr<EnemyAI>>& enemies_ai);
+  ~GameSession();
+
+  void NotifyGameCycleElapsed(float elapsed_time);
+  void DrawEntities();
+
+  bool is_game_session_ended() const;
+ private:
+  GameBusinessLogic game_business_logic_;
+  LevelManager* const level_manager_;
+  float game_aiio_scan_timer_;
+
+  std::vector<AIIOData> collected_aiio_data_;
+};
+
+#endif  // AAIRACE_SOURCE_GAME_SESSION_H_

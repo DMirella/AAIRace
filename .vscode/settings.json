@@ -66,6 +66,12 @@
         "atomic": "cpp",
         "chrono": "cpp",
         "numeric": "cpp",
-        "ratio": "cpp"
+        "ratio": "cpp",
+        "hash_map": "cpp",
+        "core": "cpp",
+        "complex": "cpp",
+        "cstdarg": "cpp",
+        "thread": "cpp",
+        "unordered_set": "cpp"
     },
 }
