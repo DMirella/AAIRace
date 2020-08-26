@@ -16,6 +16,8 @@ class EnemyAI {
   std::vector<double> TransformAIInputDataToVector(const AIInputData& ai_input_data) const;
   std::vector<double> TransformAIOutputDataToVector(const AIOutputData& ai_output_data) const;
   AIOutputData TransformVectorToAIOutputData(const std::vector<double>& vector) const;
+  std::vector<AIIOData> GetTrainData(const std::vector<AIIOData>& aiio_data) const;
+  bool GetValueFromActionNumber(const AIOutputData& data, int number) const;
 
   NeuralNetwork neural_network_;
   std::vector<AIIOData> last_aiio_data_;

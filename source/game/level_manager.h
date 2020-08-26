@@ -3,13 +3,15 @@
 
 #include <memory>
 
-#include "game_session.h"
+#include "ai/ai_types.h"
 #include "ui/game_window.h"
 
+class EnemyAI;
+class GameSession;
 class LevelManager {
  public:
   LevelManager(const GameWindowContext& game_window_context);
-  GameSession GenerateGameSession(int game_level);
+  std::shared_ptr<GameSession> GenerateGameSession(int game_level);
 
   void NotifyAIIODataCollected(const std::vector<AIIOData>& collected_aiio_data);
  private:

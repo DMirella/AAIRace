@@ -14,9 +14,10 @@
 #include "drawable_units/racing_car.h"
 #include "drawable_units/road.h"
 #include "ui/game_window.h"
-#include "tools/tools.h"
+#include <common/tools.h>
 
-GameBusinessLogic::GameBusinessLogic(const GameWindowContext& game_window_context, int enemies_count, int city_car_count, const std::vector<std::shared_ptr<EnemyAI>>& enemies_ai)
+GameBusinessLogic::GameBusinessLogic(const GameWindowContext& game_window_context, int enemies_count, 
+                                     int city_car_count, const std::vector<std::shared_ptr<EnemyAI>>& enemies_ai)
   : game_window_context_(game_window_context)
   , is_game_session_ended_(false)
   , enemies_ai_(enemies_ai) {

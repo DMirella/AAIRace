@@ -8,7 +8,7 @@
 
 #include <MiniDNN.h>
 
-#include "tools/tools.h"
+#include <common/tools.h>
 /*
 namespace {
 const float gMutationChance = 0.03f;
@@ -145,9 +145,9 @@ std::vector<double> NeuralNetwork::GetOutputs(const std::vector<double>& inputs)
 void NeuralNetwork::Train(const std::vector<std::pair<std::vector<double>, std::vector<double>>>& train_matrix) {
   assert(train_matrix.size() > 0);
 
-  const double kLearningRate = 0.01;
+  const double kLearningRate = 0.001;
   const int kBatchSize = std::max(static_cast<int>(train_matrix.size()) / 10, 1);
-  const int kEpochCount = 3;
+  const int kEpochCount = 10;
 
   Eigen::MatrixXd inputs_train_matrix(train_matrix[0].first.size(), train_matrix.size());
   Eigen::MatrixXd outputs_train_matrix(train_matrix[0].second.size(), train_matrix.size());

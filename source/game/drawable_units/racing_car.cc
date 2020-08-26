@@ -30,7 +30,7 @@ RacingCar::RacingCar(int x, int y, const DrawFunction& draw_function)
 }
 
 void RacingCar::Init() {
-  const std::string kCarImageFile = "images/racing_car.png";
+  const std::string kCarImageFile = "resources/racing_car.png";
 	sf::Image car_image;
   car_image.loadFromFile(kCarImageFile);
   texture_.loadFromImage(car_image);

@@ -17,7 +17,7 @@ CityCar::CityCar(int x, int y,  const DrawFunction& draw_function)
 }
 
 void CityCar::Init() {
-  const std::string kCarImageFile = "images/city_car.png";
+  const std::string kCarImageFile = "resources/city_car.png";
   sf::Image car_image;
   car_image.loadFromFile(kCarImageFile);
   texture_.loadFromImage(car_image);

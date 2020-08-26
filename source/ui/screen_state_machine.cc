@@ -4,20 +4,14 @@
 #include "screens.h"
 
 ScreenStateMachine::ScreenStateMachine(const GameWindowContext& game_window_context)
-    : active_screen_id_(ScreenId::kGameScreen) {
-  screens_[ScreenId::kGameScreen] = std::make_shared<GameScreen>(this, game_window_context);
-
-  SetScreen(ScreenId::kGameScreen);
+    : active_screen_(nullptr) {
+  active_screen_ = std::make_shared<MenuScreen>(this, game_window_context);
 }
 
-void ScreenStateMachine::SetScreen(ScreenId screen_id) {
-  if (screen_id != active_screen_id_) {
-    screens_[active_screen_id_]->Close();
-    active_screen_id_ = screen_id;
-    screens_[active_screen_id_]->Show();
-  }
+void ScreenStateMachine::SetScreen(const std::shared_ptr<Screen>& screen) {
+  active_screen_ = screen;
 }
 
 std::shared_ptr<Screen> ScreenStateMachine::active_screen() {
-  return screens_[active_screen_id_];
+  return active_screen_;
 }

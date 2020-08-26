@@ -3,7 +3,7 @@
 
 #include <SFML/Graphics.hpp>
 
-#include "game/drawable_units/drawable_unit.h"
+#include "common/drawable_unit.h"
 #include "screen_state_machine.h"
 
 struct GameWindowContext {

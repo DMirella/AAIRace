@@ -3,8 +3,8 @@
 
 #include <SFML/Graphics.hpp>
 
-#include "drawable_unit.h"
-#include "tools/tools.h"
+#include <common/drawable_unit.h>
+#include <common/tools.h>
 
 class Car : public DrawableUnit {
  public:

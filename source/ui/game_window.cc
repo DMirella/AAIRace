@@ -26,12 +26,14 @@ void GameWindow::Start() {
     sf::Event event;
     while (window_.pollEvent(event))
     {
-      if (event.type == sf::Event::Closed)
+      if (event.type == sf::Event::Closed) {
         window_.close();
+      }
     }
-    screen_state_machine_->active_screen()->NotifyGameCycleElapsed(time);
+    screen_state_machine_->active_screen()->NotifyGameCycleElapsed(time, sf::Mouse::getPosition(window_).x, 
+          sf::Mouse::getPosition(window_).y, sf::Mouse::isButtonPressed(sf::Mouse::Button::Left));
 
-    window_.clear();
+    window_.clear(sf::Color(0x80, 0xA4, 0x86));
     screen_state_machine_->active_screen()->Draw();
     window_.display();
   }

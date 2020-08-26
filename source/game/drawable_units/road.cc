@@ -9,8 +9,8 @@ Road::Road(int screen_width, int screen_height, const DrawFunction& draw_functio
   , screen_width_(screen_width)
   , screen_height_(screen_height)
   , speed_(0.0f) {
-  const std::string kRoadTextureFile = "images/road.jpg";
-  const std::string kStartFinishLineTextureFile = "images/finish_line.png";
+  const std::string kRoadTextureFile = "resources/road.jpg";
+  const std::string kStartFinishLineTextureFile = "resources/finish_line.png";
 
   sf::Image road_image, start_finish_line_image;
   road_image.loadFromFile(kRoadTextureFile);

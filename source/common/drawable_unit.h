@@ -16,7 +16,8 @@ class DrawableUnit {
   virtual ~DrawableUnit() {}
 
   virtual void Draw() = 0;
-  virtual void Update(float elapsed_time) = 0;
+  virtual void Update(float elapsed_time) {}
+  virtual void Update(float elapsed_time, int cursor_x, int cursor_y, bool is_mouse_button_pressed) {}
  protected:
   DrawFunction draw_function_;
 };
