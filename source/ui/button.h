@@ -18,7 +18,7 @@ class Button : public DrawableUnit {
   
   // DrawableUnit
   virtual void Draw() override;
-  virtual void Update(float elapsed_time, int cursor_x, int cursor_y, bool is_mouse_button_pressed) override;
+  virtual void Update(float elapsed_time, const UserControllersContext& context) override;
  private:
   static sf::Color kBasicRectColor;
   static sf::Color kActiveRectColor;

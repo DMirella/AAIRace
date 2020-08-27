@@ -5,7 +5,7 @@
 
 ScreenStateMachine::ScreenStateMachine(const GameWindowContext& game_window_context)
     : active_screen_(nullptr) {
-  active_screen_ = std::make_shared<MenuScreen>(this, game_window_context);
+  SetScreen(std::make_shared<ProfileChooseScreen>(this, game_window_context));
 }
 
 void ScreenStateMachine::SetScreen(const std::shared_ptr<Screen>& screen) {

@@ -68,8 +68,8 @@ void RacingCar::SetBlockMove(bool is_blocked) {
   is_move_blocked_ = is_blocked;
 }
 
-void RacingCar::Update(float elapsed_time) {
-  Car::Update(elapsed_time);
+void RacingCar::Update(float elapsed_time, const UserControllersContext& context) {
+  Car::Update(elapsed_time, context);
 
   if (is_car_accelerate_now_ && speed_ < gMaxCarSpeed) {
     speed_ += gAccelerateValue * elapsed_time;

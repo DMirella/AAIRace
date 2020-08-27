@@ -33,19 +33,17 @@ void Button::Draw() {
   text_label_->Draw();
 }
 
-void Button::Update(float elapsed_time, int cursor_x, int cursor_y, bool is_mouse_button_pressed) {
-  if (x_ <= cursor_x && cursor_x <= x_ + width_ &&
-      y_ <= cursor_y && cursor_y <= y_ + height_) {
-    if (is_mouse_button_pressed && !is_mouse_down_on_active_button_) {
+void Button::Update(float elapsed_time, const UserControllersContext& context) {
+  if (x_ <= context.cursor_x && context.cursor_x <= x_ + width_ &&
+      y_ <= context.cursor_y && context.cursor_y <= y_ + height_) {
+    if (context.is_mouse_button_pressed && !is_mouse_down_on_active_button_) {
       is_mouse_down_on_active_button_ = true;
-    } else if (!is_mouse_button_pressed && is_mouse_down_on_active_button_) {
+    } else if (!context.is_mouse_button_pressed && is_mouse_down_on_active_button_) {
       is_mouse_down_on_active_button_ = false;
       on_press_callback_();
     }
     rect_.setFillColor(kActiveRectColor);
-    //text_.setColor(kActiveFontColor);
   } else {
     rect_.setFillColor(kBasicRectColor);
-    //text_.setColor(kBasicFontColor);
   }
 }

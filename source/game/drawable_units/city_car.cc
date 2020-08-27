@@ -27,8 +27,8 @@ float CityCar::height() {
   return texture_.getSize().y;
 }
 
-void CityCar::Update(float elapsed_time) {
-  Car::Update(elapsed_time);
+void CityCar::Update(float elapsed_time, const UserControllersContext& context) {
+  Car::Update(elapsed_time, context);
 
   if (speed_ > kDefaultSpeed) {
     speed_ = std::min(speed_, kMaxSpeed);

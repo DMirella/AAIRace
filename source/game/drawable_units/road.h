@@ -23,7 +23,7 @@ class Road : public DrawableUnit {
 
   // DrawableUnit
   virtual void Draw() override;
-  virtual void Update(float elapsed_time) override;
+  virtual void Update(float elapsed_time, const UserControllersContext& context) override;
 
   float left_x() const;
   float right_x() const;

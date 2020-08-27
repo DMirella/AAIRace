@@ -17,9 +17,9 @@ GameSession::GameSession(LevelManager* const level_manager,
 GameSession::~GameSession() {
 }
 
-void GameSession::NotifyGameCycleElapsed(float elapsed_time) {
+void GameSession::NotifyGameCycleElapsed(float elapsed_time, const UserControllersContext& context) {
   const float kGameAIIOScanRate = 1000.0f;  // ms
-  game_business_logic_.NotifyGameCycleElapsed(elapsed_time);
+  game_business_logic_.NotifyGameCycleElapsed(elapsed_time, context);
   game_aiio_scan_timer_ += elapsed_time;
   if (game_aiio_scan_timer_ >= kGameAIIOScanRate) {
     collected_aiio_data_.emplace_back(game_business_logic_.GetAIIODataRegardingToHeroCar());

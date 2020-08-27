@@ -24,7 +24,7 @@ class GameBusinessLogic {
  public:
   GameBusinessLogic(const GameWindowContext& game_window_context, int enemies_count, int city_car_count, const std::vector<std::shared_ptr<EnemyAI>>& enemies_ai);
 
-  void NotifyGameCycleElapsed(float elapsed_time);
+  void NotifyGameCycleElapsed(float elapsed_time, const UserControllersContext& context);
   void DrawEntities();
 
   bool is_game_session_ended() const;
@@ -37,7 +37,7 @@ class GameBusinessLogic {
   void CheckHeroControllers();
   void MakeEnemiesTurn();
   void ProcessGameEvents();
-  void Update(float elapsed_time);
+  void Update(float elapsed_time, const UserControllersContext& context);
 
   GameWindowContext game_window_context_;
 

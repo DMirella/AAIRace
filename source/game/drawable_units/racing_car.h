@@ -29,7 +29,7 @@ class RacingCar : public Car {
   void SetBlockMove(bool is_blocked);
 
   // DrawableUnit
-  virtual void Update(float elapsed_time) override;
+  virtual void Update(float elapsed_time, const UserControllersContext& context) override;
   virtual void Draw() override;
 
   // Car

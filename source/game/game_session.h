@@ -19,9 +19,9 @@ class GameSession {
               const std::vector<std::shared_ptr<EnemyAI>>& enemies_ai);
   ~GameSession();
 
-  void NotifyGameCycleElapsed(float elapsed_time);
+  void NotifyGameCycleElapsed(float elapsed_time, const UserControllersContext& context);
   void DrawEntities();
-
+  
   bool is_game_session_ended() const;
  private:
   GameBusinessLogic game_business_logic_;

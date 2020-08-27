@@ -8,6 +8,13 @@ namespace sf {
 class Sprite;
 }  // namespace sf
 
+struct UserControllersContext {
+  int cursor_x;
+  int cursor_y;
+  bool is_mouse_button_pressed;
+  sf::Uint32 entered_unicode;
+};
+
 class DrawableUnit {
  public:
   using DrawFunction = std::function<void(const sf::Drawable& sprite)>;
@@ -16,8 +23,7 @@ class DrawableUnit {
   virtual ~DrawableUnit() {}
 
   virtual void Draw() = 0;
-  virtual void Update(float elapsed_time) {}
-  virtual void Update(float elapsed_time, int cursor_x, int cursor_y, bool is_mouse_button_pressed) {}
+  virtual void Update(float elapsed_time, const UserControllersContext& context) {}
  protected:
   DrawFunction draw_function_;
 };

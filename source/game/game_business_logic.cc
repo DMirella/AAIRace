@@ -60,11 +60,11 @@ GameBusinessLogic::GameBusinessLogic(const GameWindowContext& game_window_contex
   }
 }
 
-void GameBusinessLogic::NotifyGameCycleElapsed(float elapsed_time) {
+void GameBusinessLogic::NotifyGameCycleElapsed(float elapsed_time, const UserControllersContext& context) {
   CheckHeroControllers();
   MakeEnemiesTurn();
   ProcessGameEvents();
-  Update(elapsed_time);
+  Update(elapsed_time, context);
 }
 
 void GameBusinessLogic::CheckHeroControllers() {
@@ -137,10 +137,10 @@ void GameBusinessLogic::ProcessGameEvents() {
   }
 }
 
-void GameBusinessLogic::Update(float elapsed_time) {
-  road_->Update(elapsed_time);
+void GameBusinessLogic::Update(float elapsed_time, const UserControllersContext& context) {
+  road_->Update(elapsed_time, context);
   for (auto& it : car_list_) {
-    it->Update(elapsed_time);
+    it->Update(elapsed_time, context);
   }
 }
 

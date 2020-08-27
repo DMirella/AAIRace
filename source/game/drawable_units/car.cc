@@ -27,7 +27,8 @@ void Car::Draw() {
   draw_function_(sprite_);
 }
 
-void Car::Update(float elapsed_time) {
+void Car::Update(float elapsed_time, const UserControllersContext& context) {
+  (void) context;
   speed_ -= push_dy_ * push_speed_y_ * elapsed_time;
   sprite_x_ += push_dx_ * push_speed_x_ * elapsed_time;
 

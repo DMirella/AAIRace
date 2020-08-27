@@ -64,7 +64,9 @@ void Road::Draw() {
   draw_function_(finish_line_sprite_);
 }
 
-void Road::Update(float elapsed_time) {
+void Road::Update(float elapsed_time, const UserControllersContext& context) {
+  (void) context;
+  
   speed_ = hero_car_->speed();
   sprite1_y_ += speed_ * elapsed_time;
   sprite2_y_ += speed_ * elapsed_time;

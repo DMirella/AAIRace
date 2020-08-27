@@ -13,10 +13,19 @@ class CenterAlignLabel : public DrawableUnit {
   CenterAlignLabel(const tools::Rectangle& rect, const std::string& text_string, 
                    int font_size, const DrawFunction& draw_function);
 
+  void SetText(const std::string& text_string);
+
+  // DrawableUnit
   virtual void Draw() override;
+
+  int text_pixel_width() const;
  private:
+  const int kFontSize;
+
   sf::Font font_;
   sf::Text text_;
+  int text_y_;
+  tools::Rectangle bound_rectangle_;
 };
 
 #endif  // SOURCE_UI_CENTER_ALIGN_LABEL_H_
