@@ -4,4 +4,5 @@ add_library(${UI_LIBRARY_NAME}
             game_window.cc
             screens.cc
             screen_state_machine.cc
-            button.cc)
+            button.cc
+            center_align_label.cc)

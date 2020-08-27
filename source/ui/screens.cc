@@ -5,6 +5,7 @@
 #include "button.h"
 #include "game/game_session.h"
 #include "screen_state_machine.h"
+#include "center_align_label.h"
 
 // Screen
 Screen::Screen(ScreenStateMachine* const screen_state_machine, const GameWindowContext& game_window_context)
@@ -59,9 +60,14 @@ LevelChooseScreen::LevelChooseScreen(ScreenStateMachine* const screen_state_mach
   const int kLevelsCount = 30;
   const int kLevelButtonSize = 100;
   const int kLevelButtonXYOffset = 20;
-  const int kLevelButtonsBlockXYOffset = 100;
+  const int kLevelButtonsBlockXYOffset = 150;
   const int kMaxCountLevelButtonsX 
       = (game_window_context.screen_width - 2 * kLevelButtonsBlockXYOffset) / (kLevelButtonSize + kLevelButtonXYOffset);
+  const int kFontLabelSize = 50;
+  const std::string kChooseLavelLabelText = "Choose level:";
+    
+  label_ = std::make_shared<CenterAlignLabel>(tools::Rectangle(0, 0, game_window_context_.screen_width, kLevelButtonsBlockXYOffset),
+                                              kChooseLavelLabelText, kFontLabelSize, game_window_context_.draw_function);
 
   for (int current_level = 1; current_level <= kLevelsCount; current_level++) {
     Button::OnClickCallback on_current_level_button_click_callback = [this, current_level]() {
@@ -87,6 +93,7 @@ void LevelChooseScreen::NotifyGameCycleElapsed(float elapsed_time, int cursor_x,
 }
 
 void LevelChooseScreen::Draw() {
+  label_->Draw();
   for (const auto& it : level_buttons_) {
     it->Draw();
   }

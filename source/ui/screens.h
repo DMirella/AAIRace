@@ -35,6 +35,7 @@ class MenuScreen : public Screen {
   std::shared_ptr<Button> exit_game_button_;
 };
 
+class CenterAlignLabel;
 class LevelChooseScreen : public Screen {
  public:
   LevelChooseScreen(ScreenStateMachine* const screen_state_machine, const GameWindowContext& game_window_context);
@@ -44,6 +45,7 @@ class LevelChooseScreen : public Screen {
  private:
   void OnLevelChoosen(int level);
 
+  std::shared_ptr<CenterAlignLabel> label_;
   std::vector<std::shared_ptr<Button>> level_buttons_;
   std::vector<Button::OnClickCallback> level_button_callback_;
 };

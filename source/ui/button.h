@@ -8,6 +8,7 @@
 
 #include <common/drawable_unit.h>
 
+class CenterAlignLabel;
 class Button : public DrawableUnit {
  public:
   using OnClickCallback = std::function<void()>;
@@ -28,8 +29,7 @@ class Button : public DrawableUnit {
   int y_;
   int width_;
   int height_;
-  sf::Font font_;
-  sf::Text text_;
+  std::shared_ptr<CenterAlignLabel> text_label_;
   sf::RectangleShape rect_;
 
   bool is_mouse_down_on_active_button_;

@@ -11,6 +11,9 @@ struct Point {
 };
 
 struct Rectangle {
+  Rectangle() : x1(0.0f), y1(0.0f), x2(0.0f), y2(0.0f) {}
+  Rectangle(float _x1, float _y1, float _x2, float _y2) 
+      : x1(_x1), y1(_y1), x2(_x2), y2(_y2) {}
   float x1, y1, x2, y2;
 };
 
