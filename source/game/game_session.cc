@@ -18,14 +18,14 @@ GameSession::~GameSession() {
 }
 
 void GameSession::NotifyGameCycleElapsed(float elapsed_time, const UserControllersContext& context) {
-  const float kGameAIIOScanRate = 1000.0f;  // ms
+  const float kGameAIIOScanRate = 1500.0f;  // ms
   game_business_logic_.NotifyGameCycleElapsed(elapsed_time, context);
   game_aiio_scan_timer_ += elapsed_time;
   if (game_aiio_scan_timer_ >= kGameAIIOScanRate) {
     collected_aiio_data_.emplace_back(game_business_logic_.GetAIIODataRegardingToHeroCar());
   }
   if (game_business_logic_.is_game_session_ended()) {
-    level_manager_->NotifyAIIODataCollected(collected_aiio_data_);
+    level_manager_->NotifyCurrentLevelEnds(collected_aiio_data_);
   }
 }
 

@@ -7,6 +7,7 @@
 #include "game/game_session.h"
 #include "screen_state_machine.h"
 #include "text_box.h"
+#include "game/user_profile.h"
 
 // Screen
 Screen::Screen(ScreenStateMachine* const screen_state_machine, const GameWindowContext& game_window_context)
@@ -98,6 +99,7 @@ void SignUpScreen::Draw() {
 }
 
 void SignUpScreen::OnRegisterButtonClick() {
+  screen_state_machine_->GetUserProfile().SetName(name_text_box_->entered_string());
   screen_state_machine_->SetScreen(std::make_shared<MenuScreen>(screen_state_machine_, game_window_context_));
 }
 
@@ -144,6 +146,7 @@ void SignInScreen::Draw() {
 }
 
 void SignInScreen::OnLogInButtonClick() {
+  screen_state_machine_->GetUserProfile().LoadFromConfigFile(name_text_box_->entered_string());
   screen_state_machine_->SetScreen(std::make_shared<MenuScreen>(screen_state_machine_, game_window_context_));
 }
 
@@ -185,7 +188,7 @@ void MenuScreen::OnStartGameButtonClick() {
 }
 
 void MenuScreen::OnExitGameButtonClick() {
-  exit(0);
+  screen_state_machine_->ExitGame();
 }
 
 // LevelChooseScreen
@@ -217,6 +220,9 @@ LevelChooseScreen::LevelChooseScreen(ScreenStateMachine* const screen_state_mach
         on_current_level_button_click_callback,
         game_window_context_.draw_function
     ));
+    if (screen_state_machine_->GetUserProfile().level_manager().count_unlocked_level() < current_level) {
+      level_buttons_.back()->SetEnable(false);
+    }
   }
 }
 
@@ -242,9 +248,8 @@ GameScreen::GameScreen(ScreenStateMachine* const screen_state_machine,
                        const GameWindowContext& game_window_context,
                        int game_level)
     : Screen(screen_state_machine, game_window_context)
-    , level_manager_(game_window_context)
     , active_game_session_(nullptr) {
-  active_game_session_ = level_manager_.GenerateGameSession(game_level);
+  active_game_session_ = screen_state_machine_->GetUserProfile().level_manager().GenerateGameSession(game_level);
 }
 
 void GameScreen::NotifyGameCycleElapsed(float elapsed_time, const UserControllersContext& context) {

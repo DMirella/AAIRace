@@ -99,7 +99,6 @@ class GameScreen : public Screen {
   virtual void NotifyGameCycleElapsed(float elapsed_time, const UserControllersContext& context) override;
   virtual void Draw() override;
  private:
-  LevelManager level_manager_;
   std::shared_ptr<GameSession> active_game_session_;
 };
 

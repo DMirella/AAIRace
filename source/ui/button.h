@@ -15,16 +15,13 @@ class Button : public DrawableUnit {
 
   Button(int x, int y, int width, int height, const std::string& text_string,
          const OnClickCallback& on_press_callback, const DrawableUnit::DrawFunction& draw_function);
+
+  void SetEnable(bool enable);
   
   // DrawableUnit
   virtual void Draw() override;
   virtual void Update(float elapsed_time, const UserControllersContext& context) override;
  private:
-  static sf::Color kBasicRectColor;
-  static sf::Color kActiveRectColor;
-  static sf::Color kBasicFontColor;
-  static sf::Color kActiveFontColor;
-       
   int x_;
   int y_;
   int width_;
@@ -32,6 +29,7 @@ class Button : public DrawableUnit {
   std::shared_ptr<CenterAlignLabel> text_label_;
   sf::RectangleShape rect_;
 
+  bool enable_;
   bool is_mouse_down_on_active_button_;
 
   OnClickCallback on_press_callback_;

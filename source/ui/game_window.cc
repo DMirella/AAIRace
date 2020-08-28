@@ -2,21 +2,27 @@
 
 #include <functional>
 #include <iostream>
+#include <string>
 
 #include "game/level_manager.h"
+#include "screen_state_machine.h"
 #include "screens.h"
 
 GameWindow::GameWindow() {
-  // window_.create(sf::VideoMode(1280, 720), "Lesson 4. kychka-pc.ru"); 
-  window_.create(sf::VideoMode(1280, 720), "Lesson 4. kychka-pc.ru", sf::Style::Fullscreen); 
+  const sf::VideoMode kGameVideoMode = sf::VideoMode(1280, 720);
+  const std::string kGameWindowTitle = "AAIRace";
+  const bool kIsFullScreen = false;
+
+  window_.create(kGameVideoMode, kGameWindowTitle, kIsFullScreen? sf::Style::Fullscreen : sf::Style::Default);
   
   auto draw_callback = std::bind(&GameWindow::Draw, this, std::placeholders::_1);
+  auto exit_game_callback = std::bind(&GameWindow::ExitGame, this);
   GameWindowContext window_context;
   window_context.screen_width = static_cast<int>(window_.getSize().x);
   window_context.screen_height = static_cast<int>(window_.getSize().y);
   window_context.draw_function = draw_callback;
 
-  screen_state_machine_ = std::make_unique<ScreenStateMachine>(window_context);
+  screen_state_machine_ = std::make_shared<ScreenStateMachine>(window_context, exit_game_callback);
 }
 
 void GameWindow::Start() {
@@ -30,7 +36,7 @@ void GameWindow::Start() {
     user_controllers_context = UserControllersContext();
     while (window_.pollEvent(event)) {
       if (event.type == sf::Event::Closed) {
-        window_.close();
+        ExitGame();
       } else if (event.type == sf::Event::TextEntered) {
         user_controllers_context.entered_unicode = event.text.unicode;
       }
@@ -44,6 +50,10 @@ void GameWindow::Start() {
     screen_state_machine_->active_screen()->Draw();
     window_.display();
   }
+}
+
+void GameWindow::ExitGame() {
+  window_.close();
 }
 
 void GameWindow::Draw(const sf::Drawable& object) {

@@ -198,6 +198,8 @@ AIInputData GameBusinessLogic::GetAIInputDataRegardingToRacingCar(const std::sha
         }
       }
     }
+    car_info.distance /= kMaxDistance;
+    car_info.speed /= kMaxSpeedInGame;
     input_data.distance_to_racing_cars[i] = std::move(car_info);
   }
   
@@ -215,6 +217,8 @@ AIInputData GameBusinessLogic::GetAIInputDataRegardingToRacingCar(const std::sha
         car_info.speed = it->speed();
       }
     }
+    car_info.distance /= kMaxDistance;
+    car_info.speed /= kMaxSpeedInGame;
     input_data.distance_to_city_cars[i] = std::move(car_info);
   }
 

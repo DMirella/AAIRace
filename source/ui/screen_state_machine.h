@@ -1,18 +1,25 @@
 #ifndef AAIRACE_SOURCE_SCREEN_STATE_MACHINE_H_
 #define AAIRACE_SOURCE_SCREEN_STATE_MACHINE_H_
 
+#include <functional>
 #include <memory>
-#include <map>
+
+#include "game/user_profile.h"
 
 class Screen;
 struct GameWindowContext;
 class ScreenStateMachine {
  public:
-  ScreenStateMachine(const GameWindowContext& game_window_context);
+  ScreenStateMachine(const GameWindowContext& game_window_context, const std::function<void()>& exit_game_function);
+  ~ScreenStateMachine();
 
   void SetScreen(const std::shared_ptr<Screen>& screen);
   std::shared_ptr<Screen> active_screen();
+  UserProfile& GetUserProfile();
+  void ExitGame();
  private:
+  std::function<void()>exit_game_function_;
+  UserProfile active_user_profile_;
   std::shared_ptr<Screen> active_screen_;
 };
 

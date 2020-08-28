@@ -1,5 +1,6 @@
 #include <cstdlib>
-#include <cmath>
+#include <ctime>
+#include <iostream>
 
 #include "ui/game_window.h"
 

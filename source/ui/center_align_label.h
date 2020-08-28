@@ -14,6 +14,7 @@ class CenterAlignLabel : public DrawableUnit {
                    int font_size, const DrawFunction& draw_function);
 
   void SetText(const std::string& text_string);
+  void SetTextColor(const sf::Color& color);
 
   // DrawableUnit
   virtual void Draw() override;

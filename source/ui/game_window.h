@@ -4,7 +4,6 @@
 #include <SFML/Graphics.hpp>
 
 #include "common/drawable_unit.h"
-#include "screen_state_machine.h"
 
 struct GameWindowContext {
   int screen_width;
@@ -12,17 +11,18 @@ struct GameWindowContext {
   DrawableUnit::DrawFunction draw_function;
 };
 
-// class ScreenStateMachine;
+class ScreenStateMachine;
 class GameWindow {
  public:
   GameWindow();
 
   void Start();
  private:
+  void ExitGame();
   void Draw(const sf::Drawable& object);
 
   sf::RenderWindow window_;
-  std::unique_ptr<ScreenStateMachine> screen_state_machine_;
+  std::shared_ptr<ScreenStateMachine> screen_state_machine_;
 };
 
 #endif  // AAIRACE_SOURCE_GAME_WINDOW_H_

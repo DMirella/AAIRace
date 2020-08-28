@@ -49,7 +49,7 @@ void TextBox::Update(float elapsed_time, const UserControllersContext& context) 
 }
 
 std::string TextBox::entered_string() const {
-  return "";
+  return entered_string_;
 }
 
 bool TextBox::CheckValidInput(sf::Uint32 unicode) const {

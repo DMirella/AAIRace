@@ -26,6 +26,10 @@ void CenterAlignLabel::SetText(const std::string& text_string) {
                     text_y_);
 }
 
+void CenterAlignLabel::SetTextColor(const sf::Color& color) {
+  text_.setColor(color);
+}
+
 void CenterAlignLabel::Draw() {
   draw_function_(text_);
 }

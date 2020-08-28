@@ -107,7 +107,6 @@ NeuralNetwork NeuralNetwork::MergeNeuralNetworks(const NeuralNetwork& a, const N
   }
   return result;
 }*/
-  MiniDNN::VerboseCallback callback;
 
 NeuralNetwork::NeuralNetwork(int count_hidden_layers, int count_hidden_neurons, int count_input_neurons, int count_output_neurons)
     : count_output_neurons_(count_output_neurons) {
@@ -123,7 +122,6 @@ NeuralNetwork::NeuralNetwork(int count_hidden_layers, int count_hidden_neurons, 
   }
   network_->set_output(new MiniDNN::RegressionMSE());
   network_->set_default_callback();
-  //network_->set_callback(callback);
   network_->init(0, 1, std::rand());
 }
 
@@ -162,10 +160,10 @@ void NeuralNetwork::Train(const std::vector<std::pair<std::vector<double>, std::
       outputs_train_matrix(j, i) = train_matrix[i].second[j];
     }
   }
-  /*std::cout << train_matrix.size() << std::endl;
+  std::cout << train_matrix.size() << std::endl;
   std::cout << "Inputs: " << inputs_train_matrix.rows() << " " << inputs_train_matrix.cols() << std::endl;
   std::cout << "Outputs: " << outputs_train_matrix.rows() << " " << outputs_train_matrix.cols() << std::endl;
-  std::cout << "--------------------------\n";*/
+  std::cout << "--------------------------\n";
   MiniDNN::RMSProp rms_prop;
   rms_prop.m_lrate = kLearningRate;
   network_->fit(rms_prop, inputs_train_matrix, outputs_train_matrix, kBatchSize, kEpochCount, std::rand());
