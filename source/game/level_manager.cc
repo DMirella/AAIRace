@@ -88,20 +88,20 @@ void LevelManager::NotifyCurrentLevelEnds(const std::vector<AIIOData>& collected
   }*/
 }
 
-void LevelManager::LoadFromFile(std::ifstream* const f) {
-  *f >> count_unlocked_levels_;
+void LevelManager::LoadFromFile(std::fstream* const f) {
+  f->read((char*)&count_unlocked_levels_, sizeof(int));
   for (int i = 0; i < count_unlocked_levels_; i++) {
     int current_collected_data_size = 0;
-    *f >> current_collected_data_size;
+    f->read((char*)&current_collected_data_size, sizeof(int));
     collected_user_aiio_data_[i]->resize(current_collected_data_size);
     for (auto& current_aiio : *(collected_user_aiio_data_[i])) {
       std::vector<double> vector_input_data(AIInputData::kInputCount, 0.0);
       for (auto& it : vector_input_data) {
-        *f >> it;
+        f->read((char*)&it, sizeof(double));
       }
       std::vector<double> vector_output_data(AIOutputData::kOutputCount, 0.0);
       for (auto& it : vector_output_data) {
-        *f >> it;
+        f->read((char*)&it, sizeof(double));
       }
       current_aiio.input = TransformVectorToAIInputData(vector_input_data);
       current_aiio.output = TransformVectorToAIOutputData(vector_output_data);
@@ -110,20 +110,20 @@ void LevelManager::LoadFromFile(std::ifstream* const f) {
   }
 }
 
-void LevelManager::SaveToFile(std::ofstream* f) const {
-  *f << count_unlocked_levels_ << '\n';
+void LevelManager::SaveToFile(std::fstream* const f) const {
+  f->write((char*)&count_unlocked_levels_, sizeof(int));
   for (int i = 0; i < count_unlocked_levels_; i++) {
-    *f << collected_user_aiio_data_[i]->size() << '\n';
+    int data_size = collected_user_aiio_data_[i]->size();
+    f->write((char*)&data_size, sizeof(int));
     for (const auto& current_aiio : *(collected_user_aiio_data_[i])) {
       auto converted_current_input_data = TransformAIInputDataToVector(current_aiio.input);
       auto converted_current_output_data = TransformAIOutputDataToVector(current_aiio.output);
       for (auto it : converted_current_input_data) {
-        *f << it << " ";
+        f->write((char*)&it, sizeof(double));
       }
       for (auto it : converted_current_output_data) {
-        *f << it << " ";
+        f->write((char*)&it, sizeof(double));
       }
-      *f << '\n';
     }
   }
 }

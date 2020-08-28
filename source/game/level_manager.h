@@ -18,8 +18,8 @@ class LevelManager {
   std::shared_ptr<GameSession> GenerateGameSession(int game_level);
   void NotifyCurrentLevelEnds(const std::vector<AIIOData>& collected_aiio_data);
   
-  void LoadFromFile(std::ifstream* const f);
-  void SaveToFile(std::ofstream* f) const;
+  void LoadFromFile(std::fstream* const f);
+  void SaveToFile(std::fstream* const f) const;
 
   static const int kLevelsCount;
   static const int kEnemiesCount;
