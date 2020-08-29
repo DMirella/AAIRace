@@ -26,8 +26,6 @@ class RacingCar : public Car {
   void TurnLeft();
   void TurnRight();
 
-  void SetBlockMove(bool is_blocked);
-
   // DrawableUnit
   virtual void Update(float elapsed_time, const UserControllersContext& context) override;
   virtual void Draw() override;
@@ -52,8 +50,6 @@ class RacingCar : public Car {
   bool is_car_slow_down_now_;
   bool is_car_turn_left_now_;
   bool is_car_turn_right_now_;
-
-  bool is_move_blocked_;
 };
 
 #endif  // AAIRACE_SOURCE_RACING_CAR_H_

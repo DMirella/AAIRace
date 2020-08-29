@@ -16,7 +16,8 @@ Car::Car(int x, int y, const DrawFunction& draw_function)
     , push_speed_y_(0.0f)
     , push_dx_(0.0f)
     , push_dy_(0.0f)
-    , hero_car_(nullptr) {
+    , hero_car_(nullptr)
+    , is_move_blocked_(false) {
 }
 
 void Car::SetHeroCar(const std::shared_ptr<Car>& hero_car) {
@@ -63,4 +64,8 @@ float Car::y() const {
 
 float Car::speed() const {
   return speed_;
+}
+
+void Car::SetBlockMove(bool is_blocked) {
+  is_move_blocked_ = is_blocked;
 }

@@ -16,10 +16,21 @@
 #include "ui/game_window.h"
 #include <common/tools.h>
 
+namespace {
+const float gSecondsCountBeforeStart = 3.0f;
+const float gOneSecondInLocalElapsedTime = 5000.0f;
+} // namespace 
+
+
 GameBusinessLogic::GameBusinessLogic(const GameWindowContext& game_window_context, int enemies_count, 
                                      int city_car_count, const std::vector<std::shared_ptr<EnemyAI>>& enemies_ai)
   : game_window_context_(game_window_context)
+  , start_timer_(0.0f)
+  , finish_timer_(0.0f)
   , is_game_session_ended_(false)
+  , is_hero_car_reached_finish_(false)
+  , is_racing_started_(false)
+  , hero_racing_car_place_(1)
   , enemies_ai_(enemies_ai) {
   assert(enemies_ai.size() == enemies_count);
   
@@ -27,6 +38,13 @@ GameBusinessLogic::GameBusinessLogic(const GameWindowContext& game_window_contex
   CityCar::Init();
 
   road_ = std::make_shared<Road>(game_window_context_.screen_width, game_window_context_.screen_height, game_window_context_.draw_function);
+
+  const int kInfoLabelHeight = game_window_context_.screen_height / 5;
+  const int kInfoLabelOutlineBorder = 5;
+  info_label_ = std::make_unique<CenterAlignLabel>(tools::Rectangle(road_->left_x(), 0, road_->right_x(), kInfoLabelHeight),
+                                                   "", kInfoLabelHeight, game_window_context_.draw_function);
+  info_label_->SetOutlineBorder(kInfoLabelOutlineBorder);
+
   float kStartRacingCarY = road_->start_line_sprite_y() + 90.0f;
 
   float car_offset = (road_->right_x() - road_->left_x()) / (enemies_count + 1);
@@ -58,13 +76,55 @@ GameBusinessLogic::GameBusinessLogic(const GameWindowContext& game_window_contex
     city_car_list_.push_back(current_car);
     car_list_.push_back(current_car);
   }
+
+  for (auto& it : car_list_) {
+    it->SetBlockMove(true);
+  }
 }
 
 void GameBusinessLogic::NotifyGameCycleElapsed(float elapsed_time, const UserControllersContext& context) {
+  ProcessStartGame(elapsed_time);
+  ProcessEndGame(elapsed_time);
   CheckHeroControllers();
   MakeEnemiesTurn();
   ProcessGameEvents();
   Update(elapsed_time, context);
+}
+
+void GameBusinessLogic::ProcessStartGame(float elapsed_time) {
+  if (!is_hero_car_reached_finish_ && !is_racing_started_) {
+    start_timer_ += elapsed_time;
+    for (int i = 1; i <= gSecondsCountBeforeStart; i++) {
+      if (start_timer_ <= i * gOneSecondInLocalElapsedTime) {
+        info_label_->SetText(std::to_string(i));
+        return;
+      }
+    }
+    if (start_timer_ <= (gSecondsCountBeforeStart + 1) * gOneSecondInLocalElapsedTime) {
+      const std::string kStartText = "START!";
+      info_label_->SetText(kStartText);
+      return;
+    } else {
+      is_racing_started_ = true;
+      for (auto& it : car_list_) {
+        it->SetBlockMove(false);
+      }
+      info_label_->SetText("");
+    }
+  }
+}
+
+void GameBusinessLogic::ProcessEndGame(float elapsed_time) {
+  if (is_racing_started_ && is_hero_car_reached_finish_) {
+    finish_timer_ += elapsed_time;
+    if (finish_timer_ <= 2 * gOneSecondInLocalElapsedTime) {
+      const std::string kPlaceInfoText = std::to_string(hero_racing_car_place_) + "st place!";
+      info_label_->SetText(kPlaceInfoText);
+    } else {
+      is_game_session_ended_ = true;
+      info_label_->SetText("");
+    }
+  }
 }
 
 void GameBusinessLogic::CheckHeroControllers() {
@@ -106,7 +166,9 @@ void GameBusinessLogic::ProcessGameEvents() {
     if (racing_car_list_[i]->GetIntersectRectangle().y1 <= road_->finish_line_sprite_y()) {
       racing_car_list_[i]->SetBlockMove(true);
       if (racing_car_list_[i] == hero_racing_car_) {
-        is_game_session_ended_ = true;
+        is_hero_car_reached_finish_ = true;
+      } else {
+        hero_racing_car_place_++;
       }
     }
   }
@@ -149,6 +211,7 @@ void GameBusinessLogic::DrawEntities() {
   for (const auto& it : car_list_) {
     it->Draw();
   }
+  info_label_->Draw();
   // DrawSensors(hero_racing_car_);
 }
 

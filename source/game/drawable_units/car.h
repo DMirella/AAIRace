@@ -23,6 +23,8 @@ class Car : public DrawableUnit {
   virtual float y() const;
   virtual float speed() const;
 
+  void SetBlockMove(bool is_blocked);
+
   virtual tools::Rectangle GetIntersectRectangle() const = 0;
 
  protected:
@@ -41,6 +43,8 @@ class Car : public DrawableUnit {
   float push_speed_y_;
   float push_dx_;
   float push_dy_;
+
+  bool is_move_blocked_;
 
   std::shared_ptr<Car> hero_car_;
 };

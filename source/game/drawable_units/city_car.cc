@@ -42,6 +42,10 @@ void CityCar::Update(float elapsed_time, const UserControllersContext& context) 
     speed_ = std::min(speed_, kDefaultSpeed);
   }
 
+  if (is_move_blocked_) {
+    speed_ = 0;
+  }
+
   sprite_.setPosition(sprite_x_, sprite_y_);
 }
 

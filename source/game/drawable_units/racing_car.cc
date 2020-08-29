@@ -22,8 +22,7 @@ RacingCar::RacingCar(int x, int y, const DrawFunction& draw_function)
     , is_car_accelerate_now_(false)
     , is_car_slow_down_now_(false)
     , is_car_turn_left_now_(false)
-    , is_car_turn_right_now_(false)
-    , is_move_blocked_(false) {
+    , is_car_turn_right_now_(false) {
   sprite_.setTexture(texture_);
   sprite_.setOrigin(texture_.getSize().x / 2.0f, texture_.getSize().y / 2.0f);
   sprite_.setPosition(sprite_x_, sprite_y_);
@@ -62,10 +61,6 @@ void RacingCar::TurnRight() {
   if (!is_move_blocked_) {
     is_car_turn_right_now_ = true;
   }
-}
-
-void RacingCar::SetBlockMove(bool is_blocked) {
-  is_move_blocked_ = is_blocked;
 }
 
 void RacingCar::Update(float elapsed_time, const UserControllersContext& context) {

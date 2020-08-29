@@ -8,6 +8,7 @@
 
 #include "ai/ai_types.h"
 #include "ui/game_window.h"
+#include "ui/center_align_label.h"
 
 namespace sf {
 class RenderWindow;
@@ -22,7 +23,8 @@ class EnemyAI;
 
 class GameBusinessLogic {
  public:
-  GameBusinessLogic(const GameWindowContext& game_window_context, int enemies_count, int city_car_count, const std::vector<std::shared_ptr<EnemyAI>>& enemies_ai);
+  GameBusinessLogic(const GameWindowContext& game_window_context, int enemies_count, int city_car_count, 
+                    const std::vector<std::shared_ptr<EnemyAI>>& enemies_ai);
 
   void NotifyGameCycleElapsed(float elapsed_time, const UserControllersContext& context);
   void DrawEntities();
@@ -34,6 +36,8 @@ class GameBusinessLogic {
   AIInputData GetAIInputDataRegardingToRacingCar(const std::shared_ptr<RacingCar>& car) const;
   void DrawSensors(const std::shared_ptr<RacingCar>& car) const;
 
+  void ProcessStartGame(float elapsed_time);
+  void ProcessEndGame(float elapsed_time);
   void CheckHeroControllers();
   void MakeEnemiesTurn();
   void ProcessGameEvents();
@@ -41,6 +45,10 @@ class GameBusinessLogic {
 
   GameWindowContext game_window_context_;
 
+  float start_timer_;
+  float finish_timer_;
+
+  std::unique_ptr<CenterAlignLabel> info_label_;
   std::shared_ptr<RacingCar> hero_racing_car_;
   std::vector<std::shared_ptr<Car>> car_list_;
   std::vector<std::shared_ptr<CityCar>> city_car_list_;
@@ -50,6 +58,10 @@ class GameBusinessLogic {
 
   std::vector<std::shared_ptr<EnemyAI>> enemies_ai_;
 
+  int hero_racing_car_place_;
+
+  bool is_racing_started_;
+  bool is_hero_car_reached_finish_;
   bool is_game_session_ended_;
 };
 

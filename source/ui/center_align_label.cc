@@ -31,6 +31,12 @@ void CenterAlignLabel::SetTextColor(const sf::Color& color) {
   text_.setColor(color);
 }
 
+void CenterAlignLabel::SetOutlineBorder(int size) {
+  const sf::Color kOutlineBorderColor = sf::Color::Black;
+  text_.setOutlineColor(kOutlineBorderColor);
+  text_.setOutlineThickness(size);
+}
+
 void CenterAlignLabel::Draw() {
   draw_function_(text_);
 }
