@@ -10,7 +10,8 @@ GameSession::GameSession(LevelManager* const level_manager,
                          int city_car_count,
                          const std::vector<std::shared_ptr<EnemyAI>>& enemies_ai)
     : game_business_logic_(game_window_context, enemies_count, city_car_count, enemies_ai)
-    , level_manager_(level_manager) {
+    , level_manager_(level_manager)
+    , collected_aiio_data_sended_(false) {
 
 }
 
@@ -24,7 +25,9 @@ void GameSession::NotifyGameCycleElapsed(float elapsed_time, const UserControlle
   if (game_aiio_scan_timer_ >= kGameAIIOScanRate) {
     collected_aiio_data_.emplace_back(game_business_logic_.GetAIIODataRegardingToHeroCar());
   }
-  if (game_business_logic_.is_game_session_ended()) {
+  if (!collected_aiio_data_sended_ && 
+      game_business_logic_.is_game_session_ended()) {
+    collected_aiio_data_sended_ = true;
     level_manager_->NotifyCurrentLevelEnds(collected_aiio_data_);
   }
 }

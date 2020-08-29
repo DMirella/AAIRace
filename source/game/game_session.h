@@ -27,6 +27,7 @@ class GameSession {
   GameBusinessLogic game_business_logic_;
   LevelManager* const level_manager_;
   float game_aiio_scan_timer_;
+  bool collected_aiio_data_sended_;
 
   std::vector<AIIOData> collected_aiio_data_;
 };

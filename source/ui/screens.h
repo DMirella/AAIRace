@@ -1,20 +1,23 @@
 #ifndef AAIRACE_SOURCE_SCREEN_H_
 #define AAIRACE_SOURCE_SCREEN_H_
 
+#include <iostream>
 #include <memory>
 #include <vector>
+#include <string>
 
 #include "button.h"
 #include <game/level_manager.h>
 #include "game_window.h"
 
 class ScreenStateMachine;
-class Screen {
+class Screen : public std::enable_shared_from_this<Screen> {
  public:
   Screen(ScreenStateMachine* const screen_state_machine, const GameWindowContext& game_window_context);
 
   virtual void NotifyGameCycleElapsed(float elapsed_time, const UserControllersContext& context) {}
   virtual void Draw() {}
+  virtual std::string GetScreenName() const = 0;
  protected:
   GameWindowContext game_window_context_;
   ScreenStateMachine* const screen_state_machine_;
@@ -23,8 +26,9 @@ class Screen {
 class ProfileChooseScreen : public Screen {
  public:
   ProfileChooseScreen(ScreenStateMachine* const screen_state_machine, const GameWindowContext& game_window_context);
-  virtual void NotifyGameCycleElapsed(float elapsed_time, const UserControllersContext& context);
-  virtual void Draw();
+  virtual void NotifyGameCycleElapsed(float elapsed_time, const UserControllersContext& context) override;
+  virtual void Draw() override;
+  virtual std::string GetScreenName() const override;
  private:
   void OnSignInButtonClick();
   void OnSignUpButtonClick();
@@ -37,8 +41,9 @@ class TextBox;
 class SignUpScreen : public Screen {
  public:
   SignUpScreen(ScreenStateMachine* const screen_state_machine, const GameWindowContext& game_window_context);
-  virtual void NotifyGameCycleElapsed(float elapsed_time, const UserControllersContext& context);
-  virtual void Draw();
+  virtual void NotifyGameCycleElapsed(float elapsed_time, const UserControllersContext& context) override;
+  virtual void Draw() override;
+  virtual std::string GetScreenName() const override;
  private:
   void OnRegisterButtonClick();
 
@@ -50,8 +55,9 @@ class SignUpScreen : public Screen {
 class SignInScreen : public Screen {
  public:
   SignInScreen(ScreenStateMachine* const screen_state_machine, const GameWindowContext& game_window_context);
-  virtual void NotifyGameCycleElapsed(float elapsed_time, const UserControllersContext& context);
-  virtual void Draw();
+  virtual void NotifyGameCycleElapsed(float elapsed_time, const UserControllersContext& context) override;
+  virtual void Draw() override;
+  virtual std::string GetScreenName() const override;
  private:
   void OnLogInButtonClick();
 
@@ -66,6 +72,7 @@ class MenuScreen : public Screen {
 
   virtual void NotifyGameCycleElapsed(float elapsed_time, const UserControllersContext& context) override;
   virtual void Draw() override;
+  virtual std::string GetScreenName() const override;
  private:
   void OnStartGameButtonClick();
   void OnExitGameButtonClick();
@@ -81,6 +88,7 @@ class LevelChooseScreen : public Screen {
 
   virtual void NotifyGameCycleElapsed(float elapsed_time, const UserControllersContext& context) override;
   virtual void Draw() override;
+  virtual std::string GetScreenName() const override;
  private:
   void OnLevelChoosen(int level);
 
@@ -98,8 +106,29 @@ class GameScreen : public Screen {
 
   virtual void NotifyGameCycleElapsed(float elapsed_time, const UserControllersContext& context) override;
   virtual void Draw() override;
+  virtual std::string GetScreenName() const override;
  private:
   std::shared_ptr<GameSession> active_game_session_;
+};
+
+class TransitionScreen : public Screen {
+ public:
+  TransitionScreen(ScreenStateMachine* const screen_state_machine, 
+                   const GameWindowContext& game_window_context,
+                   const std::shared_ptr<Screen>& current_screen,
+                   const std::shared_ptr<Screen>& next_screen,
+                   float transition_animation_time);
+  virtual void NotifyGameCycleElapsed(float elapsed_time, const UserControllersContext& context) override;
+  virtual void Draw() override;
+  virtual std::string GetScreenName() const override;
+ private:
+  float transition_animation_time_;
+  float summary_transition_time_;
+  float current_transperent_value_;
+  sf::RectangleShape transition_rectangle_;
+  sf::Color current_rectangle_color_;
+  std::shared_ptr<Screen> current_screen_;
+  std::shared_ptr<Screen> next_screen_;
 };
 
 #endif  // AAIRACE_SOURCE_SCREEN_H_

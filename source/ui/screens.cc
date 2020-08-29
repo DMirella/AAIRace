@@ -48,6 +48,10 @@ void ProfileChooseScreen::Draw() {
   sign_up_button_->Draw();
 }
 
+std::string ProfileChooseScreen::GetScreenName() const {
+  return "ProfileChooseScreen";
+}
+
 void ProfileChooseScreen::OnSignInButtonClick() {
   screen_state_machine_->SetScreen(std::make_shared<SignInScreen>(screen_state_machine_, game_window_context_));
 }
@@ -98,6 +102,10 @@ void SignUpScreen::Draw() {
   register_button_->Draw();
 }
 
+std::string SignUpScreen::GetScreenName() const {
+  return "SignUpScreen";
+}
+
 void SignUpScreen::OnRegisterButtonClick() {
   screen_state_machine_->GetUserProfile().SetName(name_text_box_->entered_string());
   screen_state_machine_->SetScreen(std::make_shared<MenuScreen>(screen_state_machine_, game_window_context_));
@@ -145,6 +153,10 @@ void SignInScreen::Draw() {
   register_button_->Draw();
 }
 
+std::string SignInScreen::GetScreenName() const {
+  return "SignInScreen";
+}
+
 void SignInScreen::OnLogInButtonClick() {
   screen_state_machine_->GetUserProfile().LoadFromConfigFile(name_text_box_->entered_string());
   screen_state_machine_->SetScreen(std::make_shared<MenuScreen>(screen_state_machine_, game_window_context_));
@@ -181,6 +193,10 @@ void MenuScreen::NotifyGameCycleElapsed(float elapsed_time, const UserController
 void MenuScreen::Draw() {
   start_game_button_->Draw();
   exit_game_button_->Draw();
+}
+
+std::string MenuScreen::GetScreenName() const {
+  return "MenuScreen";
 }
 
 void MenuScreen::OnStartGameButtonClick() {
@@ -239,8 +255,17 @@ void LevelChooseScreen::Draw() {
   }
 }
 
+std::string LevelChooseScreen::GetScreenName() const {
+  return "LevelChooseScreen";
+}
+
 void LevelChooseScreen::OnLevelChoosen(int level) {
-  screen_state_machine_->SetScreen(std::make_shared<GameScreen>(screen_state_machine_, game_window_context_, level));
+  //screen_state_machine_->SetScreen(std::make_shared<GameScreen>(screen_state_machine_, game_window_context_, level));
+  const float kTransitionAnimationTime = 4000.0f;
+  screen_state_machine_->SetScreen(std::make_shared<TransitionScreen>(
+      screen_state_machine_, game_window_context_, shared_from_this(), 
+      std::make_shared<GameScreen>(screen_state_machine_, game_window_context_, level),
+      kTransitionAnimationTime));
 }
 
 // GameScreen
@@ -254,12 +279,75 @@ GameScreen::GameScreen(ScreenStateMachine* const screen_state_machine,
 
 void GameScreen::NotifyGameCycleElapsed(float elapsed_time, const UserControllersContext& context) {
   active_game_session_->NotifyGameCycleElapsed(elapsed_time, context);
+  if (active_game_session_->is_game_session_ended()) {
+    const float kTransitionAnimationTime = 6000.0f;
+    screen_state_machine_->SetScreen(std::make_shared<TransitionScreen>(
+        screen_state_machine_, game_window_context_, shared_from_this(), 
+        std::make_shared<LevelChooseScreen>(screen_state_machine_, game_window_context_),
+        kTransitionAnimationTime));
+  }
 }
 
 void GameScreen::Draw() {
-  if (!active_game_session_->is_game_session_ended()) {
-    active_game_session_->DrawEntities();
+  active_game_session_->DrawEntities();
+}
+
+std::string GameScreen::GetScreenName() const {
+  return "GameScreen";
+}
+
+// TransitionScreen
+TransitionScreen::TransitionScreen(ScreenStateMachine* const screen_state_machine, 
+                                   const GameWindowContext& game_window_context,
+                                   const std::shared_ptr<Screen>& current_screen,
+                                   const std::shared_ptr<Screen>& next_screen,
+                                   float transition_animation_time) 
+    : Screen(screen_state_machine, game_window_context)
+    , transition_animation_time_(transition_animation_time)
+    , summary_transition_time_(0.0f)
+    , current_transperent_value_(0.0f)
+    , current_rectangle_color_(sf::Color(0, 0, 0, 0))
+    , current_screen_(current_screen)
+    , next_screen_(next_screen) {
+  transition_rectangle_.setPosition(sf::Vector2f(0.0f, 0.0f));
+  transition_rectangle_.setSize(sf::Vector2f(game_window_context_.screen_width, game_window_context_.screen_height));
+  transition_rectangle_.setFillColor(current_rectangle_color_);
+}
+
+void TransitionScreen::NotifyGameCycleElapsed(float elapsed_time, const UserControllersContext& context) {
+  const float kSemiTransitionAnimationTime = transition_animation_time_ / 2.0f;
+  const float kSemiTransitionAnimationSpeed = (255.0f / kSemiTransitionAnimationTime);
+  summary_transition_time_ += elapsed_time;
+  // std::cout << elapsed_time << " "<< summary_transition_time_ << " " << current_transperent_value_ << " " << transition_animation_time_ << " " << kSemiTransitionAnimationSpeed << std::endl;
+  if (summary_transition_time_ <= kSemiTransitionAnimationTime) {
+    current_transperent_value_ += kSemiTransitionAnimationSpeed * elapsed_time;
+    current_transperent_value_ = std::min(current_transperent_value_, 255.0f);
+    current_rectangle_color_.a = current_transperent_value_;
+    transition_rectangle_.setFillColor(current_rectangle_color_);
+    //current_screen_->NotifyGameCycleElapsed(elapsed_time, context);
+  } else if (summary_transition_time_ <= transition_animation_time_) {
+    current_transperent_value_ -= kSemiTransitionAnimationSpeed * elapsed_time;
+    current_transperent_value_ = std::max(current_transperent_value_, 0.0f);
+    current_rectangle_color_.a = current_transperent_value_;
+    transition_rectangle_.setFillColor(current_rectangle_color_);
+    //next_screen_->NotifyGameCycleElapsed(elapsed_time, context);
   } else {
-    screen_state_machine_->SetScreen(std::make_shared<LevelChooseScreen>(screen_state_machine_, game_window_context_));
+    // std::cout << std::endl;
+    //next_screen_->NotifyGameCycleElapsed(elapsed_time, context);
+    screen_state_machine_->SetScreen(next_screen_);
   }
+}
+
+void TransitionScreen::Draw() {
+  const float kSemiTransitionAnimationTime = transition_animation_time_ / 2.0f;
+  if (summary_transition_time_ <= kSemiTransitionAnimationTime) {
+    current_screen_->Draw();
+  } else {
+    next_screen_->Draw();
+  }
+  game_window_context_.draw_function(transition_rectangle_);
+}
+
+std::string TransitionScreen::GetScreenName() const {
+  return "TransitionScreen";
 }
