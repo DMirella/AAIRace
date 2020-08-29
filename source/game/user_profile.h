@@ -16,6 +16,8 @@ class UserProfile {
   LevelManager& level_manager();
   bool LoadFromConfigFile(const std::string& user_name);
   void SaveToConfigFile() const;
+  void Reset();
+
   static bool CheckIfConfigExist(const std::string& user_name);
  private:
   std::string name_;

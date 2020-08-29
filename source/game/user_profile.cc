@@ -12,7 +12,7 @@ const int kNameBufferSize = 256;
 }  // namespace
 
 UserProfile::UserProfile(const GameWindowContext& game_window_context)
-    : level_manager_(game_window_context, 1) {
+    : level_manager_(game_window_context, LevelManager::kMinimumCountUnlockedLevels) {
 }
 
 void UserProfile::SetName(const std::string& name) {
@@ -48,6 +48,14 @@ void UserProfile::SaveToConfigFile() const {
   f.write(buf, kNameBufferSize * sizeof(char));
   level_manager_.SaveToFile(&f);
   f.close();
+}
+
+void UserProfile::Reset() {
+  if (!name_.empty()) {
+    SaveToConfigFile();
+  }
+  name_.clear();
+  level_manager_.Reset();
 }
 
 bool UserProfile::CheckIfConfigExist(const std::string& user_name) {

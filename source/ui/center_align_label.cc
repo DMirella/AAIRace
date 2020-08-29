@@ -1,5 +1,7 @@
 #include "center_align_label.h"
 
+#include <iostream>
+
 CenterAlignLabel::CenterAlignLabel(const tools::Rectangle& rect, const std::string& text_string, 
                                    int font_size, const DrawFunction& draw_function)
     : DrawableUnit(draw_function)
@@ -14,9 +16,8 @@ CenterAlignLabel::CenterAlignLabel(const tools::Rectangle& rect, const std::stri
   text_.setColor(kTextColor);
   text_.setCharacterSize(kFontSize);
   auto local_text_bounds = text_.getLocalBounds();
-  text_y_ = rect.y1 + (rect.y2 - rect.y1 - local_text_bounds.height) / 2 - local_text_bounds.height * 0.5;
-  text_.setPosition(rect.x1 + (rect.x2 - rect.x1 - local_text_bounds.width) / 2, 
-                    text_y_);
+  text_y_ = rect.y1 + (rect.y2 - rect.y1 - font_size) / 2 - font_size * 0.15;
+  text_.setPosition(rect.x1 + (rect.x2 - rect.x1 - local_text_bounds.width) / 2, text_y_);
 }
 
 void CenterAlignLabel::SetText(const std::string& text_string) {

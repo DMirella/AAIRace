@@ -49,8 +49,10 @@ class SignUpScreen : public Screen {
   virtual std::string GetScreenName() const override;
  private:
   void OnRegisterButtonClick();
+  void OnBackButtonClick();
 
   bool ok_button_error_popup_pressed_;
+  std::unique_ptr<Button> back_button_;
   std::unique_ptr<Popup> active_popup_;
   std::shared_ptr<CenterAlignLabel> text_label_;
   std::shared_ptr<TextBox> name_text_box_;
@@ -65,8 +67,10 @@ class SignInScreen : public Screen {
   virtual std::string GetScreenName() const override;
  private:
   void OnLogInButtonClick();
+  void OnBackButtonClick();
 
   bool ok_button_error_popup_pressed_;
+  std::unique_ptr<Button> back_button_;
   std::unique_ptr<Popup> active_popup_;
   std::shared_ptr<CenterAlignLabel> text_label_;
   std::shared_ptr<TextBox> name_text_box_;
@@ -83,7 +87,9 @@ class MenuScreen : public Screen {
  private:
   void OnStartGameButtonClick();
   void OnExitGameButtonClick();
+  void OnLogOutButtonClick();
 
+  std::unique_ptr<Button> log_out_button_;
   std::shared_ptr<Button> start_game_button_;
   std::shared_ptr<Button> exit_game_button_;
 };
@@ -98,7 +104,9 @@ class LevelChooseScreen : public Screen {
   virtual std::string GetScreenName() const override;
  private:
   void OnLevelChoosen(int level);
+  void OnBackButtonClick();
 
+  std::unique_ptr<Button> back_button_;
   std::shared_ptr<CenterAlignLabel> label_;
   std::vector<std::shared_ptr<Button>> level_buttons_;
   std::vector<Button::OnClickCallback> level_button_callback_;

@@ -21,6 +21,9 @@ class LevelManager {
   void LoadFromFile(std::fstream* const f);
   void SaveToFile(std::fstream* const f) const;
 
+  void Reset();
+
+  static const int kMinimumCountUnlockedLevels;
   static const int kLevelsCount;
   static const int kEnemiesCount;
  private:
