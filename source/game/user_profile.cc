@@ -49,3 +49,8 @@ void UserProfile::SaveToConfigFile() const {
   level_manager_.SaveToFile(&f);
   f.close();
 }
+
+bool UserProfile::CheckIfConfigExist(const std::string& user_name) {
+  std::ifstream f(gProfilesFolderPath + "/" + user_name + "." + gProfileFileFormat);
+  return f.good();
+}

@@ -6,9 +6,12 @@
 #include <vector>
 #include <string>
 
+#include <SFML/Graphics.hpp>
+
 #include "button.h"
 #include <game/level_manager.h>
 #include "game_window.h"
+#include "popup.h"
 
 class ScreenStateMachine;
 class Screen : public std::enable_shared_from_this<Screen> {
@@ -47,6 +50,8 @@ class SignUpScreen : public Screen {
  private:
   void OnRegisterButtonClick();
 
+  bool ok_button_error_popup_pressed_;
+  std::unique_ptr<Popup> active_popup_;
   std::shared_ptr<CenterAlignLabel> text_label_;
   std::shared_ptr<TextBox> name_text_box_;
   std::shared_ptr<Button> register_button_;
@@ -61,6 +66,8 @@ class SignInScreen : public Screen {
  private:
   void OnLogInButtonClick();
 
+  bool ok_button_error_popup_pressed_;
+  std::unique_ptr<Popup> active_popup_;
   std::shared_ptr<CenterAlignLabel> text_label_;
   std::shared_ptr<TextBox> name_text_box_;
   std::shared_ptr<Button> register_button_;

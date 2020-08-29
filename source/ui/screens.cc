@@ -62,7 +62,9 @@ void ProfileChooseScreen::OnSignUpButtonClick() {
 
 // SignUpScreen
 SignUpScreen::SignUpScreen(ScreenStateMachine* const screen_state_machine, const GameWindowContext& game_window_context)
-    : Screen(screen_state_machine, game_window_context) {
+    : Screen(screen_state_machine, game_window_context)
+    , ok_button_error_popup_pressed_(false)
+    , active_popup_(nullptr) {
   const int kElementsYOffset = 10;
   const int kElementsCount = 3;
   const int kTextEditHeight = game_window_context_.screen_height / 8;
@@ -91,15 +93,26 @@ SignUpScreen::SignUpScreen(ScreenStateMachine* const screen_state_machine, const
 }
 
 void SignUpScreen::NotifyGameCycleElapsed(float elapsed_time, const UserControllersContext& context) {
-  text_label_->Update(elapsed_time, context);
-  name_text_box_->Update(elapsed_time, context);
-  register_button_->Update(elapsed_time, context);
+  if (active_popup_.get() == nullptr) {
+    text_label_->Update(elapsed_time, context);
+    name_text_box_->Update(elapsed_time, context);
+    register_button_->Update(elapsed_time, context);
+  } else {
+    active_popup_->Update(elapsed_time, context);
+    if (ok_button_error_popup_pressed_) {
+      active_popup_ = nullptr;
+      ok_button_error_popup_pressed_ = false;
+    }
+  }
 }
 
 void SignUpScreen::Draw() {
   text_label_->Draw();
   name_text_box_->Draw();
   register_button_->Draw();
+  if (active_popup_.get() != nullptr) {
+    active_popup_->Draw();
+  }
 }
 
 std::string SignUpScreen::GetScreenName() const {
@@ -107,13 +120,32 @@ std::string SignUpScreen::GetScreenName() const {
 }
 
 void SignUpScreen::OnRegisterButtonClick() {
-  screen_state_machine_->GetUserProfile().SetName(name_text_box_->entered_string());
-  screen_state_machine_->SetScreen(std::make_shared<MenuScreen>(screen_state_machine_, game_window_context_));
+  const int kPopupWidth = game_window_context_.screen_width / 1.5f;
+  const int kPopupHeight = game_window_context_.screen_width / 6;
+  const int kPopupX = (game_window_context_.screen_width - kPopupWidth) / 2;
+  const int kPopupY = (game_window_context_.screen_height - kPopupHeight) / 2;
+  const auto entered_string = name_text_box_->entered_string();
+  if (entered_string.empty()) {
+    const std::string kErrorMessage = "User name can not be empty.";
+    active_popup_ = std::make_unique<Popup>(
+        kPopupX, kPopupY, kPopupWidth, kPopupHeight, kErrorMessage, 
+        [this](){ ok_button_error_popup_pressed_ = true; }, game_window_context_.draw_function);
+  } else if (UserProfile::CheckIfConfigExist(entered_string)) {
+    const std::string kErrorMessage = "User with this name already exists.";
+    active_popup_ = std::make_unique<Popup>(
+        kPopupX, kPopupY, kPopupWidth, kPopupHeight, kErrorMessage, 
+        [this](){ ok_button_error_popup_pressed_ = true; }, game_window_context_.draw_function);
+  } else {
+    screen_state_machine_->GetUserProfile().SetName(entered_string);
+    screen_state_machine_->SetScreen(std::make_shared<MenuScreen>(screen_state_machine_, game_window_context_));
+  }
 }
 
 // SignInScreen
 SignInScreen::SignInScreen(ScreenStateMachine* const screen_state_machine, const GameWindowContext& game_window_context)
-    : Screen(screen_state_machine, game_window_context) {
+    : Screen(screen_state_machine, game_window_context)
+    , ok_button_error_popup_pressed_(false)
+    , active_popup_(nullptr) {
   const int kElementsYOffset = 10;
   const int kElementsCount = 3;
   const int kTextEditHeight = game_window_context_.screen_height / 8;
@@ -142,15 +174,26 @@ SignInScreen::SignInScreen(ScreenStateMachine* const screen_state_machine, const
 }
 
 void SignInScreen::NotifyGameCycleElapsed(float elapsed_time, const UserControllersContext& context) {
-  text_label_->Update(elapsed_time, context);
-  name_text_box_->Update(elapsed_time, context);
-  register_button_->Update(elapsed_time, context);
+  if (active_popup_.get() == nullptr) {
+    text_label_->Update(elapsed_time, context);
+    name_text_box_->Update(elapsed_time, context);
+    register_button_->Update(elapsed_time, context);
+  } else {
+    active_popup_->Update(elapsed_time, context);
+    if (ok_button_error_popup_pressed_) {
+      active_popup_ = nullptr;
+      ok_button_error_popup_pressed_ = false;
+    }
+  }
 }
 
 void SignInScreen::Draw() {
   text_label_->Draw();
   name_text_box_->Draw();
   register_button_->Draw();
+  if (active_popup_.get() != nullptr) {
+    active_popup_->Draw();
+  }
 }
 
 std::string SignInScreen::GetScreenName() const {
@@ -158,8 +201,25 @@ std::string SignInScreen::GetScreenName() const {
 }
 
 void SignInScreen::OnLogInButtonClick() {
-  screen_state_machine_->GetUserProfile().LoadFromConfigFile(name_text_box_->entered_string());
-  screen_state_machine_->SetScreen(std::make_shared<MenuScreen>(screen_state_machine_, game_window_context_));
+  const int kPopupWidth = game_window_context_.screen_width / 1.5f;
+  const int kPopupHeight = game_window_context_.screen_width / 6;
+  const int kPopupX = (game_window_context_.screen_width - kPopupWidth) / 2;
+  const int kPopupY = (game_window_context_.screen_height - kPopupHeight) / 2;
+  const auto entered_string = name_text_box_->entered_string();
+  if (entered_string.empty()) {
+    const std::string kErrorMessage = "User name can not be empty.";
+    active_popup_ = std::make_unique<Popup>(
+        kPopupX, kPopupY, kPopupWidth, kPopupHeight, kErrorMessage, 
+        [this](){ ok_button_error_popup_pressed_ = true; }, game_window_context_.draw_function);
+  } else if (!UserProfile::CheckIfConfigExist(entered_string)) {
+    const std::string kErrorMessage = "User with this name is not registered.";
+    active_popup_ = std::make_unique<Popup>(
+        kPopupX, kPopupY, kPopupWidth, kPopupHeight, kErrorMessage, 
+        [this](){ ok_button_error_popup_pressed_ = true; }, game_window_context_.draw_function);
+  } else {
+    screen_state_machine_->GetUserProfile().LoadFromConfigFile(name_text_box_->entered_string());
+    screen_state_machine_->SetScreen(std::make_shared<MenuScreen>(screen_state_machine_, game_window_context_));
+  }
 }
 
 // MenuScreen
