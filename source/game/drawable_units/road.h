@@ -48,7 +48,6 @@ class Road : public DrawableUnit {
   float sprite2_y_;
   float start_line_sprite_y_;
   float finish_line_sprite_y_;
-  float road_x_;
   float start_finish_line_x_;
   float speed_;
 

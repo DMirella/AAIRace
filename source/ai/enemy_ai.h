@@ -15,10 +15,11 @@ class EnemyAI {
   EnemyAI(const std::shared_ptr<std::vector<AIIOData>>& collected_aiio_data);
 
   void TrainWithData(const std::vector<AIIOData>& aiio_data);
-  AIOutputData GetOutputData(const AIInputData& input_data) const;
+  AIOutputData GetOutputData(const AIInputData& input_data);
   std::stringstream ToStringStream() const;
  private:
   NeuralNetwork neural_network_;
+  int last_applied_action_;
   std::shared_ptr<std::vector<AIIOData>> collected_aiio_data_;
 };
 

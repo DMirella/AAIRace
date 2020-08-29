@@ -96,7 +96,8 @@ std::vector<AIIOData> FilterAIIOData(const std::vector<AIIOData>& aiio_data) {
 // EnemyAI
 EnemyAI::EnemyAI(const std::shared_ptr<std::vector<AIIOData>>& collected_aiio_data)
     : collected_aiio_data_(collected_aiio_data)
-    , neural_network_(NeuralNetwork(gCountHiddenLayers, gCountHiddenNeurons, gCountInputNeurons, gCountOutputNeurons)) {
+    , neural_network_(NeuralNetwork(gCountHiddenLayers, gCountHiddenNeurons, gCountInputNeurons, gCountOutputNeurons))
+    , last_applied_action_(-1) {
 }
 
 void EnemyAI::TrainWithData(const std::vector<AIIOData>& aiio_data) {
@@ -108,10 +109,17 @@ void EnemyAI::TrainWithData(const std::vector<AIIOData>& aiio_data) {
   neural_network_.Train(train_matrix);
 }
 
-AIOutputData EnemyAI::GetOutputData(const AIInputData& input_data) const {
+AIOutputData EnemyAI::GetOutputData(const AIInputData& input_data) {
+  const int kSearchFromLastActionRange = 2000;
   if (nullptr != collected_aiio_data_ && collected_aiio_data_->size() > 0) {
     std::pair<double, int> minimum_distance = {tools::gInfinity, 0};
-    for (int i = 0; i < collected_aiio_data_->size(); i++) {
+    int left_search_range = 0, right_search_range = collected_aiio_data_->size() - 1;
+    if (last_applied_action_ != -1) {
+      left_search_range = std::max(last_applied_action_ - kSearchFromLastActionRange, 0);
+      right_search_range = std::min(last_applied_action_ + kSearchFromLastActionRange, 
+                                    static_cast<int>(collected_aiio_data_->size()) - 1);
+    }
+    for (int i = left_search_range; i <= right_search_range; i++) {
       double current_distance = 0.0;
       for (int j = 0; j < AIInputData::kCountDistanceScanRays; j++) {
         current_distance += sqr((*collected_aiio_data_)[i].input.distance_to_city_cars[j].distance - input_data.distance_to_city_cars[j].distance);
@@ -129,6 +137,7 @@ AIOutputData EnemyAI::GetOutputData(const AIInputData& input_data) const {
         minimum_distance = {current_distance, i};
       }
     }
+    last_applied_action_ = minimum_distance.second;
     return (*collected_aiio_data_)[minimum_distance.second].output;
   } else {
     return {0, 0, 0, 0};

@@ -47,7 +47,7 @@ GameBusinessLogic::GameBusinessLogic(const GameWindowContext& game_window_contex
                                                    "", kInfoLabelHeight, game_window_context_.draw_function);
   info_label_->SetOutlineBorder(kInfoLabelOutlineBorder);
 
-  float kStartRacingCarY = road_->start_line_sprite_y() + 90.0f;
+  float kStartRacingCarY = road_->start_line_sprite_y() + 130.0f;
 
   float car_offset = (road_->right_x() - road_->left_x()) / (enemies_count + 1);
 
