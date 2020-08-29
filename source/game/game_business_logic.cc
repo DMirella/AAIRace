@@ -34,6 +34,8 @@ GameBusinessLogic::GameBusinessLogic(const GameWindowContext& game_window_contex
   , enemies_ai_(enemies_ai) {
   assert(enemies_ai.size() == enemies_count);
   
+  is_enemy_racing_car_finished_.resize(enemies_count, false);
+
   RacingCar::Init();
   CityCar::Init();
 
@@ -50,7 +52,9 @@ GameBusinessLogic::GameBusinessLogic(const GameWindowContext& game_window_contex
   float car_offset = (road_->right_x() - road_->left_x()) / (enemies_count + 1);
 
   float current_racing_car_x = road_->left_x() + car_offset / 2, previous_racing_car_x;
-  hero_racing_car_ = std::make_shared<RacingCar>(current_racing_car_x, kStartRacingCarY, game_window_context_.draw_function);
+  int hero_car_start_place = std::rand() % (enemies_count + 1);
+  hero_racing_car_ = std::make_shared<RacingCar>(current_racing_car_x + car_offset * hero_car_start_place, 
+                                                 kStartRacingCarY, game_window_context_.draw_function);
   hero_racing_car_->SetHeroCar(hero_racing_car_);
   car_list_.push_back(hero_racing_car_);
   racing_car_list_.push_back(hero_racing_car_);
@@ -58,13 +62,19 @@ GameBusinessLogic::GameBusinessLogic(const GameWindowContext& game_window_contex
   road_->SetHeroCar(hero_racing_car_);
 
   for (int i = 0; i < enemies_count; i++) {
-    previous_racing_car_x = current_racing_car_x;
-    current_racing_car_x = previous_racing_car_x + car_offset;
+    if (i == hero_car_start_place) {
+      previous_racing_car_x = current_racing_car_x;
+      current_racing_car_x = previous_racing_car_x + car_offset;
+    }
+    
     std::shared_ptr<RacingCar> current_car = std::make_shared<RacingCar>(current_racing_car_x, kStartRacingCarY, game_window_context_.draw_function);
     current_car->SetHeroCar(hero_racing_car_);
     racing_car_list_.push_back(current_car);
     enemies_car_list_.push_back(current_car);
     car_list_.push_back(current_car);
+
+    previous_racing_car_x = current_racing_car_x;
+    current_racing_car_x = previous_racing_car_x + car_offset;
   }
   for (int i = 0; i < city_car_count; i++) {
     const float kStartYCityCarFromStartLineOffset = 1000.0f;
@@ -162,15 +172,18 @@ void GameBusinessLogic::MakeEnemiesTurn() {
 }
 
 void GameBusinessLogic::ProcessGameEvents() {
-  for (int i = 0; i < racing_car_list_.size(); i++) {
-    if (racing_car_list_[i]->GetIntersectRectangle().y1 <= road_->finish_line_sprite_y()) {
-      racing_car_list_[i]->SetBlockMove(true);
-      if (racing_car_list_[i] == hero_racing_car_) {
-        is_hero_car_reached_finish_ = true;
-      } else {
+  for (int i = 0; i < enemies_car_list_.size(); i++) {
+    if (enemies_car_list_[i]->GetIntersectRectangle().y1 <= road_->finish_line_sprite_y()) {
+      enemies_car_list_[i]->SetBlockMove(true);
+      if (!is_enemy_racing_car_finished_[i] && !is_hero_car_reached_finish_) {
         hero_racing_car_place_++;
+        is_enemy_racing_car_finished_[i] = true;
       }
     }
+  }
+  if (hero_racing_car_->GetIntersectRectangle().y1 <= road_->finish_line_sprite_y()) {
+    is_hero_car_reached_finish_ = true;
+    hero_racing_car_->SetBlockMove(true);
   }
 
   for (int i = 0; i < car_list_.size(); i++) {
