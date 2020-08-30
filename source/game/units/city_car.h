@@ -5,8 +5,9 @@
 
 #include "car.h"
 
+namespace game {
+namespace units {
 class RacingCar;
-
 class CityCar : public Car {
  public:
   CityCar() = delete;
@@ -21,11 +22,13 @@ class CityCar : public Car {
   static float height();
 
   // DrawableUnit
-  virtual void Update(float elapsed_time, const UserControllersContext& context) override;
+  virtual void Update(float elapsed_time, const ui::UserControllersContext& context) override;
   // Car
-  virtual tools::Rectangle GetIntersectRectangle() const override;
+  virtual common::Rectangle GetIntersectRectangle() const override;
  private:
   static sf::Texture texture_;
 };
+}  // namespace units
+}  // namespace game
 
 #endif  // AAIRACE_SOURCE_GAME_UNITS_CITY_CAR_H_

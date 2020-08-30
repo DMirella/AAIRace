@@ -9,6 +9,7 @@ sf::Color gBackgroundRectColor = sf::Color(0x5A, 0x7C, 0x60);
 const int gTextXOffset = 10;
 }  // namespace
 
+namespace ui {
 EditTextBox::EditTextBox(int x, int y, int width, int height, const DrawFunction& draw_function)
     : DrawableUnit(draw_function)
     , x_(x)
@@ -23,7 +24,7 @@ EditTextBox::EditTextBox(int x, int y, int width, int height, const DrawFunction
   background_rect_.setPosition(x_, y_);
 
   text_label_ = std::make_unique<CenterAlignLabel>(
-      tools::Rectangle(x_ + gTextXOffset, y_, x_ + width_ - gTextXOffset, y_ + height_),
+      common::Rectangle(x_ + gTextXOffset, y_, x_ + width_ - gTextXOffset, y_ + height_),
       entered_string_, kFontHeight, draw_function_);
 }
 
@@ -57,3 +58,4 @@ bool EditTextBox::CheckValidInput(sf::Uint32 unicode) const {
          ('0' <= unicode && unicode <= '9') ||
          unicode == '\b';
 }
+}  // namespace ui

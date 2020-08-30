@@ -9,7 +9,8 @@
 #include <common/drawable_unit.h>
 #include "center_align_label.h"
 
-class Button : public DrawableUnit {
+namespace ui {
+class Button : public common::DrawableUnit {
  public:
   using OnClickCallback = std::function<void()>;
   
@@ -40,5 +41,6 @@ class Button : public DrawableUnit {
 
   OnClickCallback on_press_callback_;
 };
+}  // namespace ui
 
 #endif  // AAIRACE_SOURCE_UI_BUTTON_H_

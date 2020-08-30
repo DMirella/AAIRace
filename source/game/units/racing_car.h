@@ -7,6 +7,8 @@
 
 #include "car.h"
 
+namespace game {
+namespace units {
 class RacingCar : public Car {
  public:
   RacingCar() = delete;
@@ -28,11 +30,11 @@ class RacingCar : public Car {
   void TurnRight();
 
   // DrawableUnit
-  virtual void Update(float elapsed_time, const UserControllersContext& context) override;
+  virtual void Update(float elapsed_time, const ui::UserControllersContext& context) override;
   virtual void Draw() override;
   // Car
   virtual void SetHeroCar(const std::shared_ptr<Car>& hero_car) override;
-  virtual tools::Rectangle GetIntersectRectangle() const override;
+  virtual common::Rectangle GetIntersectRectangle() const override;
 
   void GetControllersState(bool* const is_car_accelerates,
                            bool* const is_car_slows_down,
@@ -48,5 +50,7 @@ class RacingCar : public Car {
   bool is_car_turn_left_now_;
   bool is_car_turn_right_now_;
 };
+}  // namespace units
+}  // namespace game
 
 #endif  // AAIRACE_SOURCE_GAME_UNITS_RACING_CAR_H_

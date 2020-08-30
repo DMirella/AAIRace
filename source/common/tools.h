@@ -1,7 +1,7 @@
 #ifndef AAIRACE_SOURCE_COMMON_TOOLS_H_
 #define AAIRACE_SOURCE_COMMON_TOOLS_H_
 
-namespace tools {
+namespace common {
 struct Point {
   Point() : x(0.0f), y(0.0f) {}
   Point(float _x, float _y) : x(_x), y(_y) {}
@@ -23,6 +23,6 @@ float RandomFloat(float a, float b);
 float GetRandomNormilizedFloat();
 float EstimateDistance(float x1, float y1, float x2, float y2);
 float GetDistanceFromRayToReactangle(const Point& ray_origin, const Point& ray_direction, const Rectangle& rectangle);
-}  // namespace tools
+}  // namespace common
 
 #endif  // AAIRACE_SOURCE_COMMON_TOOLS_H_

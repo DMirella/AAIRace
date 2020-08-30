@@ -9,6 +9,9 @@ const float gPushAccelerateY = 0.04f;
 const float gPushSlowDownAccelerate = 0.0004f;
 }  // namespace
 
+namespace game {
+namespace units {
+
 Car::Car(int x, int y, const DrawFunction& draw_function) 
     : DrawableUnit(draw_function)
     , sprite_(sf::Sprite())
@@ -31,7 +34,7 @@ void Car::Draw() {
   draw_function_(sprite_);
 }
 
-void Car::Update(float elapsed_time, const UserControllersContext& context) {
+void Car::Update(float elapsed_time, const ui::UserControllersContext& context) {
   (void) context;
   speed_ -= push_dy_ * push_speed_y_ * elapsed_time;
   sprite_x_ += push_dx_ * push_speed_x_ * elapsed_time;
@@ -72,3 +75,6 @@ float Car::speed() const {
 void Car::SetBlockMove(bool is_blocked) {
   is_move_blocked_ = is_blocked;
 }
+
+}  // namespace units
+}  // namespace game

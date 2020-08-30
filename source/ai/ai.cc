@@ -8,6 +8,7 @@
 
 #include <common/tools.h>
 
+namespace ai {
 NeuralNetwork::NeuralNetwork(int count_hidden_layers, int count_hidden_neurons, int count_input_neurons, int count_output_neurons)
     : count_output_neurons_(count_output_neurons) {
   network_.add_layer(new MiniDNN::FullyConnected<MiniDNN::Sigmoid>(count_input_neurons, count_hidden_neurons));
@@ -75,3 +76,4 @@ void NeuralNetwork::Train(const std::vector<std::pair<std::vector<double>, std::
   }
   // std::cout << "Quality: " << cnt / train_matrix.size() << std::endl;
 }
+}  // namespace ai

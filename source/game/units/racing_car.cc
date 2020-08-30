@@ -15,6 +15,9 @@ const float gMinCarSpeed = gDefaultSpeed - 0.15f;
 const float gTurnSpeed = 0.1f;
 }  // namespace
 
+namespace game {
+namespace units {
+
 sf::Texture RacingCar::texture_ = sf::Texture();
 
 RacingCar::RacingCar(int x, int y, const DrawFunction& draw_function) 
@@ -63,7 +66,7 @@ void RacingCar::TurnRight() {
   }
 }
 
-void RacingCar::Update(float elapsed_time, const UserControllersContext& context) {
+void RacingCar::Update(float elapsed_time, const ui::UserControllersContext& context) {
   Car::Update(elapsed_time, context);
 
   if (is_car_accelerate_now_ && speed_ < gMaxCarSpeed) {
@@ -119,9 +122,9 @@ void RacingCar::SetHeroCar(const std::shared_ptr<Car>& hero_car) {
   }
 }
 
-tools::Rectangle RacingCar::GetIntersectRectangle() const {
+common::Rectangle RacingCar::GetIntersectRectangle() const {
   const float kOffsetFromBorder = 8.0f;
-  tools::Rectangle result;
+  common::Rectangle result;
   result.y1 = sprite_y_ - texture_.getSize().y / 2.0f + kOffsetFromBorder;
   result.y2 = sprite_y_ + texture_.getSize().y / 2.0f - kOffsetFromBorder;
   result.x1 = sprite_x_ - texture_.getSize().x / 2.0f + kOffsetFromBorder;
@@ -149,3 +152,6 @@ void RacingCar::ResetControls() {
   is_car_turn_left_now_ = false;
   is_car_turn_right_now_ = false;
 }
+
+}  // namespace units
+}  // namespace game

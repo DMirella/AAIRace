@@ -6,6 +6,7 @@
 
 #include <MiniDNN.h>
 
+namespace ai {
 class NeuralNetwork {
  public:
   NeuralNetwork() = delete;
@@ -21,5 +22,6 @@ class NeuralNetwork {
   MiniDNN::Network network_;
   int count_output_neurons_;
 };
+}  // namespace ai
 
 #endif  // AAIRACE_SOURCE_AI_H_

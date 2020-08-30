@@ -8,9 +8,12 @@
 
 #include "game_business_logic.h"
 
+namespace ai {
 class EnemyAI;
-class LevelManager;
+}  // namespace ai
 
+namespace game {
+class LevelManager;
 class GameSession {
  public:
   GameSession() = delete;
@@ -20,12 +23,12 @@ class GameSession {
   GameSession& operator=(GameSession&& game_session) = delete;
 
   GameSession(LevelManager* const level_manager, 
-              const GameWindowContext& game_window_context,
+              const ui::GameWindowContext& game_window_context,
               int enemies_count,
               int city_car_count,
-              const std::vector<std::shared_ptr<EnemyAI>>& enemies_ai);
+              const std::vector<std::shared_ptr<ai::EnemyAI>>& enemies_ai);
 
-  void NotifyGameCycleElapsed(float elapsed_time, const UserControllersContext& context);
+  void NotifyGameCycleElapsed(float elapsed_time, const ui::UserControllersContext& context);
   void DrawEntities();
   
   bool is_game_session_ended() const;
@@ -34,7 +37,8 @@ class GameSession {
   LevelManager* const level_manager_;
   float game_aiio_scan_timer_;
   bool collected_aiio_data_sended_;
-  std::vector<AIIOData> collected_aiio_data_;
+  std::vector<ai::AIIOData> collected_aiio_data_;
 };
+}  // namespace game
 
 #endif  // AAIRACE_SOURCE_GAME_GAME_SESSION_H_

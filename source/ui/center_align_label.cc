@@ -2,7 +2,8 @@
 
 #include <iostream>
 
-CenterAlignLabel::CenterAlignLabel(const tools::Rectangle& rect, const std::string& text_string, 
+namespace ui {
+CenterAlignLabel::CenterAlignLabel(const common::Rectangle& rect, const std::string& text_string, 
                                    int font_size, const DrawFunction& draw_function)
     : DrawableUnit(draw_function)
     , kFontSize(font_size)
@@ -45,3 +46,4 @@ int CenterAlignLabel::text_pixel_width() const {
   auto local_text_bounds = text_.getLocalBounds();
   return local_text_bounds.width;
 }
+}  // namespace ui

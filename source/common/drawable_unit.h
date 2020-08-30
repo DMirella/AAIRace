@@ -7,6 +7,7 @@ namespace sf {
 class Drawable;
 }  // namespace sf
 
+namespace ui {
 struct UserControllersContext {
   int cursor_x;
   int cursor_y;
@@ -17,6 +18,9 @@ struct UserControllersContext {
   bool is_mouse_button_pressed;
   sf::Uint32 entered_unicode;
 };
+}  // namespace ui
+
+namespace common {
 
 class DrawableUnit {
  public:
@@ -26,9 +30,10 @@ class DrawableUnit {
   virtual ~DrawableUnit() {}
 
   virtual void Draw() = 0;
-  virtual void Update(float elapsed_time, const UserControllersContext& context) {}
+  virtual void Update(float elapsed_time, const ui::UserControllersContext& context) {}
  protected:
   DrawFunction draw_function_;
 };
+}  // namespace common
 
 #endif  // AAIRACE_SOURCE_COMMON_DRAWABLE_UNIT_H_

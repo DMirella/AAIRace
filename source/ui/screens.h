@@ -16,6 +16,7 @@
 #include "game_window.h"
 #include "popup.h"
 
+namespace ui {
 class ScreenStateMachine;
 class Screen : public std::enable_shared_from_this<Screen> {
  public:
@@ -167,7 +168,7 @@ class GameScreen : public Screen {
   virtual void Draw() override;
   virtual std::string GetScreenName() const override;
  private:
-  std::unique_ptr<GameSession> active_game_session_;
+  std::unique_ptr<game::GameSession> active_game_session_;
 };
 
 class TransitionScreen : public Screen {
@@ -195,5 +196,6 @@ class TransitionScreen : public Screen {
   std::shared_ptr<Screen> current_screen_;
   std::shared_ptr<Screen> next_screen_;
 };
+}  // namespace ui
 
 #endif  // AAIRACE_SOURCE_UI_SCREEN_H_

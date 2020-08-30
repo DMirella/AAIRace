@@ -6,7 +6,11 @@
 
 #include "level_manager.h"
 
+namespace ui {
 struct GameWindowContext;
+}  // namespace ui
+
+namespace game {
 class UserProfile {
  public:
   UserProfile() = delete;
@@ -15,7 +19,7 @@ class UserProfile {
   UserProfile& operator=(const UserProfile& user_profile) = delete;
   UserProfile& operator=(UserProfile&& user_profile) = delete;
 
-  UserProfile(const GameWindowContext& game_window_context);
+  UserProfile(const ui::GameWindowContext& game_window_context);
   
   void SetName(const std::string& name);
   std::string name() const;
@@ -29,5 +33,6 @@ class UserProfile {
   std::string name_;
   LevelManager level_manager_;
 };
+}  // namespace game
 
 #endif  // AAIRACE_SOURCE_GAME_USER_PROFILE_H_

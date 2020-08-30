@@ -12,8 +12,8 @@
 #include "screen_state_machine.h"
 
 namespace {
-std::unique_ptr<Button> GenerateClassicBackButton(const GameWindowContext& game_window_context,
-                                                  const Button::OnClickCallback& on_click_callback,
+std::unique_ptr<ui::Button> GenerateClassicBackButton(const ui::GameWindowContext& game_window_context,
+                                                  const ui::Button::OnClickCallback& on_click_callback,
                                                   const std::string& button_title) {
   const int kBackButtonWidth = 140; 
   const int kBackButtonHeight = 45;
@@ -21,11 +21,12 @@ std::unique_ptr<Button> GenerateClassicBackButton(const GameWindowContext& game_
   const int kBackButtonX = game_window_context.screen_width - kBackButtonXYOffset - kBackButtonWidth; 
   const int kBackButtonY = game_window_context.screen_height - kBackButtonXYOffset - kBackButtonHeight;
 
-  return std::make_unique<Button>(kBackButtonX, kBackButtonY, kBackButtonWidth, kBackButtonHeight, 
-                                  button_title, on_click_callback, game_window_context.draw_function);
+  return std::make_unique<ui::Button>(kBackButtonX, kBackButtonY, kBackButtonWidth, kBackButtonHeight, 
+                                      button_title, on_click_callback, game_window_context.draw_function);
 }
 }  // namespace
 
+namespace ui {
 // Screen
 Screen::Screen(ScreenStateMachine* const screen_state_machine, const GameWindowContext& game_window_context)
     : game_window_context_(game_window_context)
@@ -99,8 +100,8 @@ UserRegistrationScreen::UserRegistrationScreen(ScreenStateMachine* const screen_
   Button::OnClickCallback back_button_click_callback = std::bind(&UserRegistrationScreen::OnBackButtonClick, this);
   back_button_ = GenerateClassicBackButton(game_window_context_, back_button_click_callback, "Back");
 
-  text_label_ = std::make_unique<CenterAlignLabel>(tools::Rectangle(kElementsBlockStartX, kElementsBlockStartY, 
-                                                                    kElementsBlockStartX + kElementsBlockWidth, kElementsBlockStartY + kLabelHeight),
+  text_label_ = std::make_unique<CenterAlignLabel>(common::Rectangle(kElementsBlockStartX, kElementsBlockStartY, 
+                                                                     kElementsBlockStartX + kElementsBlockWidth, kElementsBlockStartY + kLabelHeight),
                                                    kLabelText, kLabelFontSize, game_window_context_.draw_function);
   name_edit_text_box_ = std::make_unique<EditTextBox>(kElementsBlockStartX, kElementsBlockStartY + kLabelHeight + kElementsYOffset, 
                                              kElementsBlockWidth, kTextEditHeight, game_window_context_.draw_function);
@@ -152,7 +153,7 @@ void UserRegistrationScreen::OnRegisterButtonClick() {
     active_popup_ = std::make_unique<Popup>(
         kPopupX, kPopupY, kPopupWidth, kPopupHeight, kErrorMessage, 
         [this](){ ok_button_error_popup_pressed_ = true; }, game_window_context_.draw_function);
-  } else if (UserProfile::CheckIfConfigExist(entered_string)) {
+  } else if (game::UserProfile::CheckIfConfigExist(entered_string)) {
     const std::string kErrorMessage = "User with this name already exists.";
     active_popup_ = std::make_unique<Popup>(
         kPopupX, kPopupY, kPopupWidth, kPopupHeight, kErrorMessage, 
@@ -190,8 +191,8 @@ UserLogInScreen::UserLogInScreen(ScreenStateMachine* const screen_state_machine,
   Button::OnClickCallback back_button_click_callback = std::bind(&UserLogInScreen::OnBackButtonClick, this);
   back_button_ = GenerateClassicBackButton(game_window_context_, back_button_click_callback, "Back");
 
-  text_label_ = std::make_unique<CenterAlignLabel>(tools::Rectangle(kElementsBlockStartX, kElementsBlockStartY, 
-                                                                    kElementsBlockStartX + kElementsBlockWidth, kElementsBlockStartY + kLabelHeight),
+  text_label_ = std::make_unique<CenterAlignLabel>(common::Rectangle(kElementsBlockStartX, kElementsBlockStartY, 
+                                                                     kElementsBlockStartX + kElementsBlockWidth, kElementsBlockStartY + kLabelHeight),
                                                    kLabelText, kLabelFontSize, game_window_context_.draw_function);
   name_edit_text_box_ = std::make_unique<EditTextBox>(kElementsBlockStartX, kElementsBlockStartY + kLabelHeight + kElementsYOffset, 
                                              kElementsBlockWidth, kTextEditHeight, game_window_context_.draw_function);
@@ -243,7 +244,7 @@ void UserLogInScreen::OnLogInButtonClick() {
     active_popup_ = std::make_unique<Popup>(
         kPopupX, kPopupY, kPopupWidth, kPopupHeight, kErrorMessage, 
         [this](){ ok_button_error_popup_pressed_ = true; }, game_window_context_.draw_function);
-  } else if (!UserProfile::CheckIfConfigExist(entered_string)) {
+  } else if (!game::UserProfile::CheckIfConfigExist(entered_string)) {
     const std::string kErrorMessage = "User with this name is not registered.";
     active_popup_ = std::make_unique<Popup>(
         kPopupX, kPopupY, kPopupWidth, kPopupHeight, kErrorMessage, 
@@ -329,7 +330,7 @@ LevelChooseScreen::LevelChooseScreen(ScreenStateMachine* const screen_state_mach
   Button::OnClickCallback back_button_click_callback = std::bind(&LevelChooseScreen::OnBackButtonClick, this);
   back_button_ = GenerateClassicBackButton(game_window_context_, back_button_click_callback, "Back");
     
-  label_ = std::make_unique<CenterAlignLabel>(tools::Rectangle(0, 0, game_window_context_.screen_width, kLevelButtonsBlockXYOffset),
+  label_ = std::make_unique<CenterAlignLabel>(common::Rectangle(0, 0, game_window_context_.screen_width, kLevelButtonsBlockXYOffset),
                                               kChooseLavelLabelText, kFontLabelSize, game_window_context_.draw_function);
   for (int current_level = 1; current_level <= kLevelsCount; current_level++) {
     Button::OnClickCallback on_current_level_button_click_callback = [this, current_level]() {
@@ -461,3 +462,4 @@ void TransitionScreen::Draw() {
 std::string TransitionScreen::GetScreenName() const {
   return "TransitionScreen";
 }
+}  // namespace ui

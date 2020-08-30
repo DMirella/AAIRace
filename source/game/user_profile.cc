@@ -12,7 +12,8 @@ const std::string gProfileFileFormat = "aairp";
 const int kNameBufferSize = 256;
 }  // namespace
 
-UserProfile::UserProfile(const GameWindowContext& game_window_context)
+namespace game {
+UserProfile::UserProfile(const ui::GameWindowContext& game_window_context)
     : name_("")
     , level_manager_(game_window_context, LevelManager::kMinimumCountUnlockedLevels) {
 }
@@ -64,3 +65,4 @@ bool UserProfile::CheckIfConfigExist(const std::string& user_name) {
   std::ifstream f(gProfilesFolderPath + "/" + user_name + "." + gProfileFileFormat);
   return f.good();
 }
+}  // namespace game

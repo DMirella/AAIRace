@@ -5,10 +5,11 @@
 
 #include "common/drawable_unit.h"
 
+namespace ui {
 struct GameWindowContext {
   int screen_width;
   int screen_height;
-  DrawableUnit::DrawFunction draw_function;
+  common::DrawableUnit::DrawFunction draw_function;
 };
 
 class ScreenStateMachine;
@@ -30,5 +31,6 @@ class GameWindow {
   sf::RenderWindow window_;
   std::shared_ptr<ScreenStateMachine> screen_state_machine_;
 };
+}  // namespace ui
 
 #endif  // AAIRACE_SOURCE_UI_GAME_WINDOW_H_

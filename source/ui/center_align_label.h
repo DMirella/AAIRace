@@ -8,7 +8,8 @@
 #include <common/tools.h>
 #include <common/drawable_unit.h>
 
-class CenterAlignLabel : public DrawableUnit {
+namespace ui {
+class CenterAlignLabel : public common::DrawableUnit {
  public:
   CenterAlignLabel() = delete;
   CenterAlignLabel(const CenterAlignLabel& center_align_label) = delete;
@@ -16,7 +17,7 @@ class CenterAlignLabel : public DrawableUnit {
   CenterAlignLabel& operator=(const CenterAlignLabel& center_align_label) = delete;
   CenterAlignLabel& operator=(CenterAlignLabel&& center_align_label) = delete;
 
-  CenterAlignLabel(const tools::Rectangle& rect, const std::string& text_string, 
+  CenterAlignLabel(const common::Rectangle& rect, const std::string& text_string, 
                    int font_size, const DrawFunction& draw_function);
 
   void SetText(const std::string& text_string);
@@ -32,7 +33,8 @@ class CenterAlignLabel : public DrawableUnit {
   sf::Font font_;
   sf::Text text_;
   int text_y_;
-  tools::Rectangle bound_rectangle_;
+  common::Rectangle bound_rectangle_;
 };
+}  // namespace ui
 
 #endif  // SOURCE_UI_CENTER_ALIGN_LABEL_H_

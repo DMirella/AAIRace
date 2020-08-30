@@ -8,7 +8,8 @@
 #include <common/drawable_unit.h>
 #include "center_align_label.h"
 
-class EditTextBox : public DrawableUnit {
+namespace ui {
+class EditTextBox : public common::DrawableUnit {
 public:
   EditTextBox() = delete;
   EditTextBox(const EditTextBox& text_box) = delete;
@@ -34,5 +35,6 @@ private:
 	sf::RectangleShape background_rect_;
 	std::unique_ptr<CenterAlignLabel> text_label_;
 };
+}  // namespace ui
 
 #endif  // SOURCE_UI_EDIT_TEXT_BOX_H_

@@ -8,6 +8,9 @@ namespace {
 const float gRoadX = 298.0f;
 }  // namespace
 
+namespace game {
+namespace units {
+
 Road::Road(int screen_width, int screen_height, const DrawFunction& draw_function) 
     : DrawableUnit(draw_function)
     , screen_width_(screen_width)
@@ -68,7 +71,7 @@ void Road::Draw() {
   draw_function_(finish_line_sprite_);
 }
 
-void Road::Update(float elapsed_time, const UserControllersContext& context) {
+void Road::Update(float elapsed_time, const ui::UserControllersContext& context) {
   (void) context;
   
   speed_ = hero_car_->speed();
@@ -107,3 +110,6 @@ float Road::finish_line_sprite_y() const {
 float Road::start_line_sprite_y() const {
   return start_line_sprite_y_;
 }
+
+}  // namespace units
+}  // namespace game

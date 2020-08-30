@@ -11,6 +11,7 @@
 #include "screen_state_machine.h"
 #include "screens.h"
 
+namespace ui {
 GameWindow::GameWindow() {
   const sf::VideoMode kGameVideoMode = sf::VideoMode(1280, 720);
   const std::string kGameWindowTitle = "AAIRace";
@@ -29,8 +30,8 @@ GameWindow::GameWindow() {
 }
 
 void GameWindow::LoadGameTextures() {
-  RacingCar::Init();
-  CityCar::Init();
+  game::units::RacingCar::Init();
+  game::units::CityCar::Init();
 }
 
 void GameWindow::Start() {
@@ -71,3 +72,4 @@ void GameWindow::ExitGame() {
 void GameWindow::Draw(const sf::Drawable& object) {
   window_.draw(object);
 }
+}  // namespace ui

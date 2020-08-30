@@ -5,6 +5,7 @@
 
 #include <common/tools.h>
 
+namespace ai {
 std::vector<double> TransformAIInputDataToVector(const AIInputData& ai_input_data) {
   std::vector<double> result;
   result.push_back(ai_input_data.current_speed);
@@ -87,7 +88,7 @@ std::vector<AIIOData> FilterAIIOData(const std::vector<AIIOData>& aiio_data) {
     }
   }
 
-  int minimum_action_count = tools::gInfinity;
+  int minimum_action_count = common::gInfinity;
   std::sort(output_action_count, output_action_count + AIOutputData::kOutputCount);
   for (int i = 0; i < AIOutputData::kOutputCount; i++) {
     if (output_action_count[i].first >= kMinimumActionDatasetSize) {
@@ -142,3 +143,4 @@ std::vector<AIIOData> FilterAIIOData(const std::vector<AIIOData>& aiio_data) {
 
   return shuffled_result;
 }
+}  // namespace ai

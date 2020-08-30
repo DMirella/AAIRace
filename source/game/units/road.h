@@ -7,9 +7,11 @@
 
 #include <common/drawable_unit.h>
 
-class RacingCar;
+namespace game {
+namespace units {
 
-class Road : public DrawableUnit {
+class RacingCar;
+class Road : public common::DrawableUnit {
  public:
   Road() = delete;
   Road(const Road& road) = delete;
@@ -23,7 +25,7 @@ class Road : public DrawableUnit {
 
   // DrawableUnit
   virtual void Draw() override;
-  virtual void Update(float elapsed_time, const UserControllersContext& context) override;
+  virtual void Update(float elapsed_time, const ui::UserControllersContext& context) override;
 
   float left_x() const;
   float right_x() const;
@@ -51,5 +53,7 @@ class Road : public DrawableUnit {
 
   std::shared_ptr<RacingCar> hero_car_;
 };
+}  // namespace units
+}  // namespace game
 
 #endif  // AAIRACE_SOURCE_GAME_UNITS_ROAD_H_

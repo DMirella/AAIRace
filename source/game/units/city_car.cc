@@ -12,6 +12,9 @@ const float gAccelerateValue = 0.00001f;
 const float gDefaultSlowDown = 0.00006f;
 }  // namespace
 
+namespace game {
+namespace units {
+  
 sf::Texture CityCar::texture_ = sf::Texture();
 
 CityCar::CityCar(int x, int y,  const DrawFunction& draw_function) 
@@ -32,7 +35,7 @@ float CityCar::height() {
   return texture_.getSize().y;
 }
 
-void CityCar::Update(float elapsed_time, const UserControllersContext& context) {
+void CityCar::Update(float elapsed_time, const ui::UserControllersContext& context) {
   Car::Update(elapsed_time, context);
   if (speed_ > gDefaultSpeed) {
     speed_ = std::min(speed_, gMaxSpeed);
@@ -50,12 +53,15 @@ void CityCar::Update(float elapsed_time, const UserControllersContext& context) 
   sprite_.setPosition(sprite_x_, sprite_y_);
 }
 
-tools::Rectangle CityCar::GetIntersectRectangle() const {
+common::Rectangle CityCar::GetIntersectRectangle() const {
   const float kOffsetFromBorder = 8.0f;
-  tools::Rectangle result;
+  common::Rectangle result;
   result.y1 = sprite_y_ - texture_.getSize().y / 2.0f + kOffsetFromBorder;
   result.y2 = sprite_y_ + texture_.getSize().y / 2.0f - kOffsetFromBorder;
   result.x1 = sprite_x_ - texture_.getSize().x / 2.0f + kOffsetFromBorder;
   result.x2 = sprite_x_ + texture_.getSize().x / 2.0f - kOffsetFromBorder;
   return result;
 }
+
+}  // namespace units
+}  // namespace game

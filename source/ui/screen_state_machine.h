@@ -6,6 +6,7 @@
 
 #include <game/user_profile.h>
 
+namespace ui {
 class Screen;
 struct GameWindowContext;
 class ScreenStateMachine {
@@ -21,12 +22,13 @@ class ScreenStateMachine {
 
   void SetScreen(const std::shared_ptr<Screen>& screen);
   std::shared_ptr<Screen> active_screen();
-  UserProfile& GetUserProfile();
+  game::UserProfile& GetUserProfile();
   void ExitGame();
  private:
   std::function<void()> exit_game_function_;
-  UserProfile active_user_profile_;
+  game::UserProfile active_user_profile_;
   std::shared_ptr<Screen> active_screen_;
 };
+}  // namespace ui
 
 #endif  // AAIRACE_SOURCE_SCREEN_STATE_MACHINE_H_

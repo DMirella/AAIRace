@@ -3,6 +3,7 @@
 
 #include <vector>
 
+namespace ai {
 struct AIInputData {
   static const int kCountDistanceScanRays = 20;
   static const int kInputCount = kCountDistanceScanRays * 2 * 2 + 3;
@@ -38,5 +39,6 @@ AIInputData TransformVectorToAIInputData(const std::vector<double>& vector);
 AIOutputData TransformVectorToAIOutputData(const std::vector<double>& vector);
 bool GetValueFromActionNumber(const AIOutputData& data, int number);
 std::vector<AIIOData> FilterAIIOData(const std::vector<AIIOData>& aiio_data);
+}  // namespace ai
 
 #endif  // AAIRACE_SOURCE_AI_TYPES_H_

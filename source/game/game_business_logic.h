@@ -14,14 +14,19 @@
 
 namespace sf {
 class RenderWindow;
-}  // namespace sf
+}  // namespace sf]
 
-class GameWindow;
+namespace ai {
+class EnemyAI;
+}  // namespace ai
+
+namespace game {
+namespace units {
 class Car;
 class CityCar;
 class RacingCar;
 class Road;
-class EnemyAI;
+}  // namespace units
 
 class GameBusinessLogic {
  public:
@@ -31,42 +36,42 @@ class GameBusinessLogic {
   GameBusinessLogic& operator=(const GameBusinessLogic& game_business_logic) = delete;
   GameBusinessLogic& operator=(GameBusinessLogic&& game_business_logic) = delete;
 
-  GameBusinessLogic(const GameWindowContext& game_window_context, int enemies_count, int city_car_count, 
-                    const std::vector<std::shared_ptr<EnemyAI>>& enemies_ai);
+  GameBusinessLogic(const ui::GameWindowContext& game_window_context, int enemies_count, int city_car_count, 
+                    const std::vector<std::shared_ptr<ai::EnemyAI>>& enemies_ai);
 
-  void NotifyGameCycleElapsed(float elapsed_time, const UserControllersContext& context);
+  void NotifyGameCycleElapsed(float elapsed_time, const ui::UserControllersContext& context);
   void DrawEntities();
 
   bool is_game_ended() const;
 
-  AIIOData GetAIIODataRegardingToHeroCar() const;
+  ai::AIIOData GetAIIODataRegardingToHeroCar() const;
  private:
-  AIInputData GetAIInputDataRegardingToRacingCar(const std::shared_ptr<RacingCar>& car) const;
-  void DrawSensors(const std::shared_ptr<RacingCar>& car) const;
+  ai::AIInputData GetAIInputDataRegardingToRacingCar(const std::shared_ptr<units::RacingCar>& car) const;
+  void DrawSensors(const std::shared_ptr<units::RacingCar>& car) const;
 
   // Process game cycle
   void ProcessStartGame(float elapsed_time);
   void ProcessEndGame(float elapsed_time);
-  void CheckHeroControllers(const UserControllersContext& context);
+  void CheckHeroControllers(const ui::UserControllersContext& context);
   void MakeEnemiesTurn();
   void ProcessGameEvents();
-  void Update(float elapsed_time, const UserControllersContext& context);
+  void Update(float elapsed_time, const ui::UserControllersContext& context);
 
-  GameWindowContext game_window_context_;
+  ui::GameWindowContext game_window_context_;
 
   float start_timer_;
   float finish_timer_;
 
-  std::unique_ptr<CenterAlignLabel> info_label_;
-  std::shared_ptr<RacingCar> hero_racing_car_;
-  std::vector<std::shared_ptr<Car>> car_list_;
-  std::vector<std::shared_ptr<CityCar>> city_car_list_;
-  std::vector<std::shared_ptr<RacingCar>> racing_car_list_;
-  std::vector<std::shared_ptr<RacingCar>> enemies_car_list_;
+  std::unique_ptr<ui::CenterAlignLabel> info_label_;
+  std::shared_ptr<units::RacingCar> hero_racing_car_;
+  std::vector<std::shared_ptr<units::Car>> car_list_;
+  std::vector<std::shared_ptr<units::CityCar>> city_car_list_;
+  std::vector<std::shared_ptr<units::RacingCar>> racing_car_list_;
+  std::vector<std::shared_ptr<units::RacingCar>> enemies_car_list_;
   std::vector<bool> is_enemy_racing_car_finished_;
-  std::unique_ptr<Road> road_;
+  std::unique_ptr<units::Road> road_;
 
-  std::vector<std::shared_ptr<EnemyAI>> enemies_ai_;
+  std::vector<std::shared_ptr<ai::EnemyAI>> enemies_ai_;
 
   int hero_racing_car_place_;
 
@@ -74,5 +79,6 @@ class GameBusinessLogic {
   bool is_hero_car_reached_finish_;
   bool is_game_ended_;
 };
+}  // namespace game
 
 #endif  // AAIRACE_SOURCE_GAME_GAME_BUSINESS_LOGIC_H_

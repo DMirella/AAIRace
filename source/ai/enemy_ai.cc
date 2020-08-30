@@ -11,15 +11,15 @@
 namespace {
 const int gCountHiddenLayers = 1;
 const int gCountHiddenNeurons = 30;
-const int gCountInputNeurons = AIInputData::kInputCount;
-const int gCountOutputNeurons = AIOutputData::kOutputCount;
+const int gCountInputNeurons = ai::AIInputData::kInputCount;
+const int gCountOutputNeurons = ai::AIOutputData::kOutputCount;
 
 double sqr(double a) {
   return a * a;
 }
 }
 
-// EnemyAI
+namespace ai {
 EnemyAI::EnemyAI(const std::shared_ptr<std::vector<AIIOData>>& collected_aiio_data)
     : neural_network_(gCountHiddenLayers, gCountHiddenNeurons, gCountInputNeurons, gCountOutputNeurons)
     , last_applied_action_index_(-1)
@@ -38,7 +38,7 @@ void EnemyAI::TrainWithData(const std::vector<AIIOData>& aiio_data) {
 AIOutputData EnemyAI::GetOutputData(const AIInputData& input_data) {
   const int kSearchFromLastActionRange = 2000;
   if (nullptr != collected_aiio_data_ && collected_aiio_data_->size() > 0) {
-    std::pair<double, int> minimum_distance = {tools::gInfinity, 0};
+    std::pair<double, int> minimum_distance = {common::gInfinity, 0};
     int left_search_range = 0, right_search_range = collected_aiio_data_->size() - 1;
     if (last_applied_action_index_ != -1) {
       left_search_range = std::max(last_applied_action_index_ - kSearchFromLastActionRange, 0);
@@ -72,3 +72,4 @@ AIOutputData EnemyAI::GetOutputData(const AIInputData& input_data) {
   return TransformVectorToAIOutputData(vector_outputs);
   */
 }
+}  // namespace ai

@@ -6,9 +6,9 @@
 int main() {
   std::srand(std::time(nullptr));
 
-  GameWindow::LoadGameTextures();
+  ui::GameWindow::LoadGameTextures();
   
-  GameWindow game_window;
+  ui::GameWindow game_window;
   game_window.Start();
 
   return 0;

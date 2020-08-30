@@ -5,32 +5,32 @@
 #include <cmath>
 
 namespace {
-tools::Point operator-(const tools::Point& a, const tools::Point& b) {
-  tools::Point result;
+common::Point operator-(const common::Point& a, const common::Point& b) {
+  common::Point result;
   result.y = a.y - b.y;
   result.x = a.x - b.x;
   return result;
 }
 
-float PointDotProduct(const tools::Point& a, const tools::Point& b) {
+float PointDotProduct(const common::Point& a, const common::Point& b) {
   return a.x * b.x + a.y * b.y;
 }
 
-float PointCrossProduct(const tools::Point& a, const tools::Point& b) {
+float PointCrossProduct(const common::Point& a, const common::Point& b) {
   return a.x * b.y - a.y * b.x;
 }
 
-void NormalizeVector(tools::Point* const pt) {
+void NormalizeVector(common::Point* const pt) {
   float length = std::sqrt(pt->x * pt->x + pt->y * pt->y);
   pt->x /= length;
   pt->y /= length;
 }
 
-float GetRayToLineDistanceSegmentIntersection(const tools::Point& ray_origin, const tools::Point& ray_direction, 
-                                              const tools::Point& segment_point_1, const tools::Point& segment_point_2) {
-  tools::Point v1 = ray_origin - segment_point_1;
-  tools::Point v2 = segment_point_2 - segment_point_1;
-  tools::Point v3 = tools::Point(-ray_direction.y, ray_direction.x);
+float GetRayToLineDistanceSegmentIntersection(const common::Point& ray_origin, const common::Point& ray_direction, 
+                                              const common::Point& segment_point_1, const common::Point& segment_point_2) {
+  common::Point v1 = ray_origin - segment_point_1;
+  common::Point v2 = segment_point_2 - segment_point_1;
+  common::Point v3 = common::Point(-ray_direction.y, ray_direction.x);
 
   float dot = PointDotProduct(v2, v3);
   if (std::fabs(dot) < 0.000001f) {
@@ -48,7 +48,7 @@ float GetRayToLineDistanceSegmentIntersection(const tools::Point& ray_origin, co
 }
 }  // namespace
 
-namespace tools {
+namespace common {
 
 bool CheckRectangleIntersect(const Rectangle& a, const Rectangle& b) {
   return !(a.y2 < b.y1 ||  a.y1 > b.y2 ||  a.x2 < b.x1 || a.x1 > b.x2);
@@ -96,4 +96,4 @@ float GetDistanceFromRayToReactangle(const Point& ray_origin, const Point& ray_d
   }
   return result;
 }
-} // namespace tools
+} // namespace common

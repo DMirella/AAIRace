@@ -8,6 +8,7 @@
 #include "ai.h"
 #include "ai_types.h"
 
+namespace ai {
 class EnemyAI {
  public:
   EnemyAI() = delete;
@@ -25,5 +26,6 @@ class EnemyAI {
   int last_applied_action_index_;
   std::shared_ptr<std::vector<AIIOData>> collected_aiio_data_;
 };
+}  // namespace ai
 
 #endif  // AAIRACE_SOURCE_ENEMY_AI_H_
