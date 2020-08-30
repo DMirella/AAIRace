@@ -9,6 +9,12 @@
 struct GameWindowContext;
 class UserProfile {
  public:
+  UserProfile() = delete;
+  UserProfile(const UserProfile& user_profile) = delete;
+  UserProfile(UserProfile&& user_profile) = delete;
+  UserProfile& operator=(const UserProfile& user_profile) = delete;
+  UserProfile& operator=(UserProfile&& user_profile) = delete;
+
   UserProfile(const GameWindowContext& game_window_context);
   
   void SetName(const std::string& name);

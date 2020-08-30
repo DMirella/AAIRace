@@ -22,17 +22,10 @@ class CityCar : public Car {
 
   // DrawableUnit
   virtual void Update(float elapsed_time, const UserControllersContext& context) override;
-
   // Car
   virtual tools::Rectangle GetIntersectRectangle() const override;
  private:
   static sf::Texture texture_;
-  static float kScaleCarImage;
-
-  const float kDefaultSpeed = 0.25f;
-  const float kMaxSpeed = kDefaultSpeed + 0.1f;
-  const float kAccelerateValue = 0.00001f;
-  const float kDefaultSlowDown = 0.00006f;
 };
 
 #endif  // AAIRACE_SOURCE_CITY_CAR_H_

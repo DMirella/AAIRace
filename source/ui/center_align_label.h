@@ -10,6 +10,12 @@
 
 class CenterAlignLabel : public DrawableUnit {
  public:
+  CenterAlignLabel() = delete;
+  CenterAlignLabel(const CenterAlignLabel& center_align_label) = delete;
+  CenterAlignLabel(CenterAlignLabel&& center_align_label) = delete;
+  CenterAlignLabel& operator=(const CenterAlignLabel& center_align_label) = delete;
+  CenterAlignLabel& operator=(CenterAlignLabel&& center_align_label) = delete;
+
   CenterAlignLabel(const tools::Rectangle& rect, const std::string& text_string, 
                    int font_size, const DrawFunction& draw_function);
 

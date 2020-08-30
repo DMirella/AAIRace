@@ -4,6 +4,9 @@
 
 namespace {
 const float gEpsilon = 1e-6;
+const float gPushAccelerateX = 0.2f;
+const float gPushAccelerateY = 0.04f;
+const float gPushSlowDownAccelerate = 0.0004f;
 }  // namespace
 
 Car::Car(int x, int y, const DrawFunction& draw_function) 
@@ -16,8 +19,8 @@ Car::Car(int x, int y, const DrawFunction& draw_function)
     , push_speed_y_(0.0f)
     , push_dx_(0.0f)
     , push_dy_(0.0f)
-    , hero_car_(nullptr)
-    , is_move_blocked_(false) {
+    , is_move_blocked_(false)
+    , hero_car_(nullptr) {
 }
 
 void Car::SetHeroCar(const std::shared_ptr<Car>& hero_car) {
@@ -37,8 +40,8 @@ void Car::Update(float elapsed_time, const UserControllersContext& context) {
     sprite_y_ += (hero_car_->speed() - speed_) * elapsed_time;
   }
 
-  push_speed_x_ -= kPushSlowDownAccelerate * elapsed_time;
-  push_speed_y_ -= kPushSlowDownAccelerate * elapsed_time;
+  push_speed_x_ -= gPushSlowDownAccelerate * elapsed_time;
+  push_speed_y_ -= gPushSlowDownAccelerate * elapsed_time;
   push_speed_x_ = std::max(push_speed_x_, 0.0f);
   push_speed_y_ = std::max(push_speed_y_, 0.0f);
 }
@@ -46,11 +49,11 @@ void Car::Update(float elapsed_time, const UserControllersContext& context) {
 void Car::Push(float dx, float dy) {
   if (push_speed_x_ < gEpsilon) {
     push_dx_ = dx;
-    push_speed_x_ = kPushAccelerateX;
+    push_speed_x_ = gPushAccelerateX;
   }
   if (push_speed_y_ < gEpsilon) {
     push_dy_ = dy;
-    push_speed_y_ = kPushAccelerateY;
+    push_speed_y_ = gPushAccelerateY;
   }
 }
 

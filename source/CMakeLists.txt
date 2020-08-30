@@ -5,7 +5,9 @@ set(GAME_LIBRARY_NAME game_library)
 set(COMMON_LIBRARY_NAME common_library)
 set(UI_LIBRARY_NAME ui_library)
 
-include_directories(./)
+include_directories(
+  ./
+  ${PROJECT_SOURCE_DIR}/external/MiniDNN/include)
 
 add_subdirectory(ai)
 add_subdirectory(common)

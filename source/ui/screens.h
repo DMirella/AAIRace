@@ -16,6 +16,12 @@
 class ScreenStateMachine;
 class Screen : public std::enable_shared_from_this<Screen> {
  public:
+  Screen() = delete;
+  Screen(const Screen& screen) = delete;
+  Screen(Screen&& screen) = delete;
+  Screen& operator=(const Screen& screen) = delete;
+  Screen& operator=(Screen&& screen) = delete;
+
   Screen(ScreenStateMachine* const screen_state_machine, const GameWindowContext& game_window_context);
 
   virtual void NotifyGameCycleElapsed(float elapsed_time, const UserControllersContext& context) {}
@@ -28,6 +34,12 @@ class Screen : public std::enable_shared_from_this<Screen> {
 
 class ProfileChooseScreen : public Screen {
  public:
+  ProfileChooseScreen() = delete;
+  ProfileChooseScreen(const ProfileChooseScreen& profile_choose_screen) = delete;
+  ProfileChooseScreen(ProfileChooseScreen&& profile_choose_screen) = delete;
+  ProfileChooseScreen& operator=(const ProfileChooseScreen& profile_choose_screen) = delete;
+  ProfileChooseScreen& operator=(ProfileChooseScreen&& profile_choose_screen) = delete;
+
   ProfileChooseScreen(ScreenStateMachine* const screen_state_machine, const GameWindowContext& game_window_context);
   virtual void NotifyGameCycleElapsed(float elapsed_time, const UserControllersContext& context) override;
   virtual void Draw() override;
@@ -43,7 +55,14 @@ class ProfileChooseScreen : public Screen {
 class TextBox;
 class SignUpScreen : public Screen {
  public:
+  SignUpScreen() = delete;
+  SignUpScreen(const SignUpScreen& sign_up_screen) = delete;
+  SignUpScreen(SignUpScreen&& sign_up_screen) = delete;
+  SignUpScreen& operator=(const SignUpScreen& sign_up_screen) = delete;
+  SignUpScreen& operator=(SignUpScreen&& sign_up_screen) = delete;
+
   SignUpScreen(ScreenStateMachine* const screen_state_machine, const GameWindowContext& game_window_context);
+
   virtual void NotifyGameCycleElapsed(float elapsed_time, const UserControllersContext& context) override;
   virtual void Draw() override;
   virtual std::string GetScreenName() const override;
@@ -61,7 +80,14 @@ class SignUpScreen : public Screen {
 
 class SignInScreen : public Screen {
  public:
+  SignInScreen() = delete;
+  SignInScreen(const SignInScreen& sign_in_screen) = delete;
+  SignInScreen(SignInScreen&& sign_in_screen) = delete;
+  SignInScreen& operator=(const SignInScreen& sign_in_screen) = delete;
+  SignInScreen& operator=(SignInScreen&& sign_in_screen) = delete;
+
   SignInScreen(ScreenStateMachine* const screen_state_machine, const GameWindowContext& game_window_context);
+
   virtual void NotifyGameCycleElapsed(float elapsed_time, const UserControllersContext& context) override;
   virtual void Draw() override;
   virtual std::string GetScreenName() const override;
@@ -79,6 +105,12 @@ class SignInScreen : public Screen {
 
 class MenuScreen : public Screen {
  public:
+  MenuScreen() = delete;
+  MenuScreen(const MenuScreen& menu_screen) = delete;
+  MenuScreen(MenuScreen&& menu_screen) = delete;
+  MenuScreen& operator=(const MenuScreen& menu_screen) = delete;
+  MenuScreen& operator=(MenuScreen&& menu_screen) = delete;
+
   MenuScreen(ScreenStateMachine* const screen_state_machine, const GameWindowContext& game_window_context);
 
   virtual void NotifyGameCycleElapsed(float elapsed_time, const UserControllersContext& context) override;
@@ -97,6 +129,12 @@ class MenuScreen : public Screen {
 class CenterAlignLabel;
 class LevelChooseScreen : public Screen {
  public:
+  LevelChooseScreen() = delete;
+  LevelChooseScreen(const LevelChooseScreen& level_choose_screen) = delete;
+  LevelChooseScreen(LevelChooseScreen&& level_choose_screen) = delete;
+  LevelChooseScreen& operator=(const LevelChooseScreen& level_choose_screen) = delete;
+  LevelChooseScreen& operator=(LevelChooseScreen&& level_choose_screen) = delete;
+
   LevelChooseScreen(ScreenStateMachine* const screen_state_machine, const GameWindowContext& game_window_context);
 
   virtual void NotifyGameCycleElapsed(float elapsed_time, const UserControllersContext& context) override;
@@ -115,6 +153,12 @@ class LevelChooseScreen : public Screen {
 class GameSession;
 class GameScreen : public Screen {
  public:
+  GameScreen() = delete;
+  GameScreen(const GameScreen& game_screen) = delete;
+  GameScreen(GameScreen&& game_screen) = delete;
+  GameScreen& operator=(const GameScreen& game_screen) = delete;
+  GameScreen& operator=(GameScreen&& game_screen) = delete;
+
   GameScreen(ScreenStateMachine* const screen_state_machine, 
              const GameWindowContext& game_window_context,
              int game_level);
@@ -128,6 +172,12 @@ class GameScreen : public Screen {
 
 class TransitionScreen : public Screen {
  public:
+  TransitionScreen() = delete;
+  TransitionScreen(const TransitionScreen& transition_screen) = delete;
+  TransitionScreen(TransitionScreen&& transition_screen) = delete;
+  TransitionScreen& operator=(const TransitionScreen& transition_screen) = delete;
+  TransitionScreen& operator=(TransitionScreen&& transition_screen) = delete;
+
   TransitionScreen(ScreenStateMachine* const screen_state_machine, 
                    const GameWindowContext& game_window_context,
                    const std::shared_ptr<Screen>& current_screen,

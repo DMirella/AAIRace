@@ -19,6 +19,7 @@ class RacingCar : public Car {
 
   static void Init();
   static float height();
+  static float max_speed();
 
   // Controls
   void Accelerate();
@@ -29,7 +30,6 @@ class RacingCar : public Car {
   // DrawableUnit
   virtual void Update(float elapsed_time, const UserControllersContext& context) override;
   virtual void Draw() override;
-
   // Car
   virtual void SetHeroCar(const std::shared_ptr<Car>& hero_car) override;
   virtual tools::Rectangle GetIntersectRectangle() const override;
@@ -38,9 +38,6 @@ class RacingCar : public Car {
                            bool* const is_car_slows_down,
                            bool* const is_car_turns_left,
                            bool* const is_car_turns_right);
-
-  static float max_speed();
-
  private:
   void ResetControls();
 

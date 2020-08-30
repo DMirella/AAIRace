@@ -4,6 +4,8 @@
 #include <iostream>
 #include <string>
 
+#include "game/drawable_units/city_car.h"
+#include "game/drawable_units/racing_car.h"
 #include "game/level_manager.h"
 #include "screen_state_machine.h"
 #include "screens.h"
@@ -11,7 +13,7 @@
 GameWindow::GameWindow() {
   const sf::VideoMode kGameVideoMode = sf::VideoMode(1280, 720);
   const std::string kGameWindowTitle = "AAIRace";
-  const bool kIsFullScreen = false;
+  const bool kIsFullScreen = true;
 
   window_.create(kGameVideoMode, kGameWindowTitle, kIsFullScreen? sf::Style::Fullscreen : sf::Style::Default);
   
@@ -23,6 +25,11 @@ GameWindow::GameWindow() {
   window_context.draw_function = draw_callback;
 
   screen_state_machine_ = std::make_shared<ScreenStateMachine>(window_context, exit_game_callback);
+}
+
+void GameWindow::LoadGameTextures() {
+  RacingCar::Init();
+  CityCar::Init();
 }
 
 void GameWindow::Start() {

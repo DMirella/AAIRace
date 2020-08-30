@@ -1,11 +1,16 @@
 #include "city_car.h"
 
 #include <cmath>
-#include <string>
-#include <iostream>
 #include <cstdlib>
+#include <iostream>
+#include <string>
 
-#include "racing_car.h"
+namespace {
+const float gDefaultSpeed = 0.25f;
+const float gMaxSpeed = gDefaultSpeed + 0.1f;
+const float gAccelerateValue = 0.00001f;
+const float gDefaultSlowDown = 0.00006f;
+}  // namespace
 
 sf::Texture CityCar::texture_ = sf::Texture();
 
@@ -29,23 +34,19 @@ float CityCar::height() {
 
 void CityCar::Update(float elapsed_time, const UserControllersContext& context) {
   Car::Update(elapsed_time, context);
-
-  if (speed_ > kDefaultSpeed) {
-    speed_ = std::min(speed_, kMaxSpeed);
-    speed_ -= kDefaultSlowDown * elapsed_time;
-    speed_ = std::max(speed_, kDefaultSpeed);
+  if (speed_ > gDefaultSpeed) {
+    speed_ = std::min(speed_, gMaxSpeed);
+    speed_ -= gDefaultSlowDown * elapsed_time;
+    speed_ = std::max(speed_, gDefaultSpeed);
   }
-
-  if (speed_ < kDefaultSpeed) {
+  if (speed_ < gDefaultSpeed) {
     speed_ = std::max(speed_, 0.0f);
-    speed_ += kAccelerateValue * elapsed_time;
-    speed_ = std::min(speed_, kDefaultSpeed);
+    speed_ += gAccelerateValue * elapsed_time;
+    speed_ = std::min(speed_, gDefaultSpeed);
   }
-
   if (is_move_blocked_) {
     speed_ = 0;
   }
-
   sprite_.setPosition(sprite_x_, sprite_y_);
 }
 

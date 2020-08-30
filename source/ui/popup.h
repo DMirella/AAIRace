@@ -9,6 +9,12 @@
 
 class Popup : public DrawableUnit {
  public:
+  Popup() = delete;
+  Popup(const Popup& popup) = delete;
+  Popup(Popup&& popup) = delete;
+  Popup& operator=(const Popup& popup) = delete;
+  Popup& operator=(Popup&& popup) = delete;
+
   Popup(int x, int y, int width, int height, const std::string& message, 
         const Button::OnClickCallback& on_ok_button_click_callback, const DrawableUnit::DrawFunction& draw_function);
 

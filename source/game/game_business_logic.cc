@@ -12,7 +12,6 @@
 #include "drawable_units/car.h"
 #include "drawable_units/city_car.h"
 #include "drawable_units/racing_car.h"
-#include "drawable_units/road.h"
 #include "ui/game_window.h"
 #include <common/tools.h>
 
@@ -27,19 +26,16 @@ GameBusinessLogic::GameBusinessLogic(const GameWindowContext& game_window_contex
   : game_window_context_(game_window_context)
   , start_timer_(0.0f)
   , finish_timer_(0.0f)
-  , is_game_session_ended_(false)
+  , hero_racing_car_place_(1)
+  , is_game_ended_(false)
   , is_hero_car_reached_finish_(false)
   , is_racing_started_(false)
-  , hero_racing_car_place_(1)
   , enemies_ai_(enemies_ai) {
   assert(enemies_ai.size() == enemies_count);
   
   is_enemy_racing_car_finished_.resize(enemies_count, false);
 
-  RacingCar::Init();
-  CityCar::Init();
-
-  road_ = std::make_shared<Road>(game_window_context_.screen_width, game_window_context_.screen_height, game_window_context_.draw_function);
+  road_ = std::make_unique<Road>(game_window_context_.screen_width, game_window_context_.screen_height, game_window_context_.draw_function);
 
   const int kInfoLabelHeight = game_window_context_.screen_height / 5;
   const int kInfoLabelOutlineBorder = 5;
@@ -131,7 +127,7 @@ void GameBusinessLogic::ProcessEndGame(float elapsed_time) {
       const std::string kPlaceInfoText = std::to_string(hero_racing_car_place_) + "st place!";
       info_label_->SetText(kPlaceInfoText);
     } else {
-      is_game_session_ended_ = true;
+      is_game_ended_ = true;
       info_label_->SetText("");
     }
   }
@@ -228,8 +224,8 @@ void GameBusinessLogic::DrawEntities() {
   // DrawSensors(hero_racing_car_);
 }
 
-bool GameBusinessLogic::is_game_session_ended() const {
-  return is_game_session_ended_;
+bool GameBusinessLogic::is_game_ended() const {
+  return is_game_ended_;
 }
 
 AIIOData GameBusinessLogic::GetAIIODataRegardingToHeroCar() const {

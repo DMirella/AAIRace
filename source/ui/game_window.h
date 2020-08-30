@@ -14,8 +14,14 @@ struct GameWindowContext {
 class ScreenStateMachine;
 class GameWindow {
  public:
+  GameWindow(const GameWindow& game_window) = delete;
+  GameWindow(GameWindow&& game_window) = delete;
+  GameWindow& operator=(const GameWindow& game_window) = delete;
+  GameWindow& operator=(GameWindow&& game_window) = delete;
+
   GameWindow();
 
+  static void LoadGameTextures();
   void Start();
  private:
   void ExitGame();

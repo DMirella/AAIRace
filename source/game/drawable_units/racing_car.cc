@@ -2,10 +2,8 @@
 
 #include <cmath>
 #include <string>
-#include <iostream>
 #include <cstdlib>
-
-sf::Texture RacingCar::texture_ = sf::Texture();
+#include <iostream>
 
 namespace {
 const float gDefaultSpeed = 0.3f;
@@ -16,6 +14,8 @@ const float gMaxCarSpeed = gDefaultSpeed + 0.2f;
 const float gMinCarSpeed = gDefaultSpeed - 0.15f;
 const float gTurnSpeed = 0.1f;
 }  // namespace
+
+sf::Texture RacingCar::texture_ = sf::Texture();
 
 RacingCar::RacingCar(int x, int y, const DrawFunction& draw_function) 
     : Car(x, y, draw_function)
@@ -103,8 +103,6 @@ void RacingCar::Update(float elapsed_time, const UserControllersContext& context
   sprite_x_ += dx;
 
   sprite_.setPosition(sprite_x_, sprite_y_);
-  // sprite_.move(std::sin(angle_) * speed_, std::cos(angle_) * -speed_);
-  // sprite_.setRotation(180 / 3.14 * angle_);
 }
 
 void RacingCar::Draw() {

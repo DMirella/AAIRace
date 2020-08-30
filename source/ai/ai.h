@@ -4,20 +4,21 @@
 #include <memory>
 #include <vector>
 
-namespace MiniDNN {
-class Layer;
-class Network;
-}  // namespace MiniDNN
+#include <MiniDNN.h>
 
 class NeuralNetwork {
  public:
+  NeuralNetwork() = delete;
+  NeuralNetwork(const NeuralNetwork& neural_network) = delete;
+  NeuralNetwork(NeuralNetwork&& neural_network) = delete;
+  NeuralNetwork& operator=(const NeuralNetwork& neural_network) = delete;
+  NeuralNetwork& operator=(NeuralNetwork&& neural_network) = delete;
+
   NeuralNetwork(int count_hidden_layers, int count_hidden_neurons, int count_input_neurons, int count_output_neurons);
-  std::vector<double> GetOutputs(const std::vector<double>& inputs) const;
+  std::vector<double> GetOutputs(const std::vector<double>& inputs);
   void Train(const std::vector<std::pair<std::vector<double>, std::vector<double>>>& train_matrix);
  private:
-  std::vector<MiniDNN::Layer*> layers_;
-  MiniDNN::Layer* output_layer_;
-  std::shared_ptr<MiniDNN::Network> network_;
+  MiniDNN::Network network_;
   int count_output_neurons_;
 };
 

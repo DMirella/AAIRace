@@ -37,5 +37,6 @@ std::vector<double> TransformAIOutputDataToVector(const AIOutputData& ai_output_
 AIInputData TransformVectorToAIInputData(const std::vector<double>& vector);
 AIOutputData TransformVectorToAIOutputData(const std::vector<double>& vector);
 bool GetValueFromActionNumber(const AIOutputData& data, int number);
+std::vector<AIIOData> FilterAIIOData(const std::vector<AIIOData>& aiio_data);
 
 #endif  // AAIRACE_SOURCE_AI_TYPES_H_

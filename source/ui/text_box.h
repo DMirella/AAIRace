@@ -10,6 +10,12 @@
 class CenterAlignLabel;
 class TextBox : public DrawableUnit {
 public:
+  TextBox() = delete;
+  TextBox(const TextBox& text_box) = delete;
+  TextBox(TextBox&& text_box) = delete;
+  TextBox& operator=(const TextBox& text_box) = delete;
+  TextBox& operator=(TextBox&& text_box) = delete;
+
   TextBox(int x, int y, int width, int height, const DrawFunction& draw_function);
 	
   virtual void Draw() override;

@@ -2,11 +2,12 @@
 #define AAIRACE_SOURCE_GAME_BUSINESS_LOGIC_H_
 
 #include <functional>
-#include <memory>
 #include <map>
+#include <memory>
 #include <vector>
 
 #include "ai/ai_types.h"
+#include "drawable_units/road.h"
 #include "ui/game_window.h"
 #include "ui/center_align_label.h"
 
@@ -23,19 +24,26 @@ class EnemyAI;
 
 class GameBusinessLogic {
  public:
+  GameBusinessLogic() = delete;
+  GameBusinessLogic(const GameBusinessLogic& game_business_logic) = delete;
+  GameBusinessLogic(GameBusinessLogic&& game_business_logic) = delete;
+  GameBusinessLogic& operator=(const GameBusinessLogic& game_business_logic) = delete;
+  GameBusinessLogic& operator=(GameBusinessLogic&& game_business_logic) = delete;
+
   GameBusinessLogic(const GameWindowContext& game_window_context, int enemies_count, int city_car_count, 
                     const std::vector<std::shared_ptr<EnemyAI>>& enemies_ai);
 
   void NotifyGameCycleElapsed(float elapsed_time, const UserControllersContext& context);
   void DrawEntities();
 
-  bool is_game_session_ended() const;
+  bool is_game_ended() const;
 
   AIIOData GetAIIODataRegardingToHeroCar() const;
  private:
   AIInputData GetAIInputDataRegardingToRacingCar(const std::shared_ptr<RacingCar>& car) const;
   void DrawSensors(const std::shared_ptr<RacingCar>& car) const;
 
+  // Process game cycle
   void ProcessStartGame(float elapsed_time);
   void ProcessEndGame(float elapsed_time);
   void CheckHeroControllers();
@@ -55,7 +63,7 @@ class GameBusinessLogic {
   std::vector<std::shared_ptr<RacingCar>> racing_car_list_;
   std::vector<std::shared_ptr<RacingCar>> enemies_car_list_;
   std::vector<bool> is_enemy_racing_car_finished_;
-  std::shared_ptr<Road> road_;
+  std::unique_ptr<Road> road_;
 
   std::vector<std::shared_ptr<EnemyAI>> enemies_ai_;
 
@@ -63,7 +71,7 @@ class GameBusinessLogic {
 
   bool is_racing_started_;
   bool is_hero_car_reached_finish_;
-  bool is_game_session_ended_;
+  bool is_game_ended_;
 };
 
 #endif  // AAIRACE_SOURCE_GAME_BUSINESS_LOGIC_H_

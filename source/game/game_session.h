@@ -12,6 +12,12 @@ class LevelManager;
 
 class GameSession {
  public:
+  GameSession() = delete;
+  GameSession(const GameSession& game_session) = delete;
+  GameSession(GameSession&& game_session) = delete;
+  GameSession& operator=(const GameSession& game_session) = delete;
+  GameSession& operator=(GameSession&& game_session) = delete;
+
   GameSession(LevelManager* const level_manager, 
               const GameWindowContext& game_window_context,
               int enemies_count,

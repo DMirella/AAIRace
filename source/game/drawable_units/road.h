@@ -28,19 +28,17 @@ class Road : public DrawableUnit {
   float left_x() const;
   float right_x() const;
   float width() const;
-
   float finish_line_sprite_y() const;
   float start_line_sprite_y() const;
-
  private:
+  sf::Texture road_texture_;
+  sf::Texture start_finish_line_texture_;
+
   sf::Sprite sprite1_;
   sf::Sprite sprite2_;
   sf::Sprite start_line_sprite_;
   sf::Sprite finish_line_sprite_;
-
-  sf::Texture road_texture_;
-  sf::Texture start_finish_line_texture_;
-
+  
   int screen_width_;
   int screen_height_;
   

@@ -12,6 +12,12 @@ class EnemyAI;
 class GameSession;
 class LevelManager {
  public:
+  LevelManager() = delete;
+  LevelManager(const LevelManager& level_manager) = delete;
+  LevelManager(LevelManager&& level_manager) = delete;
+  LevelManager& operator=(const LevelManager& level_manager) = delete;
+  LevelManager& operator=(LevelManager&& level_manager) = delete;
+
   LevelManager(const GameWindowContext& game_window_context, int count_unlocked_levels);
 
   int count_unlocked_level() const;

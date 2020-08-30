@@ -12,6 +12,12 @@ class CenterAlignLabel;
 class Button : public DrawableUnit {
  public:
   using OnClickCallback = std::function<void()>;
+  
+  Button() = delete;
+  Button(const Button& button) = delete;
+  Button(Button&& button) = delete;
+  Button& operator=(const Button& button) = delete;
+  Button& operator=(Button&& button) = delete;
 
   Button(int x, int y, int width, int height, const std::string& text_string,
          const OnClickCallback& on_press_callback, const DrawableUnit::DrawFunction& draw_function);

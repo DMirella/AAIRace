@@ -26,7 +26,7 @@ void GameSession::NotifyGameCycleElapsed(float elapsed_time, const UserControlle
     collected_aiio_data_.emplace_back(game_business_logic_.GetAIIODataRegardingToHeroCar());
   }
   if (!collected_aiio_data_sended_ && 
-      game_business_logic_.is_game_session_ended()) {
+      game_business_logic_.is_game_ended()) {
     collected_aiio_data_sended_ = true;
     level_manager_->NotifyCurrentLevelEnds(collected_aiio_data_);
   }
@@ -37,5 +37,5 @@ void GameSession::DrawEntities() {
 }
 
 bool GameSession::is_game_session_ended() const {
-  return game_business_logic_.is_game_session_ended();
+  return game_business_logic_.is_game_ended();
 }
