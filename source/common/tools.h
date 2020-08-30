@@ -1,5 +1,5 @@
-#ifndef AAIRACE_SOURCE_TOOLS_H_
-#define AAIRACE_SOURCE_TOOLS_H_
+#ifndef AAIRACE_SOURCE_COMMON_TOOLS_H_
+#define AAIRACE_SOURCE_COMMON_TOOLS_H_
 
 namespace tools {
 struct Point {
@@ -25,4 +25,4 @@ float EstimateDistance(float x1, float y1, float x2, float y2);
 float GetDistanceFromRayToReactangle(const Point& ray_origin, const Point& ray_direction, const Rectangle& rectangle);
 }  // namespace tools
 
-#endif  // AAIRACE_SOURCE_TOOLS_H_
+#endif  // AAIRACE_SOURCE_COMMON_TOOLS_H_

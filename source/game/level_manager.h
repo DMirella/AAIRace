@@ -1,5 +1,5 @@
-#ifndef AAIRACE_SOURCE_LEVEL_MANAGER_H_
-#define AAIRACE_SOURCE_LEVEL_MANAGER_H_
+#ifndef AAIRACE_SOURCE_GAME_LEVEL_MANAGER_H_
+#define AAIRACE_SOURCE_GAME_LEVEL_MANAGER_H_
 
 #include <fstream>
 #include <memory>
@@ -41,4 +41,4 @@ class LevelManager {
   std::vector<std::shared_ptr<EnemyAI>> enemies_ai_;
 };
 
-#endif  // AAIRACE_SOURCE_LEVEL_MANAGER_H_
+#endif  // AAIRACE_SOURCE_GAME_LEVEL_MANAGER_H_

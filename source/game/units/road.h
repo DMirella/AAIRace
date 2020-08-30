@@ -1,5 +1,5 @@
-#ifndef AAIRACE_SOURCE_ROAD_H_
-#define AAIRACE_SOURCE_ROAD_H_
+#ifndef AAIRACE_SOURCE_GAME_UNITS_ROAD_H_
+#define AAIRACE_SOURCE_GAME_UNITS_ROAD_H_
 
 #include <memory>
 
@@ -52,4 +52,4 @@ class Road : public DrawableUnit {
   std::shared_ptr<RacingCar> hero_car_;
 };
 
-#endif  // AAIRACE_SOURCE_ROAD_H_
+#endif  // AAIRACE_SOURCE_GAME_UNITS_ROAD_H_

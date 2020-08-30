@@ -1,5 +1,5 @@
-#ifndef AAIRACE_SOURCE_RACING_CAR_H_
-#define AAIRACE_SOURCE_RACING_CAR_H_
+#ifndef AAIRACE_SOURCE_GAME_UNITS_RACING_CAR_H_
+#define AAIRACE_SOURCE_GAME_UNITS_RACING_CAR_H_
 
 #include <memory>
 
@@ -49,4 +49,4 @@ class RacingCar : public Car {
   bool is_car_turn_right_now_;
 };
 
-#endif  // AAIRACE_SOURCE_RACING_CAR_H_
+#endif  // AAIRACE_SOURCE_GAME_UNITS_RACING_CAR_H_

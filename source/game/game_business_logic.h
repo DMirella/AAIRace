@@ -1,5 +1,5 @@
-#ifndef AAIRACE_SOURCE_GAME_BUSINESS_LOGIC_H_
-#define AAIRACE_SOURCE_GAME_BUSINESS_LOGIC_H_
+#ifndef AAIRACE_SOURCE_GAME_GAME_BUSINESS_LOGIC_H_
+#define AAIRACE_SOURCE_GAME_GAME_BUSINESS_LOGIC_H_
 
 #include <functional>
 #include <map>
@@ -75,4 +75,4 @@ class GameBusinessLogic {
   bool is_game_ended_;
 };
 
-#endif  // AAIRACE_SOURCE_GAME_BUSINESS_LOGIC_H_
+#endif  // AAIRACE_SOURCE_GAME_GAME_BUSINESS_LOGIC_H_

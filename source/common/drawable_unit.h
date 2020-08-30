@@ -1,5 +1,5 @@
-#ifndef AAIRACE_SOURCE_DRAWABLE_UNIT_H_
-#define AAIRACE_SOURCE_DRAWABLE_UNIT_H_
+#ifndef AAIRACE_SOURCE_COMMON_DRAWABLE_UNIT_H_
+#define AAIRACE_SOURCE_COMMON_DRAWABLE_UNIT_H_
 
 #include <functional>
 
@@ -31,4 +31,4 @@ class DrawableUnit {
   DrawFunction draw_function_;
 };
 
-#endif  // AAIRACE_SOURCE_DRAWABLE_UNIT_H_
+#endif  // AAIRACE_SOURCE_COMMON_DRAWABLE_UNIT_H_

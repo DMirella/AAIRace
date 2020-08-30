@@ -1,5 +1,5 @@
-#ifndef AAIRACE_SOURCE_GAME_SESSION_H_
-#define AAIRACE_SOURCE_GAME_SESSION_H_
+#ifndef AAIRACE_SOURCE_GAME_GAME_SESSION_H_
+#define AAIRACE_SOURCE_GAME_GAME_SESSION_H_
 
 #include <memory>
 #include <vector>
@@ -37,4 +37,4 @@ class GameSession {
   std::vector<AIIOData> collected_aiio_data_;
 };
 
-#endif  // AAIRACE_SOURCE_GAME_SESSION_H_
+#endif  // AAIRACE_SOURCE_GAME_GAME_SESSION_H_

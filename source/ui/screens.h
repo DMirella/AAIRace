@@ -1,5 +1,5 @@
-#ifndef AAIRACE_SOURCE_SCREEN_H_
-#define AAIRACE_SOURCE_SCREEN_H_
+#ifndef AAIRACE_SOURCE_UI_SCREEN_H_
+#define AAIRACE_SOURCE_UI_SCREEN_H_
 
 #include <iostream>
 #include <memory>
@@ -196,4 +196,4 @@ class TransitionScreen : public Screen {
   std::shared_ptr<Screen> next_screen_;
 };
 
-#endif  // AAIRACE_SOURCE_SCREEN_H_
+#endif  // AAIRACE_SOURCE_UI_SCREEN_H_

@@ -1,5 +1,5 @@
-#ifndef AAIRACE_SOURCE_CITY_CAR_H_
-#define AAIRACE_SOURCE_CITY_CAR_H_
+#ifndef AAIRACE_SOURCE_GAME_UNITS_CITY_CAR_H_
+#define AAIRACE_SOURCE_GAME_UNITS_CITY_CAR_H_
 
 #include <SFML/Graphics.hpp>
 
@@ -28,4 +28,4 @@ class CityCar : public Car {
   static sf::Texture texture_;
 };
 
-#endif  // AAIRACE_SOURCE_CITY_CAR_H_
+#endif  // AAIRACE_SOURCE_GAME_UNITS_CITY_CAR_H_

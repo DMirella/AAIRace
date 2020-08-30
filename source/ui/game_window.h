@@ -1,5 +1,5 @@
-#ifndef AAIRACE_SOURCE_GAME_WINDOW_H_
-#define AAIRACE_SOURCE_GAME_WINDOW_H_
+#ifndef AAIRACE_SOURCE_UI_GAME_WINDOW_H_
+#define AAIRACE_SOURCE_UI_GAME_WINDOW_H_
 
 #include <SFML/Graphics.hpp>
 
@@ -31,4 +31,4 @@ class GameWindow {
   std::shared_ptr<ScreenStateMachine> screen_state_machine_;
 };
 
-#endif  // AAIRACE_SOURCE_GAME_WINDOW_H_
+#endif  // AAIRACE_SOURCE_UI_GAME_WINDOW_H_

@@ -1,5 +1,5 @@
-#ifndef AAIRACE_SOURCE_CAR_H_
-#define AAIRACE_SOURCE_CAR_H_
+#ifndef AAIRACE_SOURCE_GAME_UNITS_CAR_H_
+#define AAIRACE_SOURCE_GAME_UNITS_CAR_H_
 
 #include <SFML/Graphics.hpp>
 
@@ -44,4 +44,4 @@ class Car : public DrawableUnit {
   std::shared_ptr<Car> hero_car_;
 };
 
-#endif  // AAIRACE_SOURCE_CAR_H_
+#endif  // AAIRACE_SOURCE_GAME_UNITS_CAR_H_
