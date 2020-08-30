@@ -15,10 +15,11 @@ namespace ui {
 GameWindow::GameWindow() {
   const sf::VideoMode kGameVideoMode = sf::VideoMode(1280, 720);
   const std::string kGameWindowTitle = "AAIRace";
-  const bool kIsFullScreen = false;
+  const bool kIsFullScreen = true;
 
-  window_.create(kGameVideoMode, kGameWindowTitle, 
-                 kIsFullScreen? sf::Style::Fullscreen : sf::Style::Default);
+  window_.create(
+      kGameVideoMode, kGameWindowTitle,
+      (kIsFullScreen? sf::Style::Fullscreen : sf::Style::Titlebar | sf::Style::Close));
   
   auto draw_callback = std::bind(&GameWindow::Draw, this, std::placeholders::_1);
   auto exit_game_callback = std::bind(&GameWindow::ExitGame, this);
