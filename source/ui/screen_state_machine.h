@@ -24,7 +24,7 @@ class ScreenStateMachine {
   UserProfile& GetUserProfile();
   void ExitGame();
  private:
-  std::function<void()>exit_game_function_;
+  std::function<void()> exit_game_function_;
   UserProfile active_user_profile_;
   std::shared_ptr<Screen> active_screen_;
 };

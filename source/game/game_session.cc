@@ -11,11 +11,8 @@ GameSession::GameSession(LevelManager* const level_manager,
                          const std::vector<std::shared_ptr<EnemyAI>>& enemies_ai)
     : game_business_logic_(game_window_context, enemies_count, city_car_count, enemies_ai)
     , level_manager_(level_manager)
-    , collected_aiio_data_sended_(false) {
-
-}
-
-GameSession::~GameSession() {
+    , collected_aiio_data_sended_(false)
+    , collected_aiio_data_{} {
 }
 
 void GameSession::NotifyGameCycleElapsed(float elapsed_time, const UserControllersContext& context) {

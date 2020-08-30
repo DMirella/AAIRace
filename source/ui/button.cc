@@ -21,8 +21,8 @@ Button::Button(int x, int y, int width, int height, const std::string& text_stri
     , width_(width)
     , height_(height)
     , enable_(true)
-    , on_press_callback_(on_press_callback)
-    , is_mouse_down_on_active_button_(false) {
+    , is_mouse_down_on_active_button_(false)
+    , on_press_callback_(on_press_callback) {
   const int kFontSize = height / 1.5f;
 
   text_label_ = std::make_unique<CenterAlignLabel>(tools::Rectangle(x_, y_, x_ + width_, y_ + height_),

@@ -23,7 +23,6 @@ class GameSession {
               int enemies_count,
               int city_car_count,
               const std::vector<std::shared_ptr<EnemyAI>>& enemies_ai);
-  ~GameSession();
 
   void NotifyGameCycleElapsed(float elapsed_time, const UserControllersContext& context);
   void DrawEntities();
@@ -34,7 +33,6 @@ class GameSession {
   LevelManager* const level_manager_;
   float game_aiio_scan_timer_;
   bool collected_aiio_data_sended_;
-
   std::vector<AIIOData> collected_aiio_data_;
 };
 

@@ -22,10 +22,9 @@ TextBox::TextBox(int x, int y, int width, int height, const DrawFunction& draw_f
   background_rect_.setFillColor(gBackgroundRectColor);
   background_rect_.setPosition(x_, y_);
 
-  text_label_ = std::make_shared<CenterAlignLabel>(
+  text_label_ = std::make_unique<CenterAlignLabel>(
       tools::Rectangle(x_ + gTextXOffset, y_, x_ + width_ - gTextXOffset, y_ + height_),
-      "D", kFontHeight, draw_function_);
-  text_label_->SetText(entered_string_);
+      entered_string_, kFontHeight, draw_function_);
 }
 
 void TextBox::Draw() {

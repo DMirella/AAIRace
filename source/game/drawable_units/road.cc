@@ -9,10 +9,15 @@ const float gRoadX = 298.0f;
 }  // namespace
 
 Road::Road(int screen_width, int screen_height, const DrawFunction& draw_function) 
-  : DrawableUnit(draw_function)
-  , screen_width_(screen_width)
-  , screen_height_(screen_height)
-  , speed_(0.0f) {
+    : DrawableUnit(draw_function)
+    , screen_width_(screen_width)
+    , screen_height_(screen_height)
+    , sprite1_y_(0.0f)
+    , sprite2_y_(0.0f)
+    , start_line_sprite_y_(0.0f)
+    , finish_line_sprite_y_(0.0f)
+    , start_finish_line_x_(0.0f)
+    , speed_(0.0f) {
   const std::string kRoadTextureFile = "resources/road.jpg";
   const std::string kStartFinishLineTextureFile = "resources/finish_line.png";
 
@@ -25,7 +30,6 @@ Road::Road(int screen_width, int screen_height, const DrawFunction& draw_functio
   const float kStartLineY = 450.0f;
   const float kFinishLineY = -100000.0f;
   const float kFinishLineXOffset = 34;
-  // const float kFinishLineY = -1000.0f;
 
   road_texture_.loadFromImage(road_image);
   start_finish_line_texture_.loadFromImage(start_finish_line_image);

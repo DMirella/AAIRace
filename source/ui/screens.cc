@@ -430,22 +430,17 @@ void TransitionScreen::NotifyGameCycleElapsed(float elapsed_time, const UserCont
   const float kSemiTransitionAnimationTime = transition_animation_time_ / 2.0f;
   const float kSemiTransitionAnimationSpeed = (255.0f / kSemiTransitionAnimationTime);
   summary_transition_time_ += elapsed_time;
-  // std::cout << elapsed_time << " "<< summary_transition_time_ << " " << current_transperent_value_ << " " << transition_animation_time_ << " " << kSemiTransitionAnimationSpeed << std::endl;
   if (summary_transition_time_ <= kSemiTransitionAnimationTime) {
     current_transperent_value_ += kSemiTransitionAnimationSpeed * elapsed_time;
     current_transperent_value_ = std::min(current_transperent_value_, 255.0f);
     current_rectangle_color_.a = current_transperent_value_;
     transition_rectangle_.setFillColor(current_rectangle_color_);
-    //current_screen_->NotifyGameCycleElapsed(elapsed_time, context);
   } else if (summary_transition_time_ <= transition_animation_time_) {
     current_transperent_value_ -= kSemiTransitionAnimationSpeed * elapsed_time;
     current_transperent_value_ = std::max(current_transperent_value_, 0.0f);
     current_rectangle_color_.a = current_transperent_value_;
     transition_rectangle_.setFillColor(current_rectangle_color_);
-    //next_screen_->NotifyGameCycleElapsed(elapsed_time, context);
   } else {
-    // std::cout << std::endl;
-    //next_screen_->NotifyGameCycleElapsed(elapsed_time, context);
     screen_state_machine_->SetScreen(next_screen_);
   }
 }

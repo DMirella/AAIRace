@@ -9,7 +9,6 @@
 #include <common/drawable_unit.h>
 #include "center_align_label.h"
 
-class CenterAlignLabel;
 class Button : public DrawableUnit {
  public:
   using OnClickCallback = std::function<void()>;

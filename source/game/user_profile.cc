@@ -12,7 +12,8 @@ const int kNameBufferSize = 256;
 }  // namespace
 
 UserProfile::UserProfile(const GameWindowContext& game_window_context)
-    : level_manager_(game_window_context, LevelManager::kMinimumCountUnlockedLevels) {
+    : name_("")
+    , level_manager_(game_window_context, LevelManager::kMinimumCountUnlockedLevels) {
 }
 
 void UserProfile::SetName(const std::string& name) {

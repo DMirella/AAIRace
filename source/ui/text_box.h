@@ -6,8 +6,8 @@
 #include <SFML/Graphics.hpp>
 
 #include <common/drawable_unit.h>
+#include "center_align_label.h"
 
-class CenterAlignLabel;
 class TextBox : public DrawableUnit {
 public:
   TextBox() = delete;
@@ -32,7 +32,7 @@ private:
 	std::string entered_string_;
 	sf::Font font;
 	sf::RectangleShape background_rect_;
-	std::shared_ptr<CenterAlignLabel> text_label_;
+	std::unique_ptr<CenterAlignLabel> text_label_;
 };
 
 #endif  // SOURCE_UI_TEXT_BOX_H_

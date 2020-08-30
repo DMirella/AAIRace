@@ -5,8 +5,8 @@
 
 ScreenStateMachine::ScreenStateMachine(const GameWindowContext& game_window_context, const std::function<void()>& exit_game_function)
     : exit_game_function_(exit_game_function)
-    , active_screen_(std::make_shared<ProfileChooseScreen>(this, game_window_context))
-    , active_user_profile_(game_window_context) {
+    , active_user_profile_(game_window_context)
+    , active_screen_(std::make_shared<ProfileChooseScreen>(this, game_window_context)) {
 }
 
 ScreenStateMachine::~ScreenStateMachine() {

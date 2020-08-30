@@ -45,7 +45,6 @@ void LevelManager::NotifyCurrentLevelEnds(const std::vector<AIIOData>& collected
   if (current_active_level_ == count_unlocked_levels_) {
     current_active_level_ = -1;
     
-    // TODO: if will be choosen neural network for AI simulate use it
     if (count_unlocked_levels_ < kLevelsCount) {
       count_unlocked_levels_++;
       auto& current_filling_collected_user_data = collected_user_aiio_data_[count_unlocked_levels_ - 1];
@@ -61,32 +60,6 @@ void LevelManager::NotifyCurrentLevelEnds(const std::vector<AIIOData>& collected
       // enemies_ai_[count_unlocked_levels_]->TrainWithData(collected_aiio_data);
     }
   }
-  /*for (int i = 0; i < 1; i++) {
-    std::vector<EnemyAI> new_enemies_ai;
-    std::vector<std::pair<float, int>> enemies_ai_marks_;
-    for (int j = 0; j < kEnemiesCount; j++) {
-      float current_mark = 0.0f;
-      for (const auto& it : collected_aiio_data) {
-        AIOutputData output = enemies_ai_[j].GetOutputData(it.input);
-        int count_singles 
-            = (output.is_accelerate_action_active == it.output.is_accelerate_action_active)
-            + (output.is_car_slow_action_active == it.output.is_car_slow_action_active)
-            + (output.is_car_turn_left_action_active == it.output.is_car_turn_left_action_active)
-            + (output.is_car_turn_right_action_active == it.output.is_car_turn_right_action_active);
-        current_mark += count_singles;
-      }
-      enemies_ai_marks_.push_back(std::make_pair(current_mark, j));
-    }
-    std::sort(enemies_ai_marks_.begin(), enemies_ai_marks_.end());
-
-    new_enemies_ai.push_back(enemies_ai_[enemies_ai_marks_.back().second]);
-    for (int j = kEnemiesCount - 2; j >= 0; j++) {
-      EnemyAI tmp;
-      //tmp.neural_network_ = NeuralNetwork::MergeNeuralNetworks(enemies_ai_[enemies_ai_marks_.back().second].neural_network_, enemies_ai_[j].neural_network_);
-      new_enemies_ai.emplace_back(tmp);
-    }
-    enemies_ai_ = std::move(new_enemies_ai);
-  }*/
 }
 
 void LevelManager::LoadFromFile(std::fstream* const f) {

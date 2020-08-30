@@ -29,7 +29,6 @@ class CenterAlignLabel : public DrawableUnit {
   int text_pixel_width() const;
  private:
   const int kFontSize;
-
   sf::Font font_;
   sf::Text text_;
   int text_y_;

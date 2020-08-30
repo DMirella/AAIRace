@@ -22,7 +22,7 @@ class EnemyAI {
   AIOutputData GetOutputData(const AIInputData& input_data);
  private:
   NeuralNetwork neural_network_;
-  int last_applied_action_;
+  int last_applied_action_index_;
   std::shared_ptr<std::vector<AIIOData>> collected_aiio_data_;
 };
 
