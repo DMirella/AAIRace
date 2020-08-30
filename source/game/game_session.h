@@ -4,8 +4,9 @@
 #include <memory>
 #include <vector>
 
+#include <ui/game_window.h>
+
 #include "game_business_logic.h"
-#include "ui/game_window.h"
 
 class EnemyAI;
 class LevelManager;

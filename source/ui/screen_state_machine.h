@@ -4,7 +4,7 @@
 #include <functional>
 #include <memory>
 
-#include "game/user_profile.h"
+#include <game/user_profile.h>
 
 class Screen;
 struct GameWindowContext;

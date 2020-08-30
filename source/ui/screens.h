@@ -8,10 +8,11 @@
 
 #include <SFML/Graphics.hpp>
 
+#include <game/game_session.h>
+
 #include "button.h"
 #include "center_align_label.h"
 #include "edit_text_box.h"
-#include <game/level_manager.h>
 #include "game_window.h"
 #include "popup.h"
 

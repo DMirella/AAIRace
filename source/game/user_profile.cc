@@ -1,13 +1,14 @@
 #include "user_profile.h"
 
-#include <cstring>
 #include <direct.h>
+
+#include <cstring>
 #include <fstream>
 #include <iostream>
 
 namespace {
 const std::string gProfilesFolderPath = "profiles";
-const std::string gProfileFileFormat = "txt";
+const std::string gProfileFileFormat = "aairp";
 const int kNameBufferSize = 256;
 }  // namespace
 

@@ -8,12 +8,13 @@
 
 #include <SFML/Graphics.hpp>
 
-#include "ai/enemy_ai.h"
+#include <ai/enemy_ai.h>
+#include <ui/game_window.h>
+#include <common/tools.h>
+
 #include "drawable_units/car.h"
 #include "drawable_units/city_car.h"
 #include "drawable_units/racing_car.h"
-#include "ui/game_window.h"
-#include <common/tools.h>
 
 namespace {
 const float gSecondsCountBeforeStart = 3.0f;
@@ -91,7 +92,7 @@ GameBusinessLogic::GameBusinessLogic(const GameWindowContext& game_window_contex
 void GameBusinessLogic::NotifyGameCycleElapsed(float elapsed_time, const UserControllersContext& context) {
   ProcessStartGame(elapsed_time);
   ProcessEndGame(elapsed_time);
-  CheckHeroControllers();
+  CheckHeroControllers(context);
   MakeEnemiesTurn();
   ProcessGameEvents();
   Update(elapsed_time, context);
@@ -133,17 +134,17 @@ void GameBusinessLogic::ProcessEndGame(float elapsed_time) {
   }
 }
 
-void GameBusinessLogic::CheckHeroControllers() {
-  if ((sf::Keyboard::isKeyPressed(sf::Keyboard::Left) || (sf::Keyboard::isKeyPressed(sf::Keyboard::A)))) { 
+void GameBusinessLogic::CheckHeroControllers(const UserControllersContext& context) {
+  if (context.is_left_arrow_pressed) { 
     hero_racing_car_->TurnLeft(); 
   }
-  if ((sf::Keyboard::isKeyPressed(sf::Keyboard::Right) || (sf::Keyboard::isKeyPressed(sf::Keyboard::D)))) { 
+  if (context.is_right_arrow_pressed) { 
     hero_racing_car_->TurnRight(); 
   }
-  if ((sf::Keyboard::isKeyPressed(sf::Keyboard::Up) || (sf::Keyboard::isKeyPressed(sf::Keyboard::W)))) { 
+  if (context.is_up_arrow_pressed) { 
     hero_racing_car_->Accelerate(); 
   }
-  if ((sf::Keyboard::isKeyPressed(sf::Keyboard::Down) || (sf::Keyboard::isKeyPressed(sf::Keyboard::S)))) {
+  if (context.is_down_arrow_pressed) {
     hero_racing_car_->SlowDown(); 
   }
 }

@@ -5,8 +5,8 @@
 #include <memory>
 #include <vector>
 
-#include "ai/ai_types.h"
-#include "ui/game_window.h"
+#include <ai/ai_types.h>
+#include <ui/game_window.h>
 
 class EnemyAI;
 class GameSession;

@@ -3,7 +3,10 @@
 #include <cassert>
 #include <iostream>
 
-#include "ai/enemy_ai.h"
+#include <ai/ai_types.h>
+#include <ai/enemy_ai.h>
+#include <ui/game_window.h>
+
 #include "game_session.h"
 
 namespace {

@@ -4,16 +4,17 @@
 #include <iostream>
 #include <string>
 
-#include "game/drawable_units/city_car.h"
-#include "game/drawable_units/racing_car.h"
-#include "game/level_manager.h"
+#include <game/drawable_units/city_car.h>
+#include <game/drawable_units/racing_car.h>
+#include <game/level_manager.h>
+
 #include "screen_state_machine.h"
 #include "screens.h"
 
 GameWindow::GameWindow() {
   const sf::VideoMode kGameVideoMode = sf::VideoMode(1280, 720);
   const std::string kGameWindowTitle = "AAIRace";
-  const bool kIsFullScreen = true;
+  const bool kIsFullScreen = false;
 
   window_.create(kGameVideoMode, kGameWindowTitle, kIsFullScreen? sf::Style::Fullscreen : sf::Style::Default);
   
@@ -48,6 +49,10 @@ void GameWindow::Start() {
         user_controllers_context.entered_unicode = event.text.unicode;
       }
     }
+    user_controllers_context.is_left_arrow_pressed = sf::Keyboard::isKeyPressed(sf::Keyboard::Left);
+    user_controllers_context.is_right_arrow_pressed = sf::Keyboard::isKeyPressed(sf::Keyboard::Right);
+    user_controllers_context.is_up_arrow_pressed = sf::Keyboard::isKeyPressed(sf::Keyboard::Up);
+    user_controllers_context.is_down_arrow_pressed = sf::Keyboard::isKeyPressed(sf::Keyboard::Down);
     user_controllers_context.is_mouse_button_pressed = sf::Mouse::isButtonPressed(sf::Mouse::Button::Left);
     user_controllers_context.cursor_x = sf::Mouse::getPosition(window_).x;
     user_controllers_context.cursor_y = sf::Mouse::getPosition(window_).y;

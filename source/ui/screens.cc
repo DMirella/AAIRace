@@ -2,11 +2,13 @@
 
 #include <iostream>
 
+#include <game/game_session.h>
+#include <game/level_manager.h>
+#include <game/user_profile.h>
+
 #include "button.h"
 #include "center_align_label.h"
 #include "edit_text_box.h"
-#include "game/game_session.h"
-#include "game/user_profile.h"
 #include "screen_state_machine.h"
 
 namespace {

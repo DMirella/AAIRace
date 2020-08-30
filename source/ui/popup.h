@@ -3,9 +3,10 @@
 
 #include <SFML/Graphics.hpp>
 
+#include <common/drawable_unit.h>
+
 #include "button.h"
 #include "center_align_label.h"
-#include "common/drawable_unit.h"
 
 class Popup : public DrawableUnit {
  public:

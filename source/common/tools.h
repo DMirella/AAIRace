@@ -1,8 +1,6 @@
 #ifndef AAIRACE_SOURCE_TOOLS_H_
 #define AAIRACE_SOURCE_TOOLS_H_
 
-#include <cstdlib>
-
 namespace tools {
 struct Point {
   Point() : x(0.0f), y(0.0f) {}

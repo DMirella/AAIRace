@@ -6,10 +6,11 @@
 #include <memory>
 #include <vector>
 
-#include "ai/ai_types.h"
+#include <ai/ai_types.h>
+#include <ui/game_window.h>
+#include <ui/center_align_label.h>
+
 #include "drawable_units/road.h"
-#include "ui/game_window.h"
-#include "ui/center_align_label.h"
 
 namespace sf {
 class RenderWindow;
@@ -46,7 +47,7 @@ class GameBusinessLogic {
   // Process game cycle
   void ProcessStartGame(float elapsed_time);
   void ProcessEndGame(float elapsed_time);
-  void CheckHeroControllers();
+  void CheckHeroControllers(const UserControllersContext& context);
   void MakeEnemiesTurn();
   void ProcessGameEvents();
   void Update(float elapsed_time, const UserControllersContext& context);
