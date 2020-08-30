@@ -3,7 +3,8 @@
 #include <iostream>
 
 namespace ui {
-CenterAlignLabel::CenterAlignLabel(const common::Rectangle& rect, const std::string& text_string, 
+CenterAlignLabel::CenterAlignLabel(const common::Rectangle& rect, 
+                                   const std::string& text_string, 
                                    int font_size, const DrawFunction& draw_function)
     : DrawableUnit(draw_function)
     , kFontSize(font_size)
@@ -24,7 +25,8 @@ CenterAlignLabel::CenterAlignLabel(const common::Rectangle& rect, const std::str
 void CenterAlignLabel::SetText(const std::string& text_string) {
   text_.setString(text_string);
   auto local_text_bounds = text_.getLocalBounds();
-  text_.setPosition(bound_rectangle_.x1 + (bound_rectangle_.x2 - bound_rectangle_.x1 - local_text_bounds.width) / 2, 
+  text_.setPosition(bound_rectangle_.x1 +
+                        (bound_rectangle_.x2 - bound_rectangle_.x1 - local_text_bounds.width) / 2, 
                     text_y_);
 }
 

@@ -31,7 +31,8 @@ LevelManager& UserProfile::GetLevelManager() {
 }
 
 bool UserProfile::LoadFromConfigFile(const std::string& user_name) {
-  std::fstream f(gProfilesFolderPath + "/" + user_name + "." + gProfileFileFormat, std::ios::in | std::ios::binary);
+  std::fstream f(gProfilesFolderPath + "/" + user_name + "." + gProfileFileFormat,
+                 std::ios::in | std::ios::binary);
   if (!f.fail()) {
     char buf[kNameBufferSize];
     f.read(buf, kNameBufferSize * sizeof(char));
@@ -45,7 +46,8 @@ bool UserProfile::LoadFromConfigFile(const std::string& user_name) {
 
 void UserProfile::SaveToConfigFile() const {
   _mkdir(gProfilesFolderPath.c_str());
-  std::fstream f(gProfilesFolderPath + "/" + name_ + "." + gProfileFileFormat, std::ios::out | std::ios::binary);
+  std::fstream f(gProfilesFolderPath + "/" + name_ + "." + gProfileFileFormat,
+                 std::ios::out | std::ios::binary);
   char buf[kNameBufferSize];
   std::strncpy(buf, name_.c_str(), kNameBufferSize);
   f.write(buf, kNameBufferSize * sizeof(char));

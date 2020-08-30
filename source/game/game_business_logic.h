@@ -36,7 +36,8 @@ class GameBusinessLogic {
   GameBusinessLogic& operator=(const GameBusinessLogic& game_business_logic) = delete;
   GameBusinessLogic& operator=(GameBusinessLogic&& game_business_logic) = delete;
 
-  GameBusinessLogic(const ui::GameWindowContext& game_window_context, int enemies_count, int city_car_count, 
+  GameBusinessLogic(const ui::GameWindowContext& game_window_context, 
+                    int enemies_count, int city_car_count, 
                     const std::vector<std::shared_ptr<ai::EnemyAI>>& enemies_ai);
 
   void NotifyGameCycleElapsed(float elapsed_time, const ui::UserControllersContext& context);
@@ -46,7 +47,8 @@ class GameBusinessLogic {
 
   ai::AIIOData GetAIIODataRegardingToHeroCar() const;
  private:
-  ai::AIInputData GetAIInputDataRegardingToRacingCar(const std::shared_ptr<units::RacingCar>& car) const;
+  ai::AIInputData GetAIInputDataRegardingToRacingCar(
+      const std::shared_ptr<units::RacingCar>& car) const;
   void DrawSensors(const std::shared_ptr<units::RacingCar>& car) const;
 
   // Process game cycle

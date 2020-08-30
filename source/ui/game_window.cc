@@ -17,7 +17,8 @@ GameWindow::GameWindow() {
   const std::string kGameWindowTitle = "AAIRace";
   const bool kIsFullScreen = false;
 
-  window_.create(kGameVideoMode, kGameWindowTitle, kIsFullScreen? sf::Style::Fullscreen : sf::Style::Default);
+  window_.create(kGameVideoMode, kGameWindowTitle, 
+                 kIsFullScreen? sf::Style::Fullscreen : sf::Style::Default);
   
   auto draw_callback = std::bind(&GameWindow::Draw, this, std::placeholders::_1);
   auto exit_game_callback = std::bind(&GameWindow::ExitGame, this);
@@ -26,7 +27,8 @@ GameWindow::GameWindow() {
   window_context.screen_height = static_cast<int>(window_.getSize().y);
   window_context.draw_function = draw_callback;
 
-  screen_state_machine_ = std::make_shared<ScreenStateMachine>(window_context, exit_game_callback);
+  screen_state_machine_
+      = std::make_shared<ScreenStateMachine>(window_context, exit_game_callback);
 }
 
 void GameWindow::LoadGameTextures() {

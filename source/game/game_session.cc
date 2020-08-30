@@ -16,7 +16,8 @@ GameSession::GameSession(LevelManager* const level_manager,
     , collected_aiio_data_{} {
 }
 
-void GameSession::NotifyGameCycleElapsed(float elapsed_time, const ui::UserControllersContext& context) {
+void GameSession::NotifyGameCycleElapsed(float elapsed_time, 
+                                         const ui::UserControllersContext& context) {
   const float kGameAIIOScanRate = 1500.0f;  // ms
   game_business_logic_.NotifyGameCycleElapsed(elapsed_time, context);
   game_aiio_scan_timer_ += elapsed_time;

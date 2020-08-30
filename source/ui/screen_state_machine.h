@@ -17,7 +17,8 @@ class ScreenStateMachine {
   ScreenStateMachine& operator=(const ScreenStateMachine& screen_state_machine) = delete;
   ScreenStateMachine& operator=(ScreenStateMachine&& screen_state_machine) = delete;
 
-  ScreenStateMachine(const GameWindowContext& game_window_context, const std::function<void()>& exit_game_function);
+  ScreenStateMachine(const GameWindowContext& game_window_context,
+                     const std::function<void()>& exit_game_function);
   ~ScreenStateMachine();
 
   void SetScreen(const std::shared_ptr<Screen>& screen);

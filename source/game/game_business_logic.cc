@@ -22,8 +22,9 @@ const float gOneSecondInLocalElapsedTime = 5000.0f;
 } // namespace 
 
 namespace game {
-GameBusinessLogic::GameBusinessLogic(const ui::GameWindowContext& game_window_context, int enemies_count, 
-                                     int city_car_count, const std::vector<std::shared_ptr<ai::EnemyAI>>& enemies_ai)
+GameBusinessLogic::GameBusinessLogic(const ui::GameWindowContext& game_window_context, 
+                                     int enemies_count, int city_car_count, 
+                                     const std::vector<std::shared_ptr<ai::EnemyAI>>& enemies_ai)
   : game_window_context_(game_window_context)
   , start_timer_(0.0f)
   , finish_timer_(0.0f)
@@ -36,12 +37,15 @@ GameBusinessLogic::GameBusinessLogic(const ui::GameWindowContext& game_window_co
   
   is_enemy_racing_car_finished_.resize(enemies_count, false);
 
-  road_ = std::make_unique<units::Road>(game_window_context_.screen_width, game_window_context_.screen_height, game_window_context_.draw_function);
+  road_ = std::make_unique<units::Road>(
+      game_window_context_.screen_width,game_window_context_.screen_height, 
+      game_window_context_.draw_function);
 
   const int kInfoLabelHeight = game_window_context_.screen_height / 5;
   const int kInfoLabelOutlineBorder = 5;
-  info_label_ = std::make_unique<ui::CenterAlignLabel>(common::Rectangle(road_->left_x(), 0, road_->right_x(), kInfoLabelHeight),
-                                                   "", kInfoLabelHeight, game_window_context_.draw_function);
+  info_label_ = std::make_unique<ui::CenterAlignLabel>(
+      common::Rectangle(road_->left_x(), 0, road_->right_x(), kInfoLabelHeight),
+                        "", kInfoLabelHeight, game_window_context_.draw_function);
   info_label_->SetOutlineBorder(kInfoLabelOutlineBorder);
 
   float kStartRacingCarY = road_->start_line_sprite_y() + 130.0f;
@@ -50,8 +54,9 @@ GameBusinessLogic::GameBusinessLogic(const ui::GameWindowContext& game_window_co
 
   float current_racing_car_x = road_->left_x() + car_offset / 2, previous_racing_car_x;
   int hero_car_start_place = std::rand() % (enemies_count + 1);
-  hero_racing_car_ = std::make_shared<units::RacingCar>(current_racing_car_x + car_offset * hero_car_start_place, 
-                                                 kStartRacingCarY, game_window_context_.draw_function);
+  hero_racing_car_ = std::make_shared<units::RacingCar>(
+      current_racing_car_x + car_offset * hero_car_start_place, 
+      kStartRacingCarY, game_window_context_.draw_function);
   hero_racing_car_->SetHeroCar(hero_racing_car_);
   car_list_.push_back(hero_racing_car_);
   racing_car_list_.push_back(hero_racing_car_);
@@ -64,7 +69,8 @@ GameBusinessLogic::GameBusinessLogic(const ui::GameWindowContext& game_window_co
       current_racing_car_x = previous_racing_car_x + car_offset;
     }
     
-    std::shared_ptr<units::RacingCar> current_car = std::make_shared<units::RacingCar>(current_racing_car_x, kStartRacingCarY, game_window_context_.draw_function);
+    std::shared_ptr<units::RacingCar> current_car = std::make_shared<units::RacingCar>(
+        current_racing_car_x, kStartRacingCarY, game_window_context_.draw_function);
     current_car->SetHeroCar(hero_racing_car_);
     racing_car_list_.push_back(current_car);
     enemies_car_list_.push_back(current_car);
@@ -76,9 +82,11 @@ GameBusinessLogic::GameBusinessLogic(const ui::GameWindowContext& game_window_co
   for (int i = 0; i < city_car_count; i++) {
     const float kStartYCityCarFromStartLineOffset = 1000.0f;
     auto current_x = common::RandomFloat(road_->left_x(), road_->right_x());
-    auto current_y = common::RandomFloat(road_->finish_line_sprite_y(), 
-                                        road_->start_line_sprite_y() - kStartYCityCarFromStartLineOffset);
-    std::shared_ptr<units::CityCar> current_car = std::make_shared<units::CityCar>(current_x, current_y, game_window_context_.draw_function);
+    auto current_y = common::RandomFloat(
+        road_->finish_line_sprite_y(), 
+        road_->start_line_sprite_y() - kStartYCityCarFromStartLineOffset);
+    std::shared_ptr<units::CityCar> current_car = std::make_shared<units::CityCar>(
+        current_x, current_y, game_window_context_.draw_function);
     current_car->SetHeroCar(hero_racing_car_);
     city_car_list_.push_back(current_car);
     car_list_.push_back(current_car);
@@ -89,7 +97,8 @@ GameBusinessLogic::GameBusinessLogic(const ui::GameWindowContext& game_window_co
   }
 }
 
-void GameBusinessLogic::NotifyGameCycleElapsed(float elapsed_time, const ui::UserControllersContext& context) {
+void GameBusinessLogic::NotifyGameCycleElapsed(float elapsed_time,
+                                               const ui::UserControllersContext& context) {
   ProcessStartGame(elapsed_time);
   ProcessEndGame(elapsed_time);
   CheckHeroControllers(context);
@@ -152,7 +161,8 @@ void GameBusinessLogic::CheckHeroControllers(const ui::UserControllersContext& c
 void GameBusinessLogic::MakeEnemiesTurn() {
   for (int i = 0; i < enemies_car_list_.size(); i++) {
     const auto& current_enemy = enemies_car_list_[i];
-    ai::AIOutputData ai_output_data = enemies_ai_[i]->GetOutputData(GetAIInputDataRegardingToRacingCar(current_enemy));
+    ai::AIOutputData ai_output_data 
+        = enemies_ai_[i]->GetOutputData(GetAIInputDataRegardingToRacingCar(current_enemy));
     if (ai_output_data.is_accelerate_action_active) {
       current_enemy->Accelerate();
     }
@@ -194,8 +204,9 @@ void GameBusinessLogic::ProcessGameEvents() {
     for (int j = 0; j < car_list_.size(); j++) {
       if (i != j) {
         auto& second_car = car_list_[j];
-        
-        if (common::CheckRectangleIntersect(first_car->GetIntersectRectangle(), second_car->GetIntersectRectangle())) {
+        const bool cars_intersect 
+            = common::CheckRectangleIntersect(first_car->GetIntersectRectangle(), second_car->GetIntersectRectangle());
+        if (cars_intersect) {
           float dx = first_car->x() - second_car->x(), dy = first_car->y() - second_car->y();
           float length = std::sqrt(dx * dx + dy * dy);
           dx /= length;
@@ -244,7 +255,8 @@ ai::AIIOData GameBusinessLogic::GetAIIODataRegardingToHeroCar() const {
   return result;
 }
 
-ai::AIInputData GameBusinessLogic::GetAIInputDataRegardingToRacingCar(const std::shared_ptr<units::RacingCar>& racing_car) const {
+ai::AIInputData GameBusinessLogic::GetAIInputDataRegardingToRacingCar(
+    const std::shared_ptr<units::RacingCar>& racing_car) const {
   const float kMaxDistance = 2.0f * game_window_context_.screen_height;
   const float kMaxSpeedInGame = units::RacingCar::max_speed();
   const float k2PI = 2.0f * common::gPI;
@@ -256,7 +268,7 @@ ai::AIInputData GameBusinessLogic::GetAIInputDataRegardingToRacingCar(const std:
 
   const float kAngleIncreaseValue = k2PI / ai::AIInputData::kCountDistanceScanRays;
   int i = 0;
-  for (float current_angle = 0.0f; current_angle <= k2PI; current_angle += kAngleIncreaseValue, i++) {
+  for (float current_angle = 0.0f; current_angle <= k2PI; current_angle += kAngleIncreaseValue) {
     ai::AIInputData::OtherCarRegardingCurrentCarInfo car_info;
     car_info.distance = kMaxDistance;
     car_info.speed = kMaxSpeedInGame;
@@ -264,7 +276,8 @@ ai::AIInputData GameBusinessLogic::GetAIInputDataRegardingToRacingCar(const std:
     common::Point ray_direction(std::cos(current_angle), std::sin(current_angle));
     for (const auto& it : racing_car_list_) {
       if (it != racing_car) {
-        auto current_distance = common::GetDistanceFromRayToReactangle(origin_point, ray_direction, it->GetIntersectRectangle());
+        auto current_distance = common::GetDistanceFromRayToReactangle(
+            origin_point, ray_direction, it->GetIntersectRectangle());
         if (car_info.distance > current_distance) {
           car_info.distance = current_distance;
           car_info.speed = it->speed();
@@ -274,17 +287,19 @@ ai::AIInputData GameBusinessLogic::GetAIInputDataRegardingToRacingCar(const std:
     car_info.distance /= kMaxDistance;
     car_info.speed /= kMaxSpeedInGame;
     input_data.distance_to_racing_cars[i] = std::move(car_info);
+    i++;
   }
   
   i = 0;
-  for (float current_angle = 0.0f; current_angle <= k2PI; current_angle += kAngleIncreaseValue, i++) {
+  for (float current_angle = 0.0f; current_angle <= k2PI; current_angle += kAngleIncreaseValue) {
     ai::AIInputData::OtherCarRegardingCurrentCarInfo car_info;
     car_info.distance = kMaxDistance;
     car_info.speed = kMaxSpeedInGame;
     common::Point origin_point(racing_car->x(), racing_car->y());
     common::Point ray_direction(std::cos(current_angle), std::sin(current_angle));
     for (const auto& it : city_car_list_) {
-      auto current_distance = common::GetDistanceFromRayToReactangle(origin_point, ray_direction, it->GetIntersectRectangle());
+      auto current_distance = common::GetDistanceFromRayToReactangle(
+          origin_point, ray_direction, it->GetIntersectRectangle());
       if (car_info.distance > current_distance) {
         car_info.distance = current_distance;
         car_info.speed = it->speed();
@@ -293,6 +308,7 @@ ai::AIInputData GameBusinessLogic::GetAIInputDataRegardingToRacingCar(const std:
     car_info.distance /= kMaxDistance;
     car_info.speed /= kMaxSpeedInGame;
     input_data.distance_to_city_cars[i] = std::move(car_info);
+    i++;
   }
 
   return input_data;
@@ -305,12 +321,14 @@ void GameBusinessLogic::DrawSensors(const std::shared_ptr<units::RacingCar>& car
 
   const float kAngleIncreaseValue = k2PI / ai::AIInputData::kCountDistanceScanRays;
   int i = 0;
-  for (float current_angle = 0.0f; current_angle <= k2PI; current_angle += kAngleIncreaseValue, i++) {
+  for (float current_angle = 0.0f; current_angle <= k2PI; current_angle += kAngleIncreaseValue) {
     float current_minimum_distance = kMaxDistance;
-    common::Point ray_origin = common::Point(car->x(), car->y()), ray_direction(std::cos(current_angle), std::sin(current_angle));
+    common::Point ray_origin = common::Point(
+        car->x(), car->y()), ray_direction(std::cos(current_angle), std::sin(current_angle));
     for (const auto& it : racing_car_list_) {
       if (it != car) {
-        auto current_distance = common::GetDistanceFromRayToReactangle(ray_origin, ray_direction, it->GetIntersectRectangle());
+        auto current_distance = common::GetDistanceFromRayToReactangle(
+            ray_origin, ray_direction, it->GetIntersectRectangle());
         if (current_minimum_distance > current_distance) {
           current_minimum_distance = current_distance;
         }
@@ -319,25 +337,29 @@ void GameBusinessLogic::DrawSensors(const std::shared_ptr<units::RacingCar>& car
     if (current_minimum_distance < kMaxDistance) {
       sf::VertexArray lines(sf::LinesStrip, 2);
       lines[0].position = sf::Vector2f(ray_origin.x, ray_origin.y);
-      lines[1].position = sf::Vector2f(ray_origin.x + ray_direction.x * 300, ray_origin.y + ray_direction.y * 300);
+      lines[1].position = sf::Vector2f(ray_origin.x + ray_direction.x * 300, 
+                                       ray_origin.y + ray_direction.y * 300);
       game_window_context_.draw_function(lines);
       
       sf::VertexArray lines_2(sf::LinesStrip, 2);
       lines_2[0].position = sf::Vector2f(ray_origin.x, ray_origin.y);
       lines_2[1].position = sf::Vector2f(ray_origin.x + ray_direction.x * current_minimum_distance, 
-                                        ray_origin.y + ray_direction.y * current_minimum_distance);
+                                         ray_origin.y + ray_direction.y * current_minimum_distance);
       lines_2[0].color = sf::Color::Red;
       lines_2[1].color = sf::Color::Red;
       game_window_context_.draw_function(lines_2);
     }
+    i++;
   }
   
   i = 0;
-  for (float current_angle = 0.0f; current_angle <= k2PI; current_angle += kAngleIncreaseValue, i++) {
+  for (float current_angle = 0.0f; current_angle <= k2PI; current_angle += kAngleIncreaseValue) {
     float current_minimum_distance = kMaxDistance;
-    common::Point ray_origin = common::Point(car->x(), car->y()), ray_direction(std::cos(current_angle), std::sin(current_angle));
+    common::Point ray_origin = common::Point(
+        car->x(), car->y()), ray_direction(std::cos(current_angle), std::sin(current_angle));
     for (const auto& it : city_car_list_) {
-      auto current_distance = common::GetDistanceFromRayToReactangle(ray_origin, ray_direction, it->GetIntersectRectangle());
+      auto current_distance = common::GetDistanceFromRayToReactangle(
+          ray_origin, ray_direction, it->GetIntersectRectangle());
       if (current_minimum_distance > current_distance) {
         current_minimum_distance = current_distance;
       }
@@ -345,17 +367,19 @@ void GameBusinessLogic::DrawSensors(const std::shared_ptr<units::RacingCar>& car
     if (current_minimum_distance < kMaxDistance) {
       sf::VertexArray lines(sf::LinesStrip, 2);
       lines[0].position = sf::Vector2f(ray_origin.x, ray_origin.y);
-      lines[1].position = sf::Vector2f(ray_origin.x + ray_direction.x * 300, ray_origin.y + ray_direction.y * 300);
+      lines[1].position = sf::Vector2f(ray_origin.x + ray_direction.x * 300,
+                                       ray_origin.y + ray_direction.y * 300);
       game_window_context_.draw_function(lines);
       
       sf::VertexArray lines_2(sf::LinesStrip, 2);
       lines_2[0].position = sf::Vector2f(ray_origin.x, ray_origin.y);
       lines_2[1].position = sf::Vector2f(ray_origin.x + ray_direction.x * current_minimum_distance, 
-                                        ray_origin.y + ray_direction.y * current_minimum_distance);
+                                         ray_origin.y + ray_direction.y * current_minimum_distance);
       lines_2[0].color = sf::Color::Red;
       lines_2[1].color = sf::Color::Red;
       game_window_context_.draw_function(lines_2);
     }
+    i++;
   }
 }
 }  // namespace game

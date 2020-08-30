@@ -15,7 +15,8 @@ sf::Color gActiveFontColor = sf::Color::White;
 
 namespace ui {
 Button::Button(int x, int y, int width, int height, const std::string& text_string,
-               const OnClickCallback& on_press_callback, const DrawFunction& draw_function)
+               const OnClickCallback& on_press_callback,
+               const DrawFunction& draw_function)
     : DrawableUnit(draw_function)
     , x_(x)
     , y_(y)
@@ -26,8 +27,9 @@ Button::Button(int x, int y, int width, int height, const std::string& text_stri
     , on_press_callback_(on_press_callback) {
   const int kFontSize = height / 1.5f;
 
-  text_label_ = std::make_unique<CenterAlignLabel>(common::Rectangle(x_, y_, x_ + width_, y_ + height_),
-                                                   text_string, kFontSize, draw_function_);
+  text_label_ = std::make_unique<CenterAlignLabel>(
+      common::Rectangle(x_, y_, x_ + width_, y_ + height_),
+      text_string, kFontSize, draw_function_);
   rect_.setSize(sf::Vector2f(width_, height_));
   rect_.setFillColor(gBasicRectColor);
   rect_.setPosition(x_, y_);

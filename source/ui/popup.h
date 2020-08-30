@@ -17,8 +17,9 @@ class Popup : public common::DrawableUnit {
   Popup& operator=(const Popup& popup) = delete;
   Popup& operator=(Popup&& popup) = delete;
 
-  Popup(int x, int y, int width, int height, const std::string& message, 
-        const Button::OnClickCallback& on_ok_button_click_callback, const DrawFunction& draw_function);
+  Popup(int x, int y, int width, int height, const std::string& message,
+        const Button::OnClickCallback& on_ok_button_click_callback,
+        const DrawFunction& draw_function);
 
   virtual void Draw() override;
   virtual void Update(float elapsed_time, const ui::UserControllersContext& context) override;

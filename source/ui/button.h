@@ -21,7 +21,8 @@ class Button : public common::DrawableUnit {
   Button& operator=(Button&& button) = delete;
 
   Button(int x, int y, int width, int height, const std::string& text_string,
-         const OnClickCallback& on_press_callback, const DrawableUnit::DrawFunction& draw_function);
+         const OnClickCallback& on_press_callback,
+         const DrawableUnit::DrawFunction& draw_function);
 
   void SetEnable(bool enable);
   

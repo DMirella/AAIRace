@@ -22,7 +22,8 @@ class LevelManager {
   LevelManager& operator=(const LevelManager& level_manager) = delete;
   LevelManager& operator=(LevelManager&& level_manager) = delete;
 
-  LevelManager(const ui::GameWindowContext& game_window_context, int count_unlocked_levels);
+  LevelManager(const ui::GameWindowContext& game_window_context,
+               int count_unlocked_levels);
 
   int count_unlocked_level() const;
   std::unique_ptr<GameSession> GenerateGameSession(int game_level);

@@ -18,7 +18,8 @@ const int LevelManager::kMinimumCountUnlockedLevels = 1;
 const int LevelManager::kLevelsCount = 30;
 const int LevelManager::kEnemiesCount = 4;
 
-LevelManager::LevelManager(const ui::GameWindowContext& game_window_context, int count_unlocked_levels)
+LevelManager::LevelManager(const ui::GameWindowContext& game_window_context,
+                          int count_unlocked_levels)
     : game_window_context_(game_window_context)
     , current_active_level_(-1)
     , count_unlocked_levels_(count_unlocked_levels) {
@@ -40,9 +41,11 @@ std::unique_ptr<GameSession> LevelManager::GenerateGameSession(int game_level) {
   assert(game_level <= kLevelsCount);
   current_active_level_ = game_level;
   const int kMaxCityCarCount = 300;
-  const int kCityCarsCount = (game_level * 18 > kMaxCityCarCount)? kMaxCityCarCount : game_level * 18;
-  return std::make_unique<GameSession>(this, game_window_context_, kEnemiesCount, kCityCarsCount, 
-                                       std::vector<std::shared_ptr<ai::EnemyAI>>(kEnemiesCount, enemies_ai_[game_level - 1]));
+  const int kCityCarsCount 
+      = (game_level * 18 > kMaxCityCarCount)? kMaxCityCarCount : game_level * 18;
+  return std::make_unique<GameSession>(
+      this, game_window_context_, kEnemiesCount, kCityCarsCount, 
+      std::vector<std::shared_ptr<ai::EnemyAI>>(kEnemiesCount, enemies_ai_[game_level - 1]));
 }
 
 void LevelManager::NotifyCurrentLevelEnds(const std::vector<ai::AIIOData>& collected_aiio_data) {
@@ -51,7 +54,8 @@ void LevelManager::NotifyCurrentLevelEnds(const std::vector<ai::AIIOData>& colle
     
     if (count_unlocked_levels_ < kLevelsCount) {
       count_unlocked_levels_++;
-      auto& current_filling_collected_user_data = collected_user_aiio_data_[count_unlocked_levels_ - 1];
+      auto& current_filling_collected_user_data
+          = collected_user_aiio_data_[count_unlocked_levels_ - 1];
       *current_filling_collected_user_data = ai::FilterAIIOData(collected_aiio_data);
       int to = std::max(count_unlocked_levels_ - 2 - gCollectedDataLevelsSlidingWindowSize, 0);
       for (int i = count_unlocked_levels_ - 2; i >= to; i--) {
@@ -60,7 +64,8 @@ void LevelManager::NotifyCurrentLevelEnds(const std::vector<ai::AIIOData>& colle
             collected_user_aiio_data_[i]->begin(),
             collected_user_aiio_data_[i]->end());
       }
-      enemies_ai_[count_unlocked_levels_] = std::make_shared<ai::EnemyAI>(current_filling_collected_user_data);
+      enemies_ai_[count_unlocked_levels_]
+          = std::make_shared<ai::EnemyAI>(current_filling_collected_user_data);
       // enemies_ai_[count_unlocked_levels_]->TrainWithData(collected_aiio_data);
     }
   }
@@ -84,7 +89,8 @@ void LevelManager::LoadFromFile(std::fstream* const f) {
       current_aiio.input = ai::TransformVectorToAIInputData(vector_input_data);
       current_aiio.output = ai::TransformVectorToAIOutputData(vector_output_data);
     }
-    enemies_ai_[count_unlocked_levels_] = std::make_shared<ai::EnemyAI>(collected_user_aiio_data_[i]);
+    enemies_ai_[count_unlocked_levels_]
+        = std::make_shared<ai::EnemyAI>(collected_user_aiio_data_[i]);
   }
 }
 
