@@ -159,7 +159,6 @@ void UserRegistrationScreen::OnRegisterButtonClick() {
         kPopupX, kPopupY, kPopupWidth, kPopupHeight, kErrorMessage, 
         [this](){ ok_button_error_popup_pressed_ = true; }, game_window_context_.draw_function);
   } else {
-    screen_state_machine_->GetUserProfile().Reset();
     screen_state_machine_->GetUserProfile().SetName(entered_string);
     screen_state_machine_->SetScreen(std::make_shared<MenuScreen>(screen_state_machine_, game_window_context_));
   }
@@ -250,7 +249,6 @@ void UserLogInScreen::OnLogInButtonClick() {
         kPopupX, kPopupY, kPopupWidth, kPopupHeight, kErrorMessage, 
         [this](){ ok_button_error_popup_pressed_ = true; }, game_window_context_.draw_function);
   } else {
-    screen_state_machine_->GetUserProfile().Reset();
     screen_state_machine_->GetUserProfile().LoadFromConfigFile(name_edit_text_box_->entered_string());
     screen_state_machine_->SetScreen(std::make_shared<MenuScreen>(screen_state_machine_, game_window_context_));
   }
@@ -311,7 +309,7 @@ void MenuScreen::OnExitGameButtonClick() {
 }
 
 void MenuScreen::OnLogOutButtonClick() {
-  screen_state_machine_->GetUserProfile().SaveToConfigFile();
+  screen_state_machine_->GetUserProfile().Reset();
   screen_state_machine_->SetScreen(std::make_shared<ProfileChooseScreen>(screen_state_machine_, game_window_context_));
 }
 
