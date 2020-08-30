@@ -4,10 +4,10 @@
 
 #include "button.h"
 #include "center_align_label.h"
+#include "edit_text_box.h"
 #include "game/game_session.h"
-#include "screen_state_machine.h"
-#include "text_box.h"
 #include "game/user_profile.h"
+#include "screen_state_machine.h"
 
 namespace {
 std::unique_ptr<Button> GenerateClassicBackButton(const GameWindowContext& game_window_context,
@@ -68,15 +68,15 @@ std::string ProfileChooseScreen::GetScreenName() const {
 }
 
 void ProfileChooseScreen::OnSignInButtonClick() {
-  screen_state_machine_->SetScreen(std::make_shared<SignInScreen>(screen_state_machine_, game_window_context_));
+  screen_state_machine_->SetScreen(std::make_shared<UserLogInScreen>(screen_state_machine_, game_window_context_));
 }
 
 void ProfileChooseScreen::OnSignUpButtonClick() {
-  screen_state_machine_->SetScreen(std::make_shared<SignUpScreen>(screen_state_machine_, game_window_context_));
+  screen_state_machine_->SetScreen(std::make_shared<UserRegistrationScreen>(screen_state_machine_, game_window_context_));
 }
 
-// SignUpScreen
-SignUpScreen::SignUpScreen(ScreenStateMachine* const screen_state_machine, const GameWindowContext& game_window_context)
+// UserRegistrationScreen
+UserRegistrationScreen::UserRegistrationScreen(ScreenStateMachine* const screen_state_machine, const GameWindowContext& game_window_context)
     : Screen(screen_state_machine, game_window_context)
     , ok_button_error_popup_pressed_(false)
     , active_popup_(nullptr) {
@@ -94,15 +94,15 @@ SignUpScreen::SignUpScreen(ScreenStateMachine* const screen_state_machine, const
   const std::string kRegisterButtonText = "Create";
   const std::string kLabelText = "Enter your name:";
 
-  Button::OnClickCallback back_button_click_callback = std::bind(&SignUpScreen::OnBackButtonClick, this);
+  Button::OnClickCallback back_button_click_callback = std::bind(&UserRegistrationScreen::OnBackButtonClick, this);
   back_button_ = GenerateClassicBackButton(game_window_context_, back_button_click_callback, "Back");
 
   text_label_ = std::make_unique<CenterAlignLabel>(tools::Rectangle(kElementsBlockStartX, kElementsBlockStartY, 
                                                                     kElementsBlockStartX + kElementsBlockWidth, kElementsBlockStartY + kLabelHeight),
                                                    kLabelText, kLabelFontSize, game_window_context_.draw_function);
-  name_text_box_ = std::make_unique<TextBox>(kElementsBlockStartX, kElementsBlockStartY + kLabelHeight + kElementsYOffset, 
+  name_edit_text_box_ = std::make_unique<EditTextBox>(kElementsBlockStartX, kElementsBlockStartY + kLabelHeight + kElementsYOffset, 
                                              kElementsBlockWidth, kTextEditHeight, game_window_context_.draw_function);
-  Button::OnClickCallback on_register_button_click_callback = std::bind(&SignUpScreen::OnRegisterButtonClick, this); 
+  Button::OnClickCallback on_register_button_click_callback = std::bind(&UserRegistrationScreen::OnRegisterButtonClick, this); 
   register_button_ = std::make_unique<Button>(kElementsBlockStartX + (kElementsBlockWidth - kRegisterButtonWidth) / 2, 
                                               kElementsBlockStartY + kTextEditHeight + kLabelHeight + kElementsYOffset * 2, 
                                               kRegisterButtonWidth, kRegisterButtonHeight, 
@@ -110,10 +110,10 @@ SignUpScreen::SignUpScreen(ScreenStateMachine* const screen_state_machine, const
                                               game_window_context_.draw_function);
 }
 
-void SignUpScreen::NotifyGameCycleElapsed(float elapsed_time, const UserControllersContext& context) {
+void UserRegistrationScreen::NotifyGameCycleElapsed(float elapsed_time, const UserControllersContext& context) {
   if (active_popup_.get() == nullptr) {
     text_label_->Update(elapsed_time, context);
-    name_text_box_->Update(elapsed_time, context);
+    name_edit_text_box_->Update(elapsed_time, context);
     register_button_->Update(elapsed_time, context);
     back_button_->Update(elapsed_time, context);
   } else {
@@ -125,9 +125,9 @@ void SignUpScreen::NotifyGameCycleElapsed(float elapsed_time, const UserControll
   }
 }
 
-void SignUpScreen::Draw() {
+void UserRegistrationScreen::Draw() {
   text_label_->Draw();
-  name_text_box_->Draw();
+  name_edit_text_box_->Draw();
   register_button_->Draw();
   back_button_->Draw();
   if (active_popup_.get() != nullptr) {
@@ -135,16 +135,16 @@ void SignUpScreen::Draw() {
   }
 }
 
-std::string SignUpScreen::GetScreenName() const {
-  return "SignUpScreen";
+std::string UserRegistrationScreen::GetScreenName() const {
+  return "UserRegistrationScreen";
 }
 
-void SignUpScreen::OnRegisterButtonClick() {
+void UserRegistrationScreen::OnRegisterButtonClick() {
   const int kPopupWidth = game_window_context_.screen_width / 1.5f;
   const int kPopupHeight = game_window_context_.screen_width / 6;
   const int kPopupX = (game_window_context_.screen_width - kPopupWidth) / 2;
   const int kPopupY = (game_window_context_.screen_height - kPopupHeight) / 2;
-  const auto entered_string = name_text_box_->entered_string();
+  const auto entered_string = name_edit_text_box_->entered_string();
   if (entered_string.empty()) {
     const std::string kErrorMessage = "User name can not be empty.";
     active_popup_ = std::make_unique<Popup>(
@@ -162,12 +162,12 @@ void SignUpScreen::OnRegisterButtonClick() {
   }
 }
 
-void SignUpScreen::OnBackButtonClick() {
+void UserRegistrationScreen::OnBackButtonClick() {
   screen_state_machine_->SetScreen(std::make_shared<ProfileChooseScreen>(screen_state_machine_, game_window_context_));
 }
 
-// SignInScreen
-SignInScreen::SignInScreen(ScreenStateMachine* const screen_state_machine, const GameWindowContext& game_window_context)
+// UserLogInScreen
+UserLogInScreen::UserLogInScreen(ScreenStateMachine* const screen_state_machine, const GameWindowContext& game_window_context)
     : Screen(screen_state_machine, game_window_context)
     , ok_button_error_popup_pressed_(false)
     , active_popup_(nullptr) {
@@ -185,15 +185,15 @@ SignInScreen::SignInScreen(ScreenStateMachine* const screen_state_machine, const
   const std::string kRegisterButtonText = "GO!";
   const std::string kLabelText = "Enter your name:";
   
-  Button::OnClickCallback back_button_click_callback = std::bind(&SignInScreen::OnBackButtonClick, this);
+  Button::OnClickCallback back_button_click_callback = std::bind(&UserLogInScreen::OnBackButtonClick, this);
   back_button_ = GenerateClassicBackButton(game_window_context_, back_button_click_callback, "Back");
 
   text_label_ = std::make_unique<CenterAlignLabel>(tools::Rectangle(kElementsBlockStartX, kElementsBlockStartY, 
                                                                     kElementsBlockStartX + kElementsBlockWidth, kElementsBlockStartY + kLabelHeight),
                                                    kLabelText, kLabelFontSize, game_window_context_.draw_function);
-  name_text_box_ = std::make_unique<TextBox>(kElementsBlockStartX, kElementsBlockStartY + kLabelHeight + kElementsYOffset, 
+  name_edit_text_box_ = std::make_unique<EditTextBox>(kElementsBlockStartX, kElementsBlockStartY + kLabelHeight + kElementsYOffset, 
                                              kElementsBlockWidth, kTextEditHeight, game_window_context_.draw_function);
-  Button::OnClickCallback on_register_button_click_callback = std::bind(&SignInScreen::OnLogInButtonClick, this); 
+  Button::OnClickCallback on_register_button_click_callback = std::bind(&UserLogInScreen::OnLogInButtonClick, this); 
   register_button_ = std::make_unique<Button>(kElementsBlockStartX + (kElementsBlockWidth - kRegisterButtonWidth) / 2, 
                                               kElementsBlockStartY + kTextEditHeight + kLabelHeight + kElementsYOffset * 2, 
                                               kRegisterButtonWidth, kRegisterButtonHeight, 
@@ -201,10 +201,10 @@ SignInScreen::SignInScreen(ScreenStateMachine* const screen_state_machine, const
                                               game_window_context_.draw_function);
 }
 
-void SignInScreen::NotifyGameCycleElapsed(float elapsed_time, const UserControllersContext& context) {
+void UserLogInScreen::NotifyGameCycleElapsed(float elapsed_time, const UserControllersContext& context) {
   if (active_popup_.get() == nullptr) {
     text_label_->Update(elapsed_time, context);
-    name_text_box_->Update(elapsed_time, context);
+    name_edit_text_box_->Update(elapsed_time, context);
     register_button_->Update(elapsed_time, context);
     back_button_->Update(elapsed_time, context);
   } else {
@@ -216,9 +216,9 @@ void SignInScreen::NotifyGameCycleElapsed(float elapsed_time, const UserControll
   }
 }
 
-void SignInScreen::Draw() {
+void UserLogInScreen::Draw() {
   text_label_->Draw();
-  name_text_box_->Draw();
+  name_edit_text_box_->Draw();
   register_button_->Draw();
   back_button_->Draw();
   if (active_popup_.get() != nullptr) {
@@ -226,16 +226,16 @@ void SignInScreen::Draw() {
   }
 }
 
-std::string SignInScreen::GetScreenName() const {
-  return "SignInScreen";
+std::string UserLogInScreen::GetScreenName() const {
+  return "UserLogInScreen";
 }
 
-void SignInScreen::OnLogInButtonClick() {
+void UserLogInScreen::OnLogInButtonClick() {
   const int kPopupWidth = game_window_context_.screen_width / 1.5f;
   const int kPopupHeight = game_window_context_.screen_width / 6;
   const int kPopupX = (game_window_context_.screen_width - kPopupWidth) / 2;
   const int kPopupY = (game_window_context_.screen_height - kPopupHeight) / 2;
-  const auto entered_string = name_text_box_->entered_string();
+  const auto entered_string = name_edit_text_box_->entered_string();
   if (entered_string.empty()) {
     const std::string kErrorMessage = "User name can not be empty.";
     active_popup_ = std::make_unique<Popup>(
@@ -248,12 +248,12 @@ void SignInScreen::OnLogInButtonClick() {
         [this](){ ok_button_error_popup_pressed_ = true; }, game_window_context_.draw_function);
   } else {
     screen_state_machine_->GetUserProfile().Reset();
-    screen_state_machine_->GetUserProfile().LoadFromConfigFile(name_text_box_->entered_string());
+    screen_state_machine_->GetUserProfile().LoadFromConfigFile(name_edit_text_box_->entered_string());
     screen_state_machine_->SetScreen(std::make_shared<MenuScreen>(screen_state_machine_, game_window_context_));
   }
 }
 
-void SignInScreen::OnBackButtonClick() {
+void UserLogInScreen::OnBackButtonClick() {
   screen_state_machine_->SetScreen(std::make_shared<ProfileChooseScreen>(screen_state_machine_, game_window_context_));
 }
 

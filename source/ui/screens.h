@@ -10,7 +10,7 @@
 
 #include "button.h"
 #include "center_align_label.h"
-#include "text_box.h"
+#include "edit_text_box.h"
 #include <game/level_manager.h>
 #include "game_window.h"
 #include "popup.h"
@@ -54,16 +54,15 @@ class ProfileChooseScreen : public Screen {
   std::unique_ptr<Button> sign_up_button_;
 };
 
-class TextBox;
-class SignUpScreen : public Screen {
+class UserRegistrationScreen : public Screen {
  public:
-  SignUpScreen() = delete;
-  SignUpScreen(const SignUpScreen& sign_up_screen) = delete;
-  SignUpScreen(SignUpScreen&& sign_up_screen) = delete;
-  SignUpScreen& operator=(const SignUpScreen& sign_up_screen) = delete;
-  SignUpScreen& operator=(SignUpScreen&& sign_up_screen) = delete;
+  UserRegistrationScreen() = delete;
+  UserRegistrationScreen(const UserRegistrationScreen& user_registreation_screen) = delete;
+  UserRegistrationScreen(UserRegistrationScreen&& user_registreation_screen) = delete;
+  UserRegistrationScreen& operator=(const UserRegistrationScreen& user_registreation_screen) = delete;
+  UserRegistrationScreen& operator=(UserRegistrationScreen&& user_registreation_screen) = delete;
 
-  SignUpScreen(ScreenStateMachine* const screen_state_machine, const GameWindowContext& game_window_context);
+  UserRegistrationScreen(ScreenStateMachine* const screen_state_machine, const GameWindowContext& game_window_context);
 
   virtual void NotifyGameCycleElapsed(float elapsed_time, const UserControllersContext& context) override;
   virtual void Draw() override;
@@ -76,19 +75,19 @@ class SignUpScreen : public Screen {
   std::unique_ptr<Button> back_button_;
   std::unique_ptr<Popup> active_popup_;
   std::unique_ptr<CenterAlignLabel> text_label_;
-  std::unique_ptr<TextBox> name_text_box_;
+  std::unique_ptr<EditTextBox> name_edit_text_box_;
   std::unique_ptr<Button> register_button_;
 };
 
-class SignInScreen : public Screen {
+class UserLogInScreen : public Screen {
  public:
-  SignInScreen() = delete;
-  SignInScreen(const SignInScreen& sign_in_screen) = delete;
-  SignInScreen(SignInScreen&& sign_in_screen) = delete;
-  SignInScreen& operator=(const SignInScreen& sign_in_screen) = delete;
-  SignInScreen& operator=(SignInScreen&& sign_in_screen) = delete;
+  UserLogInScreen() = delete;
+  UserLogInScreen(const UserLogInScreen& user_login_screen) = delete;
+  UserLogInScreen(UserLogInScreen&& user_login_screen) = delete;
+  UserLogInScreen& operator=(const UserLogInScreen& user_login_screen) = delete;
+  UserLogInScreen& operator=(UserLogInScreen&& user_login_screen) = delete;
 
-  SignInScreen(ScreenStateMachine* const screen_state_machine, const GameWindowContext& game_window_context);
+  UserLogInScreen(ScreenStateMachine* const screen_state_machine, const GameWindowContext& game_window_context);
 
   virtual void NotifyGameCycleElapsed(float elapsed_time, const UserControllersContext& context) override;
   virtual void Draw() override;
@@ -101,7 +100,7 @@ class SignInScreen : public Screen {
   std::unique_ptr<Button> back_button_;
   std::unique_ptr<Popup> active_popup_;
   std::unique_ptr<CenterAlignLabel> text_label_;
-  std::unique_ptr<TextBox> name_text_box_;
+  std::unique_ptr<EditTextBox> name_edit_text_box_;
   std::unique_ptr<Button> register_button_;
 };
 

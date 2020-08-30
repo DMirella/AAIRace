@@ -6,5 +6,5 @@ add_library(${UI_LIBRARY_NAME}
             screen_state_machine.cc
             button.cc
             center_align_label.cc
-            text_box.cc
+            edit_text_box.cc
             popup.cc)

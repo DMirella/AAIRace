@@ -1,4 +1,4 @@
-#include "text_box.h"
+#include "edit_text_box.h"
 
 #include <iostream>
 
@@ -9,7 +9,7 @@ sf::Color gBackgroundRectColor = sf::Color(0x5A, 0x7C, 0x60);
 const int gTextXOffset = 10;
 }  // namespace
 
-TextBox::TextBox(int x, int y, int width, int height, const DrawFunction& draw_function)
+EditTextBox::EditTextBox(int x, int y, int width, int height, const DrawFunction& draw_function)
     : DrawableUnit(draw_function)
     , x_(x)
     , y_(y)
@@ -27,12 +27,12 @@ TextBox::TextBox(int x, int y, int width, int height, const DrawFunction& draw_f
       entered_string_, kFontHeight, draw_function_);
 }
 
-void TextBox::Draw() {
+void EditTextBox::Draw() {
   draw_function_(background_rect_);
   text_label_->Draw();
 }
 
-void TextBox::Update(float elapsed_time, const UserControllersContext& context) {
+void EditTextBox::Update(float elapsed_time, const UserControllersContext& context) {
   if (CheckValidInput(context.entered_unicode)) {
     if(context.entered_unicode == '\b') {
       entered_string_ = entered_string_.substr(0, entered_string_.length() - 1);
@@ -47,11 +47,11 @@ void TextBox::Update(float elapsed_time, const UserControllersContext& context) 
   }
 }
 
-std::string TextBox::entered_string() const {
+std::string EditTextBox::entered_string() const {
   return entered_string_;
 }
 
-bool TextBox::CheckValidInput(sf::Uint32 unicode) const {
+bool EditTextBox::CheckValidInput(sf::Uint32 unicode) const {
   return ('a' <= unicode && unicode <= 'z') ||
          ('A' <= unicode && unicode <= 'Z') ||
          ('0' <= unicode && unicode <= '9') ||

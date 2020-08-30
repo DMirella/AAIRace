@@ -1,5 +1,5 @@
-#ifndef SOURCE_UI_TEXT_BOX_H_
-#define SOURCE_UI_TEXT_BOX_H_
+#ifndef SOURCE_UI_EDIT_TEXT_BOX_H_
+#define SOURCE_UI_EDIT_TEXT_BOX_H_
 
 #include <string>
 
@@ -8,15 +8,15 @@
 #include <common/drawable_unit.h>
 #include "center_align_label.h"
 
-class TextBox : public DrawableUnit {
+class EditTextBox : public DrawableUnit {
 public:
-  TextBox() = delete;
-  TextBox(const TextBox& text_box) = delete;
-  TextBox(TextBox&& text_box) = delete;
-  TextBox& operator=(const TextBox& text_box) = delete;
-  TextBox& operator=(TextBox&& text_box) = delete;
+  EditTextBox() = delete;
+  EditTextBox(const EditTextBox& text_box) = delete;
+  EditTextBox(EditTextBox&& text_box) = delete;
+  EditTextBox& operator=(const EditTextBox& text_box) = delete;
+  EditTextBox& operator=(EditTextBox&& text_box) = delete;
 
-  TextBox(int x, int y, int width, int height, const DrawFunction& draw_function);
+  EditTextBox(int x, int y, int width, int height, const DrawFunction& draw_function);
 	
   virtual void Draw() override;
   virtual void Update(float elapsed_time, const UserControllersContext& context) override;
@@ -35,4 +35,4 @@ private:
 	std::unique_ptr<CenterAlignLabel> text_label_;
 };
 
-#endif  // SOURCE_UI_TEXT_BOX_H_
+#endif  // SOURCE_UI_EDIT_TEXT_BOX_H_
