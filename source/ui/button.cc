@@ -9,8 +9,6 @@ namespace {
 sf::Color gBasicRectColor = sf::Color(0x28, 0x37, 0x2D);
 sf::Color gNotEnableFontColor = sf::Color(0x15, 0x15, 0x15);
 sf::Color gActiveRectColor = sf::Color(0x33, 0x49, 0x37);
-//sf::Color gNotEnableRectColor = sf::Color(0x15, 0x15, 0x15);
-//sf::Color gActiveRectColor = sf::Color(0x33, 0x49, 0x37);
 sf::Color gBasicFontColor = sf::Color::White;
 sf::Color gActiveFontColor = sf::Color::White;
 }  // namespace
@@ -27,7 +25,7 @@ Button::Button(int x, int y, int width, int height, const std::string& text_stri
     , is_mouse_down_on_active_button_(false) {
   const int kFontSize = height / 1.5f;
 
-  text_label_ = std::make_shared<CenterAlignLabel>(tools::Rectangle(x_, y_, x_ + width_, y_ + height_),
+  text_label_ = std::make_unique<CenterAlignLabel>(tools::Rectangle(x_, y_, x_ + width_, y_ + height_),
                                                    text_string, kFontSize, draw_function_);
   rect_.setSize(sf::Vector2f(width_, height_));
   rect_.setFillColor(gBasicRectColor);

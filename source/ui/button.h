@@ -7,6 +7,7 @@
 #include <SFML/Graphics.hpp>
 
 #include <common/drawable_unit.h>
+#include "center_align_label.h"
 
 class CenterAlignLabel;
 class Button : public DrawableUnit {
@@ -32,7 +33,7 @@ class Button : public DrawableUnit {
   int y_;
   int width_;
   int height_;
-  std::shared_ptr<CenterAlignLabel> text_label_;
+  std::unique_ptr<CenterAlignLabel> text_label_;
   sf::RectangleShape rect_;
 
   bool enable_;

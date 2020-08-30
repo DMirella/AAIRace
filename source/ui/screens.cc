@@ -45,10 +45,10 @@ ProfileChooseScreen::ProfileChooseScreen(ScreenStateMachine* const screen_state_
   Button::OnClickCallback on_sign_in_button_click_callback = std::bind(&ProfileChooseScreen::OnSignInButtonClick, this); 
   Button::OnClickCallback on_sign_up_button_click_callback = std::bind(&ProfileChooseScreen::OnSignUpButtonClick, this);
 
-  sign_in_button_ = std::make_shared<Button>(kButtonsBlockStartX, kButtonsBlockStartY, kButtonsWidth, kButtonsHeight, 
+  sign_in_button_ = std::make_unique<Button>(kButtonsBlockStartX, kButtonsBlockStartY, kButtonsWidth, kButtonsHeight, 
                                              kSignInButtonText, on_sign_in_button_click_callback, 
                                              game_window_context_.draw_function);
-  sign_up_button_ = std::make_shared<Button>(kButtonsBlockStartX, kButtonsBlockStartY + kButtonsHeight + kButtonYOffset, kButtonsWidth, kButtonsHeight, 
+  sign_up_button_ = std::make_unique<Button>(kButtonsBlockStartX, kButtonsBlockStartY + kButtonsHeight + kButtonYOffset, kButtonsWidth, kButtonsHeight, 
                                              kSignUpButtonText, on_sign_up_button_click_callback, 
                                              game_window_context_.draw_function);
 }
@@ -97,13 +97,13 @@ SignUpScreen::SignUpScreen(ScreenStateMachine* const screen_state_machine, const
   Button::OnClickCallback back_button_click_callback = std::bind(&SignUpScreen::OnBackButtonClick, this);
   back_button_ = GenerateClassicBackButton(game_window_context_, back_button_click_callback, "Back");
 
-  text_label_ = std::make_shared<CenterAlignLabel>(tools::Rectangle(kElementsBlockStartX, kElementsBlockStartY, 
+  text_label_ = std::make_unique<CenterAlignLabel>(tools::Rectangle(kElementsBlockStartX, kElementsBlockStartY, 
                                                                     kElementsBlockStartX + kElementsBlockWidth, kElementsBlockStartY + kLabelHeight),
                                                    kLabelText, kLabelFontSize, game_window_context_.draw_function);
-  name_text_box_ = std::make_shared<TextBox>(kElementsBlockStartX, kElementsBlockStartY + kLabelHeight + kElementsYOffset, 
+  name_text_box_ = std::make_unique<TextBox>(kElementsBlockStartX, kElementsBlockStartY + kLabelHeight + kElementsYOffset, 
                                              kElementsBlockWidth, kTextEditHeight, game_window_context_.draw_function);
   Button::OnClickCallback on_register_button_click_callback = std::bind(&SignUpScreen::OnRegisterButtonClick, this); 
-  register_button_ = std::make_shared<Button>(kElementsBlockStartX + (kElementsBlockWidth - kRegisterButtonWidth) / 2, 
+  register_button_ = std::make_unique<Button>(kElementsBlockStartX + (kElementsBlockWidth - kRegisterButtonWidth) / 2, 
                                               kElementsBlockStartY + kTextEditHeight + kLabelHeight + kElementsYOffset * 2, 
                                               kRegisterButtonWidth, kRegisterButtonHeight, 
                                               kRegisterButtonText, on_register_button_click_callback, 
@@ -188,13 +188,13 @@ SignInScreen::SignInScreen(ScreenStateMachine* const screen_state_machine, const
   Button::OnClickCallback back_button_click_callback = std::bind(&SignInScreen::OnBackButtonClick, this);
   back_button_ = GenerateClassicBackButton(game_window_context_, back_button_click_callback, "Back");
 
-  text_label_ = std::make_shared<CenterAlignLabel>(tools::Rectangle(kElementsBlockStartX, kElementsBlockStartY, 
+  text_label_ = std::make_unique<CenterAlignLabel>(tools::Rectangle(kElementsBlockStartX, kElementsBlockStartY, 
                                                                     kElementsBlockStartX + kElementsBlockWidth, kElementsBlockStartY + kLabelHeight),
                                                    kLabelText, kLabelFontSize, game_window_context_.draw_function);
-  name_text_box_ = std::make_shared<TextBox>(kElementsBlockStartX, kElementsBlockStartY + kLabelHeight + kElementsYOffset, 
+  name_text_box_ = std::make_unique<TextBox>(kElementsBlockStartX, kElementsBlockStartY + kLabelHeight + kElementsYOffset, 
                                              kElementsBlockWidth, kTextEditHeight, game_window_context_.draw_function);
   Button::OnClickCallback on_register_button_click_callback = std::bind(&SignInScreen::OnLogInButtonClick, this); 
-  register_button_ = std::make_shared<Button>(kElementsBlockStartX + (kElementsBlockWidth - kRegisterButtonWidth) / 2, 
+  register_button_ = std::make_unique<Button>(kElementsBlockStartX + (kElementsBlockWidth - kRegisterButtonWidth) / 2, 
                                               kElementsBlockStartY + kTextEditHeight + kLabelHeight + kElementsYOffset * 2, 
                                               kRegisterButtonWidth, kRegisterButtonHeight, 
                                               kRegisterButtonText, on_register_button_click_callback, 
@@ -275,10 +275,10 @@ MenuScreen::MenuScreen(ScreenStateMachine* const screen_state_machine, const Gam
   Button::OnClickCallback on_start_game_button_click_callback = std::bind(&MenuScreen::OnStartGameButtonClick, this); 
   Button::OnClickCallback on_exit_game_button_click_callback = std::bind(&MenuScreen::OnExitGameButtonClick, this);
 
-  start_game_button_ = std::make_shared<Button>(kButtonsBlockStartX, kButtonsBlockStartY, kButtonsWidth, kButtonsHeight, 
+  start_game_button_ = std::make_unique<Button>(kButtonsBlockStartX, kButtonsBlockStartY, kButtonsWidth, kButtonsHeight, 
                                                 kStartButtonText, on_start_game_button_click_callback, 
                                                 game_window_context_.draw_function);
-  exit_game_button_ = std::make_shared<Button>(kButtonsBlockStartX, kButtonsBlockStartY + kButtonsHeight + kButtonYOffset,
+  exit_game_button_ = std::make_unique<Button>(kButtonsBlockStartX, kButtonsBlockStartY + kButtonsHeight + kButtonYOffset,
                                                kButtonsWidth, kButtonsHeight, kExitButtonText, on_exit_game_button_click_callback,
                                                game_window_context_.draw_function);
 }
@@ -326,14 +326,14 @@ LevelChooseScreen::LevelChooseScreen(ScreenStateMachine* const screen_state_mach
   Button::OnClickCallback back_button_click_callback = std::bind(&LevelChooseScreen::OnBackButtonClick, this);
   back_button_ = GenerateClassicBackButton(game_window_context_, back_button_click_callback, "Back");
     
-  label_ = std::make_shared<CenterAlignLabel>(tools::Rectangle(0, 0, game_window_context_.screen_width, kLevelButtonsBlockXYOffset),
+  label_ = std::make_unique<CenterAlignLabel>(tools::Rectangle(0, 0, game_window_context_.screen_width, kLevelButtonsBlockXYOffset),
                                               kChooseLavelLabelText, kFontLabelSize, game_window_context_.draw_function);
   for (int current_level = 1; current_level <= kLevelsCount; current_level++) {
     Button::OnClickCallback on_current_level_button_click_callback = [this, current_level]() {
       OnLevelChoosen(current_level);
     };
     level_button_callback_.push_back(on_current_level_button_click_callback);
-    level_buttons_.emplace_back(std::make_shared<Button>(
+    level_buttons_.emplace_back(std::make_unique<Button>(
         kLevelButtonsBlockXYOffset + ((current_level - 1) % kMaxCountLevelButtonsX) * (kLevelButtonSize + kLevelButtonXYOffset),
         kLevelButtonsBlockXYOffset + ((current_level - 1) / kMaxCountLevelButtonsX) * (kLevelButtonSize + kLevelButtonXYOffset),
         kLevelButtonSize,
@@ -342,7 +342,7 @@ LevelChooseScreen::LevelChooseScreen(ScreenStateMachine* const screen_state_mach
         on_current_level_button_click_callback,
         game_window_context_.draw_function
     ));
-    if (screen_state_machine_->GetUserProfile().level_manager().count_unlocked_level() < current_level) {
+    if (screen_state_machine_->GetUserProfile().GetLevelManager().count_unlocked_level() < current_level) {
       level_buttons_.back()->SetEnable(false);
     }
   }
@@ -386,7 +386,7 @@ GameScreen::GameScreen(ScreenStateMachine* const screen_state_machine,
                        int game_level)
     : Screen(screen_state_machine, game_window_context)
     , active_game_session_(nullptr) {
-  active_game_session_ = screen_state_machine_->GetUserProfile().level_manager().GenerateGameSession(game_level);
+  active_game_session_ = screen_state_machine_->GetUserProfile().GetLevelManager().GenerateGameSession(game_level);
 }
 
 void GameScreen::NotifyGameCycleElapsed(float elapsed_time, const UserControllersContext& context) {

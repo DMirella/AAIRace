@@ -23,7 +23,7 @@ std::string UserProfile::name() const {
   return name_;
 }
 
-LevelManager& UserProfile::level_manager() {
+LevelManager& UserProfile::GetLevelManager() {
   return level_manager_;
 }
 

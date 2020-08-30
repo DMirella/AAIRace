@@ -19,7 +19,7 @@ class UserProfile {
   
   void SetName(const std::string& name);
   std::string name() const;
-  LevelManager& level_manager();
+  LevelManager& GetLevelManager();
   bool LoadFromConfigFile(const std::string& user_name);
   void SaveToConfigFile() const;
   void Reset();

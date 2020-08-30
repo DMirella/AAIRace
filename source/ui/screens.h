@@ -9,6 +9,8 @@
 #include <SFML/Graphics.hpp>
 
 #include "button.h"
+#include "center_align_label.h"
+#include "text_box.h"
 #include <game/level_manager.h>
 #include "game_window.h"
 #include "popup.h"
@@ -48,8 +50,8 @@ class ProfileChooseScreen : public Screen {
   void OnSignInButtonClick();
   void OnSignUpButtonClick();
 
-  std::shared_ptr<Button> sign_in_button_;
-  std::shared_ptr<Button> sign_up_button_;
+  std::unique_ptr<Button> sign_in_button_;
+  std::unique_ptr<Button> sign_up_button_;
 };
 
 class TextBox;
@@ -73,9 +75,9 @@ class SignUpScreen : public Screen {
   bool ok_button_error_popup_pressed_;
   std::unique_ptr<Button> back_button_;
   std::unique_ptr<Popup> active_popup_;
-  std::shared_ptr<CenterAlignLabel> text_label_;
-  std::shared_ptr<TextBox> name_text_box_;
-  std::shared_ptr<Button> register_button_;
+  std::unique_ptr<CenterAlignLabel> text_label_;
+  std::unique_ptr<TextBox> name_text_box_;
+  std::unique_ptr<Button> register_button_;
 };
 
 class SignInScreen : public Screen {
@@ -98,9 +100,9 @@ class SignInScreen : public Screen {
   bool ok_button_error_popup_pressed_;
   std::unique_ptr<Button> back_button_;
   std::unique_ptr<Popup> active_popup_;
-  std::shared_ptr<CenterAlignLabel> text_label_;
-  std::shared_ptr<TextBox> name_text_box_;
-  std::shared_ptr<Button> register_button_;
+  std::unique_ptr<CenterAlignLabel> text_label_;
+  std::unique_ptr<TextBox> name_text_box_;
+  std::unique_ptr<Button> register_button_;
 };
 
 class MenuScreen : public Screen {
@@ -122,11 +124,10 @@ class MenuScreen : public Screen {
   void OnLogOutButtonClick();
 
   std::unique_ptr<Button> log_out_button_;
-  std::shared_ptr<Button> start_game_button_;
-  std::shared_ptr<Button> exit_game_button_;
+  std::unique_ptr<Button> start_game_button_;
+  std::unique_ptr<Button> exit_game_button_;
 };
 
-class CenterAlignLabel;
 class LevelChooseScreen : public Screen {
  public:
   LevelChooseScreen() = delete;
@@ -145,12 +146,11 @@ class LevelChooseScreen : public Screen {
   void OnBackButtonClick();
 
   std::unique_ptr<Button> back_button_;
-  std::shared_ptr<CenterAlignLabel> label_;
-  std::vector<std::shared_ptr<Button>> level_buttons_;
+  std::unique_ptr<CenterAlignLabel> label_;
+  std::vector<std::unique_ptr<Button>> level_buttons_;
   std::vector<Button::OnClickCallback> level_button_callback_;
 };
 
-class GameSession;
 class GameScreen : public Screen {
  public:
   GameScreen() = delete;
@@ -167,7 +167,7 @@ class GameScreen : public Screen {
   virtual void Draw() override;
   virtual std::string GetScreenName() const override;
  private:
-  std::shared_ptr<GameSession> active_game_session_;
+  std::unique_ptr<GameSession> active_game_session_;
 };
 
 class TransitionScreen : public Screen {

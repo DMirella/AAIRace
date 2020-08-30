@@ -32,12 +32,12 @@ int LevelManager::count_unlocked_level() const {
   return count_unlocked_levels_;
 }
 
-std::shared_ptr<GameSession> LevelManager::GenerateGameSession(int game_level) {
+std::unique_ptr<GameSession> LevelManager::GenerateGameSession(int game_level) {
   assert(game_level <= kLevelsCount);
   current_active_level_ = game_level;
   const int kMaxCityCarCount = 300;
   const int kCityCarsCount = (game_level * 18 > kMaxCityCarCount)? kMaxCityCarCount : game_level * 18;
-  return std::make_shared<GameSession>(this, game_window_context_, kEnemiesCount, kCityCarsCount, 
+  return std::make_unique<GameSession>(this, game_window_context_, kEnemiesCount, kCityCarsCount, 
                                        std::vector<std::shared_ptr<EnemyAI>>(kEnemiesCount, enemies_ai_[game_level - 1]));
 }
 

@@ -21,7 +21,7 @@ class LevelManager {
   LevelManager(const GameWindowContext& game_window_context, int count_unlocked_levels);
 
   int count_unlocked_level() const;
-  std::shared_ptr<GameSession> GenerateGameSession(int game_level);
+  std::unique_ptr<GameSession> GenerateGameSession(int game_level);
   void NotifyCurrentLevelEnds(const std::vector<AIIOData>& collected_aiio_data);
   
   void LoadFromFile(std::fstream* const f);
