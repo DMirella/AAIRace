@@ -308,6 +308,7 @@ void MenuScreen::OnExitGameButtonClick() {
 }
 
 void MenuScreen::OnLogOutButtonClick() {
+  screen_state_machine_->GetUserProfile().SaveToConfigFile();
   screen_state_machine_->SetScreen(std::make_shared<ProfileChooseScreen>(screen_state_machine_, game_window_context_));
 }
 
