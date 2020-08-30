@@ -12,9 +12,9 @@
 #include <ui/game_window.h>
 #include <common/tools.h>
 
-#include "drawable_units/car.h"
-#include "drawable_units/city_car.h"
-#include "drawable_units/racing_car.h"
+#include "units/car.h"
+#include "units/city_car.h"
+#include "units/racing_car.h"
 
 namespace {
 const float gSecondsCountBeforeStart = 3.0f;

@@ -4,8 +4,8 @@
 #include <iostream>
 #include <string>
 
-#include <game/drawable_units/city_car.h>
-#include <game/drawable_units/racing_car.h>
+#include <game/units/city_car.h>
+#include <game/units/racing_car.h>
 #include <game/level_manager.h>
 
 #include "screen_state_machine.h"
