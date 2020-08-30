@@ -1,9 +1,11 @@
 #ifndef AAIRACE_SOURCE_UI_GAME_WINDOW_H_
 #define AAIRACE_SOURCE_UI_GAME_WINDOW_H_
 
+#include <memory>
+
 #include <SFML/Graphics.hpp>
 
-#include "common/drawable_unit.h"
+#include <common/drawable_unit.h>
 
 namespace ui {
 struct GameWindowContext {

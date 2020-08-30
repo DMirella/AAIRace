@@ -10,7 +10,8 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/")
 find_package(SFML 2 REQUIRED system window graphics network audio)
 find_package (Eigen REQUIRED)
 
-include_directories(${SFML_INCLUDE_DIR}
+include_directories(./source/
+		    ${SFML_INCLUDE_DIR}
                     ${EIGEN3_INCLUDE_DIR})
 
 add_subdirectory(source)

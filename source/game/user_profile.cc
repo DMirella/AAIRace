@@ -1,6 +1,11 @@
 #include "user_profile.h"
 
-#include <direct.h>
+#ifdef _WIN32
+  // #include <windows.h>  // _mkdir
+  #include <direct.h>
+#else
+  #include <sys/stat.h> // mkdir
+#endif
 
 #include <cstring>
 #include <fstream>
@@ -45,7 +50,11 @@ bool UserProfile::LoadFromConfigFile(const std::string& user_name) {
 }
 
 void UserProfile::SaveToConfigFile() const {
+#if defined _MSC_VER
   _mkdir(gProfilesFolderPath.c_str());
+#elif defined __GNUC__
+  mkdir(gProfilesFolderPath.c_str(), 0777);
+#endif
   std::fstream f(gProfilesFolderPath + "/" + name_ + "." + gProfileFileFormat,
                  std::ios::out | std::ios::binary);
   char buf[kNameBufferSize];

@@ -1,6 +1,8 @@
 #ifndef AAIRACE_SOURCE_GAME_UNITS_CAR_H_
 #define AAIRACE_SOURCE_GAME_UNITS_CAR_H_
 
+#include <memory>
+
 #include <SFML/Graphics.hpp>
 
 #include <common/drawable_unit.h>
