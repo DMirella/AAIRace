@@ -14,7 +14,8 @@
 #include "center_align_label.h"
 #include "edit_text_box.h"
 #include "game_window.h"
-#include "popup.h"
+#include "image_popup.h"
+#include "text_popup.h"
 
 namespace ui {
 class ScreenStateMachine;
@@ -81,7 +82,7 @@ class UserRegistrationScreen : public Screen {
 
   bool ok_button_error_popup_pressed_;
   std::unique_ptr<Button> back_button_;
-  std::unique_ptr<Popup> active_popup_;
+  std::unique_ptr<TextPopup> active_popup_;
   std::unique_ptr<CenterAlignLabel> text_label_;
   std::unique_ptr<EditTextBox> name_edit_text_box_;
   std::unique_ptr<Button> register_button_;
@@ -108,7 +109,7 @@ class UserLogInScreen : public Screen {
 
   bool ok_button_error_popup_pressed_;
   std::unique_ptr<Button> back_button_;
-  std::unique_ptr<Popup> active_popup_;
+  std::unique_ptr<TextPopup> active_popup_;
   std::unique_ptr<CenterAlignLabel> text_label_;
   std::unique_ptr<EditTextBox> name_edit_text_box_;
   std::unique_ptr<Button> register_button_;
@@ -131,11 +132,15 @@ class MenuScreen : public Screen {
   virtual std::string GetScreenName() const override;
  private:
   void OnStartGameButtonClick();
+  void OnTutorialGameButtonClick();
   void OnExitGameButtonClick();
   void OnLogOutButtonClick();
 
+  bool ok_button_tutorial_popup_pressed_;
+  std::unique_ptr<ImagePopup> tutorial_popup_;
   std::unique_ptr<Button> log_out_button_;
   std::unique_ptr<Button> start_game_button_;
+  std::unique_ptr<Button> tutorial_game_button_;
   std::unique_ptr<Button> exit_game_button_;
 };
 

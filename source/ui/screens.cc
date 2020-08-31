@@ -172,14 +172,16 @@ void UserRegistrationScreen::OnRegisterButtonClick() {
   const auto entered_string = name_edit_text_box_->entered_string();
   if (entered_string.empty()) {
     const std::string kErrorMessage = "User name can not be empty.";
-    active_popup_ = std::make_unique<Popup>(
-        kPopupX, kPopupY, kPopupWidth, kPopupHeight, kErrorMessage, 
-        [this](){ ok_button_error_popup_pressed_ = true; }, game_window_context_.draw_function);
+    active_popup_ = std::make_unique<TextPopup>(
+        kPopupX, kPopupY, kPopupWidth, kPopupHeight, 
+        [this](){ ok_button_error_popup_pressed_ = true; },
+        game_window_context_.draw_function, kErrorMessage);
   } else if (game::UserProfile::CheckIfConfigExist(entered_string)) {
     const std::string kErrorMessage = "User with this name already exists.";
-    active_popup_ = std::make_unique<Popup>(
-        kPopupX, kPopupY, kPopupWidth, kPopupHeight, kErrorMessage, 
-        [this](){ ok_button_error_popup_pressed_ = true; }, game_window_context_.draw_function);
+    active_popup_ = std::make_unique<TextPopup>(
+        kPopupX, kPopupY, kPopupWidth, kPopupHeight, 
+        [this](){ ok_button_error_popup_pressed_ = true; },
+        game_window_context_.draw_function, kErrorMessage);
   } else {
     screen_state_machine_->GetUserProfile().SetName(entered_string);
     screen_state_machine_->SetScreen(
@@ -271,14 +273,16 @@ void UserLogInScreen::OnLogInButtonClick() {
   const auto entered_string = name_edit_text_box_->entered_string();
   if (entered_string.empty()) {
     const std::string kErrorMessage = "User name can not be empty.";
-    active_popup_ = std::make_unique<Popup>(
-        kPopupX, kPopupY, kPopupWidth, kPopupHeight, kErrorMessage, 
-        [this](){ ok_button_error_popup_pressed_ = true; }, game_window_context_.draw_function);
+    active_popup_ = std::make_unique<TextPopup>(
+        kPopupX, kPopupY, kPopupWidth, kPopupHeight, 
+        [this](){ ok_button_error_popup_pressed_ = true; },
+        game_window_context_.draw_function, kErrorMessage);
   } else if (!game::UserProfile::CheckIfConfigExist(entered_string)) {
     const std::string kErrorMessage = "User with this name is not registered.";
-    active_popup_ = std::make_unique<Popup>(
-        kPopupX, kPopupY, kPopupWidth, kPopupHeight, kErrorMessage, 
-        [this](){ ok_button_error_popup_pressed_ = true; }, game_window_context_.draw_function);
+    active_popup_ = std::make_unique<TextPopup>(
+        kPopupX, kPopupY, kPopupWidth, kPopupHeight, 
+        [this](){ ok_button_error_popup_pressed_ = true; },
+        game_window_context_.draw_function, kErrorMessage);
   } else {
     screen_state_machine_->GetUserProfile().LoadFromConfigFile(
         name_edit_text_box_->entered_string());
@@ -295,44 +299,67 @@ void UserLogInScreen::OnBackButtonClick() {
 // MenuScreen
 MenuScreen::MenuScreen(ScreenStateMachine* const screen_state_machine,
                        const GameWindowContext& game_window_context)
-    : Screen(screen_state_machine, game_window_context) {
-  const int kButtonsCount = 2;
+    : Screen(screen_state_machine, game_window_context)
+    , ok_button_tutorial_popup_pressed_(false)
+    , tutorial_popup_(nullptr) {
   const int kButtonsWidth = game_window_context_.screen_width / 3;
   const int kButtonsHeight = game_window_context_.screen_height / 8;
-  const int kButtonsBlockStartX = game_window_context_.screen_width / 3;
-  const int kButtonsBlockStartY = (game_window_context_.screen_height - kButtonsHeight) / 2;
   const int kButtonYOffset = 10;
+  const int kButtonsBlockStartX = (game_window_context_.screen_width) / 3;
+  const int kButtonsBlockStartY 
+      = (game_window_context_.screen_height - 3 * kButtonsHeight + 2 * kButtonYOffset) / 2;
   const std::string kStartButtonText = "PLAY";
+  const std::string kTutorialButtonText = "TUTORIAL";
   const std::string kExitButtonText = "EXIT";
-  
+
   Button::OnClickCallback back_button_click_callback
       = std::bind(&MenuScreen::OnLogOutButtonClick, this);
   log_out_button_ = GenerateClassicBackButton(game_window_context_, back_button_click_callback, "Log out");
 
   Button::OnClickCallback on_start_game_button_click_callback
       = std::bind(&MenuScreen::OnStartGameButtonClick, this); 
+  Button::OnClickCallback on_tutorial_game_button_click_callback
+      = std::bind(&MenuScreen::OnTutorialGameButtonClick, this);
   Button::OnClickCallback on_exit_game_button_click_callback
       = std::bind(&MenuScreen::OnExitGameButtonClick, this);
 
   start_game_button_ = std::make_unique<Button>(
       kButtonsBlockStartX, kButtonsBlockStartY, kButtonsWidth, kButtonsHeight, 
       kStartButtonText, on_start_game_button_click_callback, game_window_context_.draw_function);
-  exit_game_button_ = std::make_unique<Button>(
+  tutorial_game_button_ = std::make_unique<Button>(
       kButtonsBlockStartX, kButtonsBlockStartY + kButtonsHeight + kButtonYOffset,
+      kButtonsWidth, kButtonsHeight, kTutorialButtonText, on_tutorial_game_button_click_callback,
+      game_window_context_.draw_function);
+  exit_game_button_ = std::make_unique<Button>(
+      kButtonsBlockStartX, kButtonsBlockStartY + 2 * (kButtonsHeight + kButtonYOffset),
       kButtonsWidth, kButtonsHeight, kExitButtonText, on_exit_game_button_click_callback,
       game_window_context_.draw_function);
 }
 
-void MenuScreen::NotifyGameCycleElapsed(float elapsed_time, const UserControllersContext& context) {
-  start_game_button_->Update(elapsed_time, context);
-  exit_game_button_->Update(elapsed_time, context);
-  log_out_button_->Update(elapsed_time, context);
+void MenuScreen::NotifyGameCycleElapsed(float elapsed_time,
+                                        const UserControllersContext& context) {
+  if (tutorial_popup_.get() == nullptr) {
+    start_game_button_->Update(elapsed_time, context);
+    tutorial_game_button_->Update(elapsed_time, context);
+    exit_game_button_->Update(elapsed_time, context);
+    log_out_button_->Update(elapsed_time, context);
+  } else {
+    tutorial_popup_->Update(elapsed_time, context);
+    if (ok_button_tutorial_popup_pressed_) {
+      tutorial_popup_ = nullptr;
+      ok_button_tutorial_popup_pressed_ = false;
+    }
+  }
 }
 
 void MenuScreen::Draw() {
   start_game_button_->Draw();
+  tutorial_game_button_->Draw();
   exit_game_button_->Draw();
   log_out_button_->Draw();
+  if (tutorial_popup_.get() != nullptr) {
+    tutorial_popup_->Draw();
+  }
 }
 
 std::string MenuScreen::GetScreenName() const {
@@ -342,6 +369,20 @@ std::string MenuScreen::GetScreenName() const {
 void MenuScreen::OnStartGameButtonClick() {
   screen_state_machine_->SetScreen(
       std::make_shared<LevelChooseScreen>(screen_state_machine_, game_window_context_));
+}
+
+void MenuScreen::OnTutorialGameButtonClick() {
+  const int kPopupWidth = game_window_context_.screen_width / 2;
+  const int kPopupHeight = game_window_context_.screen_height / 1.2f;
+  const int kPopupX = (game_window_context_.screen_width - kPopupWidth) / 2;
+  const int kPopupY = (game_window_context_.screen_height - kPopupHeight) / 2;
+  const std::string kTutorialImagePath = "resources/keyboard_arrow_keys_with_labels.png";
+
+  sf::Image tutorial_image;
+  tutorial_image.loadFromFile(kTutorialImagePath);
+  tutorial_popup_ = std::make_unique<ImagePopup>(kPopupX, kPopupY, kPopupWidth, kPopupHeight, 
+      [this]() { ok_button_tutorial_popup_pressed_ = true; }, 
+      game_window_context_.draw_function, tutorial_image);
 }
 
 void MenuScreen::OnExitGameButtonClick() {
@@ -358,7 +399,6 @@ void MenuScreen::OnLogOutButtonClick() {
 LevelChooseScreen::LevelChooseScreen(ScreenStateMachine* const screen_state_machine,
                                      const GameWindowContext& game_window_context)
     : Screen(screen_state_machine, game_window_context) {
-  const int kLevelsCount = 30;
   const int kLevelButtonSize = 100;
   const int kLevelButtonXYOffset = 20;
   const int kLevelButtonsBlockXYOffset = 150;
@@ -371,11 +411,11 @@ LevelChooseScreen::LevelChooseScreen(ScreenStateMachine* const screen_state_mach
   Button::OnClickCallback back_button_click_callback
       = std::bind(&LevelChooseScreen::OnBackButtonClick, this);
   back_button_ = GenerateClassicBackButton(game_window_context_, back_button_click_callback, "Back");
-    
+
   label_ = std::make_unique<CenterAlignLabel>(
       common::Rectangle(0, 0, game_window_context_.screen_width, kLevelButtonsBlockXYOffset),
       kChooseLavelLabelText, kFontLabelSize, game_window_context_.draw_function);
-  for (int current_level = 1; current_level <= kLevelsCount; current_level++) {
+  for (int current_level = 1; current_level <= game::LevelManager::kLevelsCount; current_level++) {
     Button::OnClickCallback on_current_level_button_click_callback = [this, current_level]() {
       OnLevelChoosen(current_level);
     };

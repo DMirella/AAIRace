@@ -15,7 +15,7 @@ const int gCollectedDataLevelsSlidingWindowSize = 3;
 
 namespace game {
 const int LevelManager::kMinimumCountUnlockedLevels = 1;
-const int LevelManager::kLevelsCount = 30;
+const int LevelManager::kLevelsCount = 10;
 const int LevelManager::kEnemiesCount = 4;
 
 LevelManager::LevelManager(const ui::GameWindowContext& game_window_context,

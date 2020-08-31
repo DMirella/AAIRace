@@ -7,4 +7,6 @@ add_library(${UI_LIBRARY_NAME}
             button.cc
             center_align_label.cc
             edit_text_box.cc
-            popup.cc)
+            popup.cc
+            text_popup.cc
+            image_popup.cc)

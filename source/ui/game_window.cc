@@ -15,7 +15,7 @@ namespace ui {
 GameWindow::GameWindow() {
   const sf::VideoMode kGameVideoMode = sf::VideoMode(1280, 720);
   const std::string kGameWindowTitle = "AAIRace";
-  const bool kIsFullScreen = true;
+  const bool kIsFullScreen = false;
 
   window_.create(
       kGameVideoMode, kGameWindowTitle,
