@@ -6,6 +6,7 @@
 
 #include <game/units/city_car.h>
 #include <game/units/racing_car.h>
+#include <game/units/racing_progress_bar.h>
 #include <game/level_manager.h>
 
 #include "screen_state_machine.h"
@@ -35,6 +36,7 @@ GameWindow::GameWindow() {
 void GameWindow::LoadGameTextures() {
   game::units::RacingCar::Init();
   game::units::CityCar::Init();
+  game::units::RacingProgressBar::Init();
 }
 
 void GameWindow::Start() {

@@ -37,7 +37,7 @@ GameBusinessLogic::GameBusinessLogic(const ui::GameWindowContext& game_window_co
   
   is_enemy_racing_car_finished_.resize(enemies_count, false);
 
-  road_ = std::make_unique<units::Road>(
+  road_ = std::make_shared<units::Road>(
       game_window_context_.screen_width,game_window_context_.screen_height, 
       game_window_context_.draw_function);
 
@@ -49,9 +49,7 @@ GameBusinessLogic::GameBusinessLogic(const ui::GameWindowContext& game_window_co
   info_label_->SetOutlineBorder(kInfoLabelOutlineBorder);
 
   float kStartRacingCarY = road_->start_line_sprite_y() + 130.0f;
-
   float car_offset = (road_->right_x() - road_->left_x()) / (enemies_count + 1);
-
   float current_racing_car_x = road_->left_x() + car_offset / 2, previous_racing_car_x;
   int hero_car_start_place = std::rand() % (enemies_count + 1);
   hero_racing_car_ = std::make_shared<units::RacingCar>(
@@ -91,6 +89,15 @@ GameBusinessLogic::GameBusinessLogic(const ui::GameWindowContext& game_window_co
     city_car_list_.push_back(current_car);
     car_list_.push_back(current_car);
   }
+
+  const int kProgressBarWidth = 20;
+  const int kProgressBarHeight = game_window_context_.screen_height / 1.2f;
+  const int kProgressBarX = 40;
+  const int kProgressBarY = (game_window_context_.screen_height - kProgressBarHeight) / 2;
+  racing_progress_bar_ = std::make_unique<units::RacingProgressBar>(
+      kProgressBarX, kProgressBarY, kProgressBarWidth, kProgressBarHeight,
+      game_window_context_.draw_function, road_, hero_racing_car_,
+      enemies_car_list_);
 
   for (auto& it : car_list_) {
     it->SetBlockMove(true);
@@ -225,6 +232,7 @@ void GameBusinessLogic::Update(float elapsed_time, const ui::UserControllersCont
   for (auto& it : car_list_) {
     it->Update(elapsed_time, context);
   }
+  racing_progress_bar_->Update(elapsed_time, context);
 }
 
 void GameBusinessLogic::DrawEntities() {
@@ -233,6 +241,7 @@ void GameBusinessLogic::DrawEntities() {
     it->Draw();
   }
   info_label_->Draw();
+  racing_progress_bar_->Draw();
   // DrawSensors(hero_racing_car_);
 }
 
