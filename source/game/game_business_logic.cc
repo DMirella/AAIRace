@@ -45,8 +45,16 @@ GameBusinessLogic::GameBusinessLogic(const ui::GameWindowContext& game_window_co
   const int kInfoLabelOutlineBorder = 5;
   info_label_ = std::make_unique<ui::CenterAlignLabel>(
       common::Rectangle(road_->left_x(), 0, road_->right_x(), kInfoLabelHeight),
-                        "", kInfoLabelHeight, game_window_context_.draw_function);
+      "", kInfoLabelHeight, game_window_context_.draw_function);
   info_label_->SetOutlineBorder(kInfoLabelOutlineBorder);
+
+  const int kHeroPlaceLabelHeight = game_window_context_.screen_height / 7;
+  const int kHeroPlaceOutlineBorder = 1;
+  hero_place_label_ = std::make_unique<ui::CenterAlignLabel>(
+      common::Rectangle(road_->right_x(), 0,
+                        game_window_context_.screen_width, kHeroPlaceLabelHeight),
+      "", kHeroPlaceLabelHeight, game_window_context_.draw_function);
+  // hero_place_label_->SetOutlineBorder(kHeroPlaceOutlineBorder);
 
   float kStartRacingCarY = road_->start_line_sprite_y() + 130.0f;
   float car_offset = (road_->right_x() - road_->left_x()) / (enemies_count + 1);
@@ -228,6 +236,14 @@ void GameBusinessLogic::ProcessGameEvents() {
 }
 
 void GameBusinessLogic::Update(float elapsed_time, const ui::UserControllersContext& context) {
+  int count_above_hero_car = 0;
+  for (const auto& it : enemies_car_list_) {
+    if (it->y() < hero_racing_car_->y()) {
+      count_above_hero_car++;
+    }
+  }
+  hero_place_label_->SetText(std::to_string(count_above_hero_car + 1) + "/"
+                                + std::to_string(enemies_car_list_.size() + 1));
   road_->Update(elapsed_time, context);
   for (auto& it : car_list_) {
     it->Update(elapsed_time, context);
@@ -241,7 +257,10 @@ void GameBusinessLogic::DrawEntities() {
     it->Draw();
   }
   info_label_->Draw();
-  racing_progress_bar_->Draw();
+  if (is_racing_started_) {
+    hero_place_label_->Draw();
+    racing_progress_bar_->Draw();
+  }
   // DrawSensors(hero_racing_car_);
 }
 

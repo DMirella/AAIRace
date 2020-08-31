@@ -66,6 +66,7 @@ class GameBusinessLogic {
   float finish_timer_;
 
   std::unique_ptr<ui::CenterAlignLabel> info_label_;
+  std::unique_ptr<ui::CenterAlignLabel> hero_place_label_;
   std::unique_ptr<units::RacingProgressBar> racing_progress_bar_;
   std::shared_ptr<units::RacingCar> hero_racing_car_;
   std::vector<std::shared_ptr<units::Car>> car_list_;
@@ -74,7 +75,6 @@ class GameBusinessLogic {
   std::vector<std::shared_ptr<units::RacingCar>> enemies_car_list_;
   std::vector<bool> is_enemy_racing_car_finished_;
   std::shared_ptr<units::Road> road_;
-
   std::vector<std::shared_ptr<ai::EnemyAI>> enemies_ai_;
 
   int hero_racing_car_place_;

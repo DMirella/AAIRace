@@ -4,7 +4,7 @@
 #include "racing_car.h"
 
 namespace {
-sf::Color gBasicRectColor = sf::Color(0xFC, 0xF8, 0xF8);
+sf::Color gBasicRectColor = sf::Color(71, 72, 78);
 }  // namespace
 
 namespace game {
