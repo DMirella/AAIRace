@@ -12,8 +12,13 @@
 #include "screen_state_machine.h"
 #include "screens.h"
 
+namespace {
+const sf::Color gClearWindowColor = sf::Color(0x80, 0xA4, 0x86);
+}  // namespace
+
 namespace ui {
-GameWindow::GameWindow() {
+GameWindow::GameWindow()
+    : is_window_has_focus_(true) {
   const sf::VideoMode kGameVideoMode = sf::VideoMode(1280, 720);
   const std::string kGameWindowTitle = "AAIRace";
   const bool kIsFullScreen = false;
@@ -49,24 +54,32 @@ void GameWindow::Start() {
     sf::Event event;
     user_controllers_context = UserControllersContext();
     while (window_.pollEvent(event)) {
-      if (event.type == sf::Event::Closed) {
-        ExitGame();
-      } else if (event.type == sf::Event::TextEntered) {
-        user_controllers_context.entered_unicode = event.text.unicode;
+      if (event.type == sf::Event::GainedFocus) {
+        is_window_has_focus_ = true;
+      } else if (event.type == sf::Event::LostFocus) {
+        is_window_has_focus_ = false;
+      }
+      if (is_window_has_focus_) {
+        if (event.type == sf::Event::Closed) {
+          ExitGame();
+        } else if (event.type == sf::Event::TextEntered) {
+          user_controllers_context.entered_unicode = event.text.unicode;
+        }
       }
     }
-    user_controllers_context.is_left_arrow_pressed = sf::Keyboard::isKeyPressed(sf::Keyboard::Left);
-    user_controllers_context.is_right_arrow_pressed = sf::Keyboard::isKeyPressed(sf::Keyboard::Right);
-    user_controllers_context.is_up_arrow_pressed = sf::Keyboard::isKeyPressed(sf::Keyboard::Up);
-    user_controllers_context.is_down_arrow_pressed = sf::Keyboard::isKeyPressed(sf::Keyboard::Down);
-    user_controllers_context.is_mouse_button_pressed = sf::Mouse::isButtonPressed(sf::Mouse::Button::Left);
-    user_controllers_context.cursor_x = sf::Mouse::getPosition(window_).x;
-    user_controllers_context.cursor_y = sf::Mouse::getPosition(window_).y;
-    screen_state_machine_->active_screen()->NotifyGameCycleElapsed(time, user_controllers_context);
-
-    window_.clear(sf::Color(0x80, 0xA4, 0x86));
-    screen_state_machine_->active_screen()->Draw();
-    window_.display();
+    if (is_window_has_focus_) {
+      user_controllers_context.is_left_arrow_pressed = sf::Keyboard::isKeyPressed(sf::Keyboard::Left);
+      user_controllers_context.is_right_arrow_pressed = sf::Keyboard::isKeyPressed(sf::Keyboard::Right);
+      user_controllers_context.is_up_arrow_pressed = sf::Keyboard::isKeyPressed(sf::Keyboard::Up);
+      user_controllers_context.is_down_arrow_pressed = sf::Keyboard::isKeyPressed(sf::Keyboard::Down);
+      user_controllers_context.is_mouse_button_pressed = sf::Mouse::isButtonPressed(sf::Mouse::Button::Left);
+      user_controllers_context.cursor_x = sf::Mouse::getPosition(window_).x;
+      user_controllers_context.cursor_y = sf::Mouse::getPosition(window_).y;
+      screen_state_machine_->active_screen()->NotifyGameCycleElapsed(time, user_controllers_context);
+      window_.clear(gClearWindowColor);
+      screen_state_machine_->active_screen()->Draw();
+      window_.display();
+    }
   }
 }
 

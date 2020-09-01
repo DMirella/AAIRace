@@ -30,6 +30,7 @@ class GameWindow {
   void ExitGame();
   void Draw(const sf::Drawable& object);
 
+  bool is_window_has_focus_;
   sf::RenderWindow window_;
   std::shared_ptr<ScreenStateMachine> screen_state_machine_;
 };
