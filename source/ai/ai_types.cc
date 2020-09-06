@@ -1,6 +1,7 @@
 #include "ai_types.h"
 
 #include <algorithm>
+#include <iostream>
 #include <list>
 
 #include <common/tools.h>
@@ -14,10 +15,12 @@ std::vector<double> TransformAIInputDataToVector(const AIInputData& ai_input_dat
   for (int i = 0; i < AIInputData::kCountDistanceScanRays; i++) {
     result.push_back(ai_input_data.distance_to_racing_cars[i].distance);
     result.push_back(ai_input_data.distance_to_racing_cars[i].speed);
+    result.push_back(ai_input_data.distance_to_racing_cars[i].faced? 1.0 : 0.0);
   }
   for (int i = 0; i < AIInputData::kCountDistanceScanRays; i++) {
     result.push_back(ai_input_data.distance_to_city_cars[i].distance);
     result.push_back(ai_input_data.distance_to_city_cars[i].speed);
+    result.push_back(ai_input_data.distance_to_racing_cars[i].faced? 1.0 : 0.0);
   }
   return result;
 }
@@ -40,10 +43,12 @@ AIInputData TransformVectorToAIInputData(const std::vector<double>& vector) {
   for (int i = 0; i < AIInputData::kCountDistanceScanRays; i++) {
     result.distance_to_racing_cars[i].distance = *it++;
     result.distance_to_racing_cars[i].speed = *it++;
+    result.distance_to_racing_cars[i].faced = static_cast<bool>(*it++);
   }
   for (int i = 0; i < AIInputData::kCountDistanceScanRays; i++) {
     result.distance_to_city_cars[i].distance = *it++;
     result.distance_to_city_cars[i].speed = *it++;
+    result.distance_to_city_cars[i].faced = static_cast<bool>(*it++);
   }
   return result;
 }
@@ -109,7 +114,7 @@ std::vector<AIIOData> FilterAIIOData(const std::vector<AIIOData>& aiio_data) {
         break;
       }
       if (GetValueFromActionNumber(it->output, current_collecting_action)) {
-        result_for_each_action[i].push_back(*it);
+        result_for_each_action[current_collecting_action].push_back(*it);
         for (int j = 0; j < AIOutputData::kOutputCount; j++) {
           if (GetValueFromActionNumber(it->output, j)) {
             taken_output_action_count[j]++;
@@ -117,7 +122,7 @@ std::vector<AIIOData> FilterAIIOData(const std::vector<AIIOData>& aiio_data) {
         }
         it = aiio_data_list.erase(it);
       } else {
-        ++it;
+          ++it;
       }
     }
   }

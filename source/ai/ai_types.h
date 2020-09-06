@@ -6,10 +6,11 @@
 namespace ai {
 struct AIInputData {
   static const int kCountDistanceScanRays = 20;
-  static const int kInputCount = kCountDistanceScanRays * 2 * 2 + 3;
+  static const int kInputCount = kCountDistanceScanRays * 3 * 2 + 3;
   struct OtherCarRegardingCurrentCarInfo {
     float speed;
     float distance;
+    bool faced;
   };
 
   OtherCarRegardingCurrentCarInfo distance_to_city_cars[kCountDistanceScanRays];

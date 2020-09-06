@@ -2,6 +2,7 @@
 #define AAIRACE_SOURCE_GAME_LEVEL_MANAGER_H_
 
 #include <fstream>
+#include <list>
 #include <memory>
 #include <vector>
 
@@ -29,8 +30,8 @@ class LevelManager {
   std::unique_ptr<GameSession> GenerateGameSession(int game_level);
   void NotifyCurrentLevelEnds(const std::vector<ai::AIIOData>& collected_aiio_data);
   
-  void LoadFromFile(std::fstream* const f);
-  void SaveToFile(std::fstream* const f) const;
+  void LoadFromFolder(const std::string& path);
+  void SaveToFolder(const std::string& path) const;
 
   void Reset();
 
@@ -42,8 +43,8 @@ class LevelManager {
   int count_unlocked_levels_;
   ui::GameWindowContext game_window_context_;
 
-  std::vector<std::shared_ptr<std::vector<ai::AIIOData>>> collected_user_aiio_data_;
-  std::vector<std::shared_ptr<ai::EnemyAI>> enemies_ai_;
+  std::list<std::vector<ai::AIIOData>> accumulated_filtered_collected_aiio_data_;
+  std::vector<std::vector<std::shared_ptr<ai::EnemyAI>>> enemies_ai_;
 };
 }  // namespace game
 

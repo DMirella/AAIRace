@@ -34,6 +34,8 @@ GameBusinessLogic::GameBusinessLogic(const ui::GameWindowContext& game_window_co
   , is_racing_started_(false)
   , enemies_ai_(enemies_ai) {
   assert(enemies_ai.size() == enemies_count);
+
+  faced_car_grid_.resize(enemies_count + 1 + city_car_count, std::vector<bool>(enemies_count + 1 + city_car_count));
   
   is_enemy_racing_car_finished_.resize(enemies_count, false);
 
@@ -222,6 +224,8 @@ void GameBusinessLogic::ProcessGameEvents() {
         const bool cars_intersect 
             = common::CheckRectangleIntersect(first_car->GetIntersectRectangle(), second_car->GetIntersectRectangle());
         if (cars_intersect) {
+          faced_car_grid_[i][j] = true;
+          faced_car_grid_[j][i] = true;
           float dx = first_car->x() - second_car->x(), dy = first_car->y() - second_car->y();
           float length = std::sqrt(dx * dx + dy * dy);
           dx /= length;
@@ -261,7 +265,7 @@ void GameBusinessLogic::DrawEntities() {
     hero_place_label_->Draw();
     racing_progress_bar_->Draw();
   }
-  // DrawSensors(hero_racing_car_);
+  DrawSensors(hero_racing_car_);
 }
 
 bool GameBusinessLogic::is_game_ended() const {
@@ -294,12 +298,20 @@ ai::AIInputData GameBusinessLogic::GetAIInputDataRegardingToRacingCar(
   input_data.distance_to_right_border = (road_->right_x() - racing_car->x()) / road_->width();
   input_data.current_speed = racing_car->speed() / kMaxSpeedInGame;
 
+  int racing_car_place_in_face_grid = 0;
+  for (; racing_car_place_in_face_grid < faced_car_grid_.size(); racing_car_place_in_face_grid++) {
+    if (car_list_[racing_car_place_in_face_grid] == racing_car) {
+      break;
+    }
+  }
+
   const float kAngleIncreaseValue = k2PI / ai::AIInputData::kCountDistanceScanRays;
   int i = 0;
   for (float current_angle = 0.0f; current_angle <= k2PI; current_angle += kAngleIncreaseValue) {
     ai::AIInputData::OtherCarRegardingCurrentCarInfo car_info;
     car_info.distance = kMaxDistance;
     car_info.speed = kMaxSpeedInGame;
+    std::shared_ptr<units::Car> current_nearest_car = nullptr;
     common::Point origin_point(racing_car->x(), racing_car->y());
     common::Point ray_direction(std::cos(current_angle), std::sin(current_angle));
     for (const auto& it : racing_car_list_) {
@@ -309,11 +321,18 @@ ai::AIInputData GameBusinessLogic::GetAIInputDataRegardingToRacingCar(
         if (car_info.distance > current_distance) {
           car_info.distance = current_distance;
           car_info.speed = it->speed();
+          current_nearest_car = it;
         }
       }
     }
     car_info.distance /= kMaxDistance;
     car_info.speed /= kMaxSpeedInGame;
+    for (int i = 0; i < faced_car_grid_[racing_car_place_in_face_grid].size(); i++) {
+      if (car_list_[i] == current_nearest_car) {
+        car_info.faced = faced_car_grid_[racing_car_place_in_face_grid][i];
+        break;
+      }
+    }
     input_data.distance_to_racing_cars[i] = std::move(car_info);
     i++;
   }
@@ -323,6 +342,7 @@ ai::AIInputData GameBusinessLogic::GetAIInputDataRegardingToRacingCar(
     ai::AIInputData::OtherCarRegardingCurrentCarInfo car_info;
     car_info.distance = kMaxDistance;
     car_info.speed = kMaxSpeedInGame;
+    std::shared_ptr<units::Car> current_nearest_car = nullptr;
     common::Point origin_point(racing_car->x(), racing_car->y());
     common::Point ray_direction(std::cos(current_angle), std::sin(current_angle));
     for (const auto& it : city_car_list_) {
@@ -331,10 +351,17 @@ ai::AIInputData GameBusinessLogic::GetAIInputDataRegardingToRacingCar(
       if (car_info.distance > current_distance) {
         car_info.distance = current_distance;
         car_info.speed = it->speed();
+        current_nearest_car = it;
       }
     }
     car_info.distance /= kMaxDistance;
     car_info.speed /= kMaxSpeedInGame;
+    for (int i = 0; i < faced_car_grid_[racing_car_place_in_face_grid].size(); i++) {
+      if (car_list_[i] == current_nearest_car) {
+        car_info.faced = faced_car_grid_[racing_car_place_in_face_grid][i];
+        break;
+      }
+    }
     input_data.distance_to_city_cars[i] = std::move(car_info);
     i++;
   }
@@ -347,9 +374,17 @@ void GameBusinessLogic::DrawSensors(const std::shared_ptr<units::RacingCar>& car
   const float kMaxSpeedInGame = units::RacingCar::max_speed();
   const float k2PI = 2.0f * common::gPI;
 
+  int racing_car_place_in_face_grid = 0;
+  for (; racing_car_place_in_face_grid < faced_car_grid_.size(); racing_car_place_in_face_grid++) {
+    if (car_list_[racing_car_place_in_face_grid] == car) {
+      break;
+    }
+  }
+
   const float kAngleIncreaseValue = k2PI / ai::AIInputData::kCountDistanceScanRays;
   int i = 0;
   for (float current_angle = 0.0f; current_angle <= k2PI; current_angle += kAngleIncreaseValue) {
+    std::shared_ptr<units::Car> current_nearest_car = nullptr;
     float current_minimum_distance = kMaxDistance;
     common::Point ray_origin = common::Point(
         car->x(), car->y()), ray_direction(std::cos(current_angle), std::sin(current_angle));
@@ -359,7 +394,15 @@ void GameBusinessLogic::DrawSensors(const std::shared_ptr<units::RacingCar>& car
             ray_origin, ray_direction, it->GetIntersectRectangle());
         if (current_minimum_distance > current_distance) {
           current_minimum_distance = current_distance;
+          current_nearest_car = it;
         }
+      }
+    }
+    bool is_faced = false;
+    for (int i = 0; i < faced_car_grid_[racing_car_place_in_face_grid].size(); i++) {
+      if (car_list_[i] == current_nearest_car) {
+        is_faced = faced_car_grid_[racing_car_place_in_face_grid][i];
+        break;
       }
     }
     if (current_minimum_distance < kMaxDistance) {
@@ -373,8 +416,13 @@ void GameBusinessLogic::DrawSensors(const std::shared_ptr<units::RacingCar>& car
       lines_2[0].position = sf::Vector2f(ray_origin.x, ray_origin.y);
       lines_2[1].position = sf::Vector2f(ray_origin.x + ray_direction.x * current_minimum_distance, 
                                          ray_origin.y + ray_direction.y * current_minimum_distance);
-      lines_2[0].color = sf::Color::Red;
-      lines_2[1].color = sf::Color::Red;
+      if (is_faced) {
+        lines_2[0].color = sf::Color::Red;
+        lines_2[1].color = sf::Color::Red;
+      } else {
+        lines_2[0].color = sf::Color::Yellow;
+        lines_2[1].color = sf::Color::Yellow;
+      }
       game_window_context_.draw_function(lines_2);
     }
     i++;
@@ -382,6 +430,7 @@ void GameBusinessLogic::DrawSensors(const std::shared_ptr<units::RacingCar>& car
   
   i = 0;
   for (float current_angle = 0.0f; current_angle <= k2PI; current_angle += kAngleIncreaseValue) {
+    std::shared_ptr<units::Car> current_nearest_car = nullptr;
     float current_minimum_distance = kMaxDistance;
     common::Point ray_origin = common::Point(
         car->x(), car->y()), ray_direction(std::cos(current_angle), std::sin(current_angle));
@@ -390,6 +439,7 @@ void GameBusinessLogic::DrawSensors(const std::shared_ptr<units::RacingCar>& car
           ray_origin, ray_direction, it->GetIntersectRectangle());
       if (current_minimum_distance > current_distance) {
         current_minimum_distance = current_distance;
+        current_nearest_car = it;
       }
     }
     if (current_minimum_distance < kMaxDistance) {
@@ -403,8 +453,20 @@ void GameBusinessLogic::DrawSensors(const std::shared_ptr<units::RacingCar>& car
       lines_2[0].position = sf::Vector2f(ray_origin.x, ray_origin.y);
       lines_2[1].position = sf::Vector2f(ray_origin.x + ray_direction.x * current_minimum_distance, 
                                          ray_origin.y + ray_direction.y * current_minimum_distance);
-      lines_2[0].color = sf::Color::Red;
-      lines_2[1].color = sf::Color::Red;
+      bool is_faced = false;
+      for (int i = 0; i < faced_car_grid_[racing_car_place_in_face_grid].size(); i++) {
+        if (car_list_[i] == current_nearest_car) {
+          is_faced = faced_car_grid_[racing_car_place_in_face_grid][i];
+          break;
+        }
+      }
+      if (is_faced) {
+        lines_2[0].color = sf::Color::Red;
+        lines_2[1].color = sf::Color::Red;
+      } else {
+        lines_2[0].color = sf::Color::Yellow;
+        lines_2[1].color = sf::Color::Yellow;
+      }
       game_window_context_.draw_function(lines_2);
     }
     i++;

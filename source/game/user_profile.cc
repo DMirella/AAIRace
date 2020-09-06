@@ -1,7 +1,6 @@
 #include "user_profile.h"
 
 #ifdef _WIN32
-  // #include <windows.h>  // _mkdir
   #include <direct.h>
 #else
   #include <sys/stat.h> // mkdir
@@ -13,6 +12,7 @@
 
 namespace {
 const std::string gProfilesFolderPath = "profiles";
+const std::string gProfileNameFileTitle = "user";
 const std::string gProfileFileFormat = "aairp";
 const int kNameBufferSize = 256;
 }  // namespace
@@ -36,32 +36,30 @@ LevelManager& UserProfile::GetLevelManager() {
 }
 
 bool UserProfile::LoadFromConfigFile(const std::string& user_name) {
-  std::fstream f(gProfilesFolderPath + "/" + user_name + "." + gProfileFileFormat,
-                 std::ios::in | std::ios::binary);
+  const std::string kProfileFolder = gProfilesFolderPath + "/" + user_name;
+  std::ifstream f(kProfileFolder + "/" + gProfileNameFileTitle + "." + gProfileFileFormat);
   if (!f.fail()) {
-    char buf[kNameBufferSize];
-    f.read(buf, kNameBufferSize * sizeof(char));
-    name_ = buf;
-    level_manager_.LoadFromFile(&f);
+    f >> name_;
     f.close();
+    level_manager_.LoadFromFolder(kProfileFolder);
     return true;
   }
   return false;
 }
 
 void UserProfile::SaveToConfigFile() const {
+  const std::string kProfileFolder = gProfilesFolderPath + "/" + name_;
 #if defined _MSC_VER
   _mkdir(gProfilesFolderPath.c_str());
+  _mkdir((gProfilesFolderPath + "/" + name_).c_str());
 #elif defined __GNUC__
   mkdir(gProfilesFolderPath.c_str(), 0777);
+  mkdir((gProfilesFolderPath + "/" + name_).c_str(), 0777);
 #endif
-  std::fstream f(gProfilesFolderPath + "/" + name_ + "." + gProfileFileFormat,
-                 std::ios::out | std::ios::binary);
-  char buf[kNameBufferSize];
-  std::strncpy(buf, name_.c_str(), kNameBufferSize);
-  f.write(buf, kNameBufferSize * sizeof(char));
-  level_manager_.SaveToFile(&f);
+  std::ofstream f(kProfileFolder + "/" + gProfileNameFileTitle + "." + gProfileFileFormat);
+  f << name_ << '\n';
   f.close();
+  level_manager_.SaveToFolder(kProfileFolder);
 }
 
 void UserProfile::Reset() {
@@ -73,7 +71,8 @@ void UserProfile::Reset() {
 }
 
 bool UserProfile::CheckIfConfigExist(const std::string& user_name) {
-  std::ifstream f(gProfilesFolderPath + "/" + user_name + "." + gProfileFileFormat);
+  const std::string kProfileFolder = gProfilesFolderPath + "/" + user_name;
+  std::ifstream f(kProfileFolder + "/" + gProfileNameFileTitle + "." + gProfileFileFormat);
   return f.good();
 }
 }  // namespace game

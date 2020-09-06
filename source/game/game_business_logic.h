@@ -74,6 +74,7 @@ class GameBusinessLogic {
   std::vector<std::shared_ptr<units::RacingCar>> racing_car_list_;
   std::vector<std::shared_ptr<units::RacingCar>> enemies_car_list_;
   std::vector<bool> is_enemy_racing_car_finished_;
+  std::vector<std::vector<bool>> faced_car_grid_;
   std::shared_ptr<units::Road> road_;
   std::vector<std::shared_ptr<ai::EnemyAI>> enemies_ai_;
 
