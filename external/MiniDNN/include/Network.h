@@ -169,6 +169,7 @@ class Network
         Network() :
             m_default_rng(1),
             m_rng(m_default_rng),
+            m_layers{},
             m_output(NULL),
             m_default_callback(),
             m_callback(&m_default_callback)
@@ -511,10 +512,7 @@ class Network
         ///
         void export_net(const std::string& folder, const std::string& filename) const
         {
-            bool created = internal::create_directory(folder);
-            if (!created)
-                throw std::runtime_error("[class Network]: Folder creation failed");
-
+            internal::create_directory(folder);
             MetaInfo map = this->get_meta_info();
             internal::write_map(folder + "/" + filename, map);
             std::vector< std::vector<Scalar> > params = this->get_parameters();

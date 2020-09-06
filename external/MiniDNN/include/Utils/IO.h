@@ -1,6 +1,7 @@
 #ifndef UTILS_IO_H_
 #define UTILS_IO_H_
 
+#include <iostream>
 #include <map>       // std::map
 #include <string>    // std::string
 #include <sstream>   // std::ostringstream
@@ -104,7 +105,7 @@ inline void write_parameters(
 inline std::vector<Scalar> read_vector_from_file(const std::string& filename)
 {
 
-    std::ifstream ifs(filename.c_str(), std::ios::in | std::ifstream::binary);
+    std::ifstream ifs(filename, std::ios::in | std::ifstream::binary);
     if (ifs.fail())
         throw std::runtime_error("Error while opening file");
 
@@ -169,7 +170,7 @@ inline void write_map(const std::string& filename, const std::map<std::string, i
 ///
 inline void read_map(const std::string& filename, std::map<std::string, int>& map)
 {
-    std::ifstream ifs(filename.c_str(), std::ios::in);
+    std::ifstream ifs(filename);
     if (ifs.fail())
         throw std::runtime_error("Error while opening file");
 
