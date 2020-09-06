@@ -4,6 +4,7 @@
 #include <fstream>
 #include <list>
 #include <memory>
+#include <thread>
 #include <vector>
 
 #include <ai/ai_types.h>
@@ -25,13 +26,14 @@ class LevelManager {
 
   LevelManager(const ui::GameWindowContext& game_window_context,
                int count_unlocked_levels);
+  ~LevelManager();
 
   int count_unlocked_level() const;
   std::unique_ptr<GameSession> GenerateGameSession(int game_level);
   void NotifyCurrentLevelEnds(const std::vector<ai::AIIOData>& collected_aiio_data);
   
   void LoadFromFolder(const std::string& path);
-  void SaveToFolder(const std::string& path) const;
+  void SaveToFolder(const std::string& path);
 
   void Reset();
 
@@ -42,7 +44,7 @@ class LevelManager {
   int current_active_level_;
   int count_unlocked_levels_;
   ui::GameWindowContext game_window_context_;
-
+  std::thread enemies_ai_training_thread_;
   std::list<std::vector<ai::AIIOData>> accumulated_filtered_collected_aiio_data_;
   std::vector<std::vector<std::shared_ptr<ai::EnemyAI>>> enemies_ai_;
 };

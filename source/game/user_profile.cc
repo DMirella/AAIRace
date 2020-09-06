@@ -47,19 +47,21 @@ bool UserProfile::LoadFromConfigFile(const std::string& user_name) {
   return false;
 }
 
-void UserProfile::SaveToConfigFile() const {
-  const std::string kProfileFolder = gProfilesFolderPath + "/" + name_;
+void UserProfile::SaveToConfigFile() {
+  if (!name_.empty()) {
+    const std::string kProfileFolder = gProfilesFolderPath + "/" + name_;
 #if defined _MSC_VER
-  _mkdir(gProfilesFolderPath.c_str());
-  _mkdir((gProfilesFolderPath + "/" + name_).c_str());
+    _mkdir(gProfilesFolderPath.c_str());
+    _mkdir((gProfilesFolderPath + "/" + name_).c_str());
 #elif defined __GNUC__
-  mkdir(gProfilesFolderPath.c_str(), 0777);
-  mkdir((gProfilesFolderPath + "/" + name_).c_str(), 0777);
+    mkdir(gProfilesFolderPath.c_str(), 0777);
+    mkdir((gProfilesFolderPath + "/" + name_).c_str(), 0777);
 #endif
-  std::ofstream f(kProfileFolder + "/" + gProfileNameFileTitle + "." + gProfileFileFormat);
-  f << name_ << '\n';
-  f.close();
-  level_manager_.SaveToFolder(kProfileFolder);
+    std::ofstream f(kProfileFolder + "/" + gProfileNameFileTitle + "." + gProfileFileFormat);
+    f << name_ << '\n';
+    f.close();
+    level_manager_.SaveToFolder(kProfileFolder);
+  }
 }
 
 void UserProfile::Reset() {

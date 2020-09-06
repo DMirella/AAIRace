@@ -265,7 +265,7 @@ void GameBusinessLogic::DrawEntities() {
     hero_place_label_->Draw();
     racing_progress_bar_->Draw();
   }
-  DrawSensors(hero_racing_car_);
+  // DrawSensors(hero_racing_car_);
 }
 
 bool GameBusinessLogic::is_game_ended() const {
