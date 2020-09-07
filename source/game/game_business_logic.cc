@@ -212,11 +212,13 @@ void GameBusinessLogic::ProcessGameEvents() {
 
   for (int i = 0; i < car_list_.size(); i++) {
     auto& first_car = car_list_[i];
-    if (first_car->GetIntersectRectangle().x1 < road_->left_x()) {
-      car_list_[i]->Push(1, 0);
+    auto first_car_intesect_rect = first_car->GetIntersectRectangle();
+    float first_car_width = first_car_intesect_rect.x2 - first_car_intesect_rect.x1;
+    if (first_car_intesect_rect.x1 < road_->left_x()) {
+      first_car->SetX(road_->left_x() + first_car_width / 2);
     }
-    if (first_car->GetIntersectRectangle().x2 > road_->right_x()) {
-      car_list_[i]->Push(-1, 0);
+    if (first_car_intesect_rect.x2 > road_->right_x()) {
+      first_car->SetX(road_->right_x() - first_car_width / 2);
     }
     for (int j = 0; j < car_list_.size(); j++) {
       if (i != j) {

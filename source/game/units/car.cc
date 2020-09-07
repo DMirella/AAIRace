@@ -26,6 +26,10 @@ Car::Car(int x, int y, const DrawFunction& draw_function)
     , hero_car_(nullptr) {
 }
 
+void Car::SetX(float x) {
+  sprite_x_ = x;
+}
+
 void Car::SetHeroCar(const std::shared_ptr<Car>& hero_car) {
   hero_car_ = hero_car;
 }
