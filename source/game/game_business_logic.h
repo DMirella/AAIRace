@@ -45,6 +45,7 @@ class GameBusinessLogic {
   void DrawEntities();
 
   bool is_game_ended() const;
+  int get_user_place() const;
 
   ai::AIIOData GetAIIODataRegardingToHeroCar() const;
  private:

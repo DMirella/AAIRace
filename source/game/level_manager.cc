@@ -14,7 +14,8 @@
 namespace {
 const int gCollectedDataLevelsSlidingWindowSize = 3;
 const std::string gLevelInfoFile = "levels_info.info";
-const std::string gCollectedFilteredDtaInfoFile = "collected_user_data.info";
+const std::string gCollectedFilteredDataInfoFile = "collected_user_data.info";
+const std::string gUserStatisticsFile = "LOG.TXT";
 const std::string gAIFilePrefix = "enemy_ai";
 }  // namespace
 
@@ -55,20 +56,20 @@ std::unique_ptr<GameSession> LevelManager::GenerateGameSession(int game_level) {
   const int kMaxCityCarCount = 300;
   const int kCityCarsCount 
       = (game_level * 18 > kMaxCityCarCount)? kMaxCityCarCount : game_level * 18;
-  
   if (enemies_ai_training_thread_.joinable()) {
     enemies_ai_training_thread_.join();
   }
-  
   return std::make_unique<GameSession>(
       this, game_window_context_, kEnemiesCount, kCityCarsCount,
       enemies_ai_[game_level - 1]);
 }
 
-void LevelManager::NotifyCurrentLevelEnds(const std::vector<ai::AIIOData>& collected_aiio_data) {
+void LevelManager::NotifyCurrentLevelEnds(const std::vector<ai::AIIOData>& collected_aiio_data,
+                                          int user_place) {
   if (current_active_level_ == count_unlocked_levels_) {
     current_active_level_ = -1;
     if (count_unlocked_levels_ < kLevelsCount) {
+      CollectUserStatistics(collected_aiio_data, user_place);
       count_unlocked_levels_++;
       auto current_collected_data = ai::FilterAIIOData(collected_aiio_data);
       accumulated_filtered_collected_aiio_data_.pop_front();
@@ -91,7 +92,7 @@ void LevelManager::LoadFromFolder(const std::string& path) {
   if (enemies_ai_training_thread_.joinable()) {
     enemies_ai_training_thread_.join();
   }
-  std::ifstream f(path + "/" + gCollectedFilteredDtaInfoFile,
+  std::ifstream f(path + "/" + gCollectedFilteredDataInfoFile,
                   std::ios::in | std::ios::binary);
   f.read((char*)&count_unlocked_levels_, sizeof(int));
   accumulated_filtered_collected_aiio_data_.resize(gCollectedDataLevelsSlidingWindowSize);
@@ -133,6 +134,7 @@ void LevelManager::LoadFromFolder(const std::string& path) {
       enemies_ai_[i][j]->Init();
     }
   }
+  LoadUserStatistics(path);
 }
 
 void LevelManager::Reset() {
@@ -154,11 +156,58 @@ void LevelManager::Reset() {
   }
 }
 
+void LevelManager::CollectUserStatistics(const std::vector<ai::AIIOData>& collected_aiio_data,
+                                         int user_place) {
+  user_places_.push_back(user_place);
+  float cnt[ai::AIOutputData::kOutputCount], sum = 0;
+  std::fill(cnt, cnt + ai::AIOutputData::kOutputCount, 0);
+  for (const auto &it : collected_aiio_data) {
+    for (int i = 0; i < ai::AIOutputData::kOutputCount; i++) {
+      if (ai::GetValueFromActionNumber(it.output, i)) {
+        cnt[i]++;
+        sum++;
+      }
+    }
+  }
+  std::vector<float> current_stat;
+  for (int i = 0; i < ai::AIOutputData::kOutputCount; i++) {
+    current_stat.push_back(cnt[i] / sum);
+  }
+  user_control_statistic_.emplace_back(current_stat);
+}
+
+void LevelManager::SaveUserStatistics(const std::string& path) {
+  std::ofstream f(path + "/" + gUserStatisticsFile);
+  for (int i = 0; i < count_unlocked_levels_ - 1; i++) {
+    f << user_places_[i] << '\n';
+    for (auto it : user_control_statistic_[i]) {
+      f << it << " ";
+    }
+    f << "\n\n";
+  }
+  f.close();
+}
+
+void LevelManager::LoadUserStatistics(const std::string& path) {
+  std::ifstream f(path + "/" + gUserStatisticsFile);
+  user_places_.resize(count_unlocked_levels_ - 1);
+  user_control_statistic_.resize(count_unlocked_levels_ - 1);
+  for (int i = 0; i < count_unlocked_levels_; i++) {
+    f >> user_places_[i];
+    user_control_statistic_[i].resize(ai::AIOutputData::kOutputCount);
+    for (auto& it : user_control_statistic_[i]) {
+      f >> it;
+    }
+  }
+  f.close();
+}
+
 void LevelManager::SaveToFolder(const std::string& path) {
   if (enemies_ai_training_thread_.joinable()) {
     enemies_ai_training_thread_.join();
   }
-  std::ofstream f(path + "/" + gCollectedFilteredDtaInfoFile,
+  SaveUserStatistics(path);
+  std::ofstream f(path + "/" + gCollectedFilteredDataInfoFile,
                   std::ios::out | std::ios::binary);
   f.write((char*)&count_unlocked_levels_, sizeof(int));
   for (const auto& it : accumulated_filtered_collected_aiio_data_) {

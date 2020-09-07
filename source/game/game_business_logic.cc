@@ -272,6 +272,10 @@ bool GameBusinessLogic::is_game_ended() const {
   return is_game_ended_;
 }
 
+int GameBusinessLogic::get_user_place() const {
+  return hero_racing_car_place_;
+}
+
 ai::AIIOData GameBusinessLogic::GetAIIODataRegardingToHeroCar() const {
   auto input_data = GetAIInputDataRegardingToRacingCar(hero_racing_car_);
 

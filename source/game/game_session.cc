@@ -27,7 +27,7 @@ void GameSession::NotifyGameCycleElapsed(float elapsed_time,
   if (!collected_aiio_data_sended_ && 
       game_business_logic_.is_game_ended()) {
     collected_aiio_data_sended_ = true;
-    level_manager_->NotifyCurrentLevelEnds(collected_aiio_data_);
+    level_manager_->NotifyCurrentLevelEnds(collected_aiio_data_, game_business_logic_.get_user_place());
   }
 }
 
