@@ -28,16 +28,10 @@ void EnemyAI::Init() {
 
 void EnemyAI::TrainWithData(const std::vector<AIIOData>& aiio_data) {
   std::vector<std::pair<std::vector<double>, std::vector<double>>> train_matrix;
-  const int kMaxTrainMatrixSize = 12000;
   for (const auto& it : aiio_data) {
     train_matrix.push_back(std::make_pair(TransformAIInputDataToVector(it.input),
                                           TransformAIOutputDataToVector(it.output)));
-    if (train_matrix.size() > kMaxTrainMatrixSize) {
-      break;
-    }
   }
-  
-  // std::cout << train_matrix.size() << std::endl;
   if (train_matrix.size() > 0) {
     neural_network_->Train(train_matrix);
   }

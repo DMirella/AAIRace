@@ -30,6 +30,10 @@ void Car::SetX(float x) {
   sprite_x_ = x;
 }
 
+void Car::SetY(float y) {
+  sprite_y_ = y;
+}
+
 void Car::SetHeroCar(const std::shared_ptr<Car>& hero_car) {
   hero_car_ = hero_car;
 }

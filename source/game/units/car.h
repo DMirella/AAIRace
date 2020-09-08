@@ -22,6 +22,7 @@ class Car : public common::DrawableUnit {
   virtual ~Car() {}
 
   void SetX(float x);
+  void SetY(float y);
 
   virtual void SetHeroCar(const std::shared_ptr<Car>& hero_car);
 

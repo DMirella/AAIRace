@@ -69,12 +69,19 @@ void LevelManager::NotifyCurrentLevelEnds(const std::vector<ai::AIIOData>& colle
   if (current_active_level_ == count_unlocked_levels_) {
     current_active_level_ = -1;
     if (count_unlocked_levels_ < kLevelsCount) {
+      const int kMaxCollectedDataSize = 12000;
       CollectUserStatistics(collected_aiio_data, user_place);
       count_unlocked_levels_++;
       auto current_collected_data = ai::FilterAIIOData(collected_aiio_data);
       accumulated_filtered_collected_aiio_data_.pop_front();
       for (const auto& it : accumulated_filtered_collected_aiio_data_) {
         current_collected_data.insert(current_collected_data.end(), it.begin(), it.end());
+      }
+      if (current_collected_data.size() > kMaxCollectedDataSize) {
+        current_collected_data = ai::FilterAIIOData(current_collected_data);
+        if (current_collected_data.size() > kMaxCollectedDataSize) {
+          current_collected_data.resize(kMaxCollectedDataSize);
+        }
       }
       accumulated_filtered_collected_aiio_data_.push_back(current_collected_data);
       auto training_function = [this, current_collected_data]() {
@@ -159,19 +166,18 @@ void LevelManager::Reset() {
 void LevelManager::CollectUserStatistics(const std::vector<ai::AIIOData>& collected_aiio_data,
                                          int user_place) {
   user_places_.push_back(user_place);
-  float cnt[ai::AIOutputData::kOutputCount], sum = 0;
+  float cnt[ai::AIOutputData::kOutputCount];
   std::fill(cnt, cnt + ai::AIOutputData::kOutputCount, 0);
   for (const auto &it : collected_aiio_data) {
     for (int i = 0; i < ai::AIOutputData::kOutputCount; i++) {
       if (ai::GetValueFromActionNumber(it.output, i)) {
         cnt[i]++;
-        sum++;
       }
     }
   }
   std::vector<float> current_stat;
   for (int i = 0; i < ai::AIOutputData::kOutputCount; i++) {
-    current_stat.push_back(cnt[i] / sum);
+    current_stat.push_back(cnt[i] / collected_aiio_data.size());
   }
   user_control_statistic_.emplace_back(current_stat);
 }
