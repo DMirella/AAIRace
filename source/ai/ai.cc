@@ -61,7 +61,8 @@ void NeuralNetwork::Train(
   
   MiniDNN::RMSProp rms_prop;
   rms_prop.m_lrate = kLearningRate;
-  network_.fit(rms_prop, inputs_train_matrix, outputs_train_matrix, kBatchSize, kEpochCount, std::rand());
+  network_.fit(rms_prop, inputs_train_matrix, outputs_train_matrix,
+               kBatchSize, kEpochCount, std::rand());
   auto outs = network_.predict(inputs_train_matrix);
   float cnt = 0;
   for (int i = 0; i < train_matrix.size(); i++) {

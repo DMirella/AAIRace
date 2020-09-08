@@ -224,7 +224,8 @@ void GameBusinessLogic::ProcessGameEvents() {
       if (i != j) {
         auto& second_car = car_list_[j];
         const bool cars_intersect 
-            = common::CheckRectangleIntersect(first_car->GetIntersectRectangle(), second_car->GetIntersectRectangle());
+            = common::CheckRectangleIntersect(first_car->GetIntersectRectangle(),
+                                              second_car->GetIntersectRectangle());
         if (cars_intersect) {
           faced_car_grid_[i][j] = true;
           faced_car_grid_[j][i] = true;
