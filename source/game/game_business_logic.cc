@@ -223,9 +223,10 @@ void GameBusinessLogic::ProcessGameEvents() {
     for (int j = 0; j < car_list_.size(); j++) {
       if (i != j) {
         auto& second_car = car_list_[j];
+        auto second_car_intesect_rect = second_car->GetIntersectRectangle();
         const bool cars_intersect 
-            = common::CheckRectangleIntersect(first_car->GetIntersectRectangle(),
-                                              second_car->GetIntersectRectangle());
+            = common::CheckRectangleIntersect(first_car_intesect_rect,
+                                              second_car_intesect_rect);
         if (cars_intersect) {
           faced_car_grid_[i][j] = true;
           faced_car_grid_[j][i] = true;

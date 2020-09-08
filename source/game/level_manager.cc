@@ -69,11 +69,18 @@ void LevelManager::NotifyCurrentLevelEnds(const std::vector<ai::AIIOData>& colle
   if (current_active_level_ == count_unlocked_levels_) {
     current_active_level_ = -1;
     if (count_unlocked_levels_ < kLevelsCount) {
+      const int kMaxCollectedDataSize = 12000;
       count_unlocked_levels_++;
       auto current_collected_data = ai::FilterAIIOData(collected_aiio_data);
       accumulated_filtered_collected_aiio_data_.pop_front();
       for (const auto& it : accumulated_filtered_collected_aiio_data_) {
         current_collected_data.insert(current_collected_data.end(), it.begin(), it.end());
+      }
+      if (current_collected_data.size() > kMaxCollectedDataSize) {
+        current_collected_data = ai::FilterAIIOData(current_collected_data);
+        if (current_collected_data.size() > kMaxCollectedDataSize) {
+          current_collected_data.resize(kMaxCollectedDataSize);
+        }
       }
       accumulated_filtered_collected_aiio_data_.push_back(current_collected_data);
       auto training_function = [this, current_collected_data]() {
