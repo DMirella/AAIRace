@@ -44,7 +44,8 @@ void EnemyAI::TrainWithData(const std::vector<AIIOData>& aiio_data) {
 }
 
 AIOutputData EnemyAI::GetOutputData(const AIInputData& input_data) {
-  auto vector_outputs = neural_network_->GetOutputs(TransformAIInputDataToVector(input_data));
+  auto vector_outputs
+      = neural_network_->GetOutputs(TransformAIInputDataToVector(input_data));
   return TransformVectorToAIOutputData(vector_outputs);
 }
 
