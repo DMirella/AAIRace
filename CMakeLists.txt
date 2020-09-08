@@ -7,6 +7,11 @@ set(CMAKE_CXX_STANDARD 14)
 set(SOURCE_LIBRARY_NAME source_library)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/")
 
+set(AI_LIBRARY_NAME ai_library)
+set(GAME_LIBRARY_NAME game_library)
+set(COMMON_LIBRARY_NAME common_library)
+set(UI_LIBRARY_NAME ui_library)
+
 find_package(SFML 2 REQUIRED system window graphics network audio)
 find_package (Eigen REQUIRED)
 find_package(OpenMP)
@@ -17,13 +22,17 @@ if (OPENMP_FOUND)
 endif()
 
 include_directories(./source/
-		    ${SFML_INCLUDE_DIR}
+                    ${PROJECT_SOURCE_DIR}/external/MiniDNN/include
+                    ${SFML_INCLUDE_DIR}
                     ${EIGEN3_INCLUDE_DIR})
 
 add_subdirectory(source)
 
+
 add_executable(${PROJECT_NAME} source/main.cc)
 target_link_libraries(${PROJECT_NAME} 
-		      ${SOURCE_LIBRARY_NAME} 
-                      ${SFML_LIBRARIES}
-                      ${Boost_LIBRARIES})
+                      ${UI_LIBRARY_NAME}
+                      ${GAME_LIBRARY_NAME}
+                      ${COMMON_LIBRARY_NAME}
+                      ${AI_LIBRARY_NAME}
+                      ${SFML_LIBRARIES})
